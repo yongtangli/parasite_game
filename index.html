@@ -1,0 +1,353 @@
+
+<!Doctype html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Parasite Game">
+    <meta name="keywords" content="parasites">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js"></script>
+    <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
+    
+    <title>寄蟲跑台無限出題循環機</title>
+    
+    <style>
+        body{
+            background-color: #efe;
+        }
+        #test{
+            display: none;
+            align-content: center;
+        }
+        #startBtn{
+            /* display: block;*/
+            margin: 10px;
+            width: 100px;
+            height:60px;
+            font-size: 20px;
+        }
+        #image{
+            position: relative;
+            margin: 10px;
+            max-height: 400px;
+            max-width: 80%;
+            width: auto;
+            height: auto;
+        }
+        #timer{
+            color: #000000;
+        }
+        .text-block {
+            font-size: 20px;
+            margin: 5px;
+        }
+        .submit{
+            margin: 10px;
+            width: 100px;
+            height:30px;
+            font-size: 15px;
+        }
+        
+        /* https://i-memo.blogspot.com/2013/11/html5css.html */
+        .blink {
+            animation-duration: 1s;
+            animation-name: blink;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+            animation-timing-function: ease-in-out;
+            width: 300px;
+        }
+        @keyframes blink {
+            from {
+                opacity: 1;
+                color: red;
+            }
+            to {
+                opacity: 0.5;
+                color: green;
+            }
+        }
+    </style>
+    
+</head>
+
+<script type="text/javascript" >
+    //var score;
+    var TIME=31;
+    var numOfProbs;
+    var tm; // timer (global)
+    var data; // answersheet
+    var x; // number of image
+    var state = 0;
+    var correct = 0;
+    var total = 0;
+    var done;
+    
+    function parseMultiAns(data){
+        for(const item of Object.entries(data)){
+            if(typeof item[1]['answer']==='undefined') {continue;}
+            var ans = JSON.stringify(item[1]['answer']).replace(/\"/g, "").split(" / ");
+            item[1]['answer'] = ans;
+        }
+        return data;
+    }
+    
+    function enterKeyEvent(event) {
+        if(state===1){
+            var getAns=document.getElementById("answer");
+            if (getAns.value !== "" & event.keyCode == 13) {
+                state = 3 - state;
+                update();
+            }
+        } else {
+            if (event.keyCode == 13) {
+                state = 3 - state;
+                nextProb();
+            }
+        }
+    }
+    
+    function init(){
+        $(document).ready(function(){
+            $.getScript("https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js",function(){
+                $.get("./answersheet.csv", function(CSVdata){
+                    data=$.csv.toObjects(CSVdata);
+                    //window.console.log(data);
+                    //window.console.log(Object.entries(data));
+                    numOfProbs = Object.keys(data).length;
+                    window.console.log(numOfProbs);
+
+                    data = parseMultiAns(data); // split "A / B / C" in answersheet into array
+                    //window.console.log(data);
+                    
+                    score=0;
+
+                    var btn=document.getElementById("startBtn");
+                    var handler=function(){
+                        btn.innerHTML+=1;
+                        btn.style.display="none";
+                        test.style.display="block";
+                        document.removeEventListener("keypress", enterPress);
+                        state = 1;
+                        done = new Array(numOfProbs+1).fill(false);
+                        
+                        startGame();
+                    };
+                    var enterPress = function(event) {
+                      if (event.keyCode == 13) {
+                        handler();
+                      }
+                    }
+                    
+                    btn.addEventListener("click",handler);
+                    
+                    // https://stackoverflow.com/questions/16089421/how-do-i-detect-keypresses-in-javascript
+                    document.addEventListener("keypress", enterPress);
+                });
+            });
+        });
+    }
+    
+    function startGame(){        
+        document.addEventListener("keypress", enterKeyEvent);
+        
+        var send=document.getElementById("send");
+        send.addEventListener("click",update);
+            
+        // https://stackoverflow.com/questions/16089421/how-do-i-detect-keypresses-in-javascript
+        // Pressing 'Enter' === clicking send button
+        
+        var next=document.getElementById("next");
+        next.addEventListener("click", nextProb);
+        
+        nextProb();
+    }
+    
+    function checkAns(input, ansArr){
+        input = input.trim();
+        return ansArr.includes(input);        
+    }
+    
+    function updateCorrect(){
+        correct += 1;
+        var cor = document.getElementById("correct");
+        cor.innerHTML = correct;
+        
+        if(correct===80){
+            alert("80 combo!!!");            
+        }
+    }
+    
+    function update(){        
+        var getAns=document.getElementById("answer");
+        var ans=getAns.value;
+        var showAns=document.getElementById("showAnswer"); 
+        
+        if(checkAns(ans,data[x]['answer'])){
+            showAns.innerHTML="Correct!";
+            updateCorrect();
+        } else{
+            showAnswer();
+        }
+        showNext();
+        updateTotal();
+    }
+    
+    function showAnswer(){
+        var showAns=document.getElementById("showAnswer"); 
+        showAns.innerHTML="Wrong. Correct Answer is: "+data[x]['answer'];
+    }
+    
+    function showExplanation(){
+        var exp = document.getElementById("showExplanation");
+        //console.log(JSON.stringify(data[x]['explanation']));
+        //console.log(JSON.stringify(data[x]['explanation']) === "");
+        if(JSON.stringify(data[x]['explanation']) === "\"\""){
+            exp.innerHTML = "詳解：還沒有人寫這題的詳解喔！"
+            var pop = document.getElementById("pop");
+            pop.style.display="block";
+        } else {
+            exp.innerHTML = "詳解："+data[x]['explanation'];
+        }
+    }
+    
+    function showNext(){
+        var next=document.getElementById("next");
+        next.style.display="inline-block";
+        showExplanation();
+    }
+    
+    function hideNext(){
+        var next=document.getElementById("next");
+        next.style.display="none";
+    }
+    
+    function updateTotal(){
+        total += 1;
+        var tot = document.getElementById("total");
+        tot.innerHTML = total;
+        
+        if(total===numOfProbs){
+            alert("You've reached the end of the problem list. The problems will be shown again in different order if you continue.")
+            done=new Array(numOfProbs+1).fill(false);
+        }
+    }
+    
+    function nextProb(){
+        var pop = document.getElementById("pop");
+        pop.style.display="none";
+        
+        hideNext();
+        
+        updateImage();
+        var getAns=document.getElementById("answer");
+        getAns.value="";
+        var showAns=document.getElementById("showAnswer"); 
+        showAns.innerHTML="";
+        var des=document.getElementById("description");
+        des.value="";
+        var exp=document.getElementById("showExplanation");
+        exp.innerHTML="";
+        resetTime();
+        countdown();
+    }
+    
+    // Jun. 1st
+    function pickNewImage(){
+        x=getRandomInt(1,numOfProbs);
+        while(done[x]===true){
+            x=getRandomInt(1,numOfProbs);
+        }
+        done[x]=true;
+        console.log(data[x]);
+        
+        return x;
+    }
+    
+    function updateImage(){
+        x=pickNewImage();
+        var picture=document.getElementById("image");
+        var picref = data[x]['path'];
+        image.setAttribute('src', picref);
+
+        var num=document.getElementById("num");
+        num.innerHTML=data[x]['num'];
+        
+        //window.console.log(x, data[x]['answer']);
+        
+        var des=document.getElementById("description");
+        des.innerHTML=data[x]['description'];
+    }
+    
+    function countdown(){
+        var show=document.getElementById("timer");
+        if(show.innerHTML>0) {
+            show.innerHTML-=1;
+            tm = window.setTimeout(countdown,1000);
+        } else {
+            clearTimeout(tm);
+            showAnswer()
+        }
+        if(show.innerHTML<=10){
+            show.style.color="#ff0000";
+        }
+    }
+    
+    function resetTime(){
+        timer=document.getElementById("timer");
+        timer.innerHTML=TIME;
+        timer.style.color="#000000";
+        clearTimeout(tm);
+    }
+    
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    }
+    
+    
+</script>
+
+<body onload="init();">
+    <h1>寄蟲跑台無限出題循環機</h1>
+    <div>
+        <div style="margin:5px">
+            請寫出畫面中的生物學名，或它是哪個生物的中間宿主。
+        </div>
+        <button id="startBtn">開始</button>
+    </div>
+    
+    <div id="test">
+        <div style="margin:5px; font-size: 25px; display:inline-block">Time left: <span id="timer">30</span> sec</div>
+        <div class="text-block" style="display:inline-block">答對率：<span id="correct">0</span>/<span id="total">0</span></div>
+        <div class="text-block" id="description"> </div>
+        <img id="image" src="images/IMG_5719.jpg"/>
+        <div class="text-block">題目編號：<span id="num"> </span></div>
+        <div>
+            <input id="answer" type="text" style="width:70%; height:30px"/>
+            <button id="send" style="width:50px; height:35px">送出</button>
+            <button id="next" style="width:60px; height:35px">下一題</button>
+        </div>
+        <div class="text-block" id="showAnswer"></div>
+        <div class="text-block" id="showExplanation"></div>
+    </div>
+    
+    <div>
+        <div id="pop">
+            <marquee class="blink">↓↓↓ Contribute to the community!! ↓↓↓</marquee>
+        </div>
+        <a href="https://forms.gle/JEx9yVpFpaE7ZAaY9" target="_blank">
+            <button class="submit">我要勘誤</button>
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1h9e1BErq4RPNZ3tfocH-L2bl-XSWN1BEQpiBVX1HkNQ/edit?usp=sharing" target="_blank">
+            <button class="submit">我要寫詳解</button>
+        </a> 
+    </div>   
+    <div style="position:absolute; font-size: 5px; color: grey; top: 0px; right: 0px">
+        Created by: Yu-Tong Cheng, Contributed by: Ricky Wang, 藍弘旭助教, B09 NTU MED etc.
+    </div>
+</body>
+
+</html>
