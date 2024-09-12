@@ -397,6 +397,8 @@
     function nextProb() {
         document.querySelector('.card-answer').style.display = 'none';
         viewing = false;
+        resetTime();
+        countdown();
 
         updateImage();
         var getAns = document.getElementById("answer");
@@ -407,8 +409,6 @@
         des.value = "";
         var exp = document.getElementById("showExplanation");
         exp.innerHTML = "";
-        resetTime();
-        countdown();
     }
     
     // Jun. 1st
