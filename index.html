@@ -443,8 +443,8 @@
             show.innerHTML-=1;
             tm = window.setTimeout(countdown,1000);
         } else {
-            clearTimeout(tm);
             showAnswer();
+            clearTimeout(tm);
         }
         if(show.innerHTML<=10){
             show.style.color="#ff0000";
