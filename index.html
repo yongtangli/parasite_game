@@ -233,6 +233,7 @@
         var correct = 0;
         var wrong = 0;
         var total = 0;
+        var viewing = false;
         var done;
 
         function parseMultiAns(data){
@@ -337,10 +338,14 @@
     }
     
     function update() {
+        if (viewing){
+            return;
+        }
         var getAns = document.getElementById("answer");
         var ans = getAns.value;
         var showAns = document.getElementById("showAnswer");
         var cardAnswer = document.querySelector(".card-answer");
+        viewing = true;
         
         // 先隱藏再更新內容
         cardAnswer.style.display = "flex";  // 提交後顯示答案區塊
@@ -391,6 +396,7 @@
     
     function nextProb() {
         document.querySelector('.card-answer').style.display = 'none';
+        viewing = false;
 
         updateImage();
         var getAns = document.getElementById("answer");
