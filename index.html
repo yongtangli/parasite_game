@@ -1,4 +1,3 @@
-
 <!Doctype html>
 <html lang="zh-Hant-TW">
 
@@ -425,7 +424,7 @@
     
     function updateImage(){
         x=pickNewImage();
-        var picture=document.getElementById("image");
+        var image=document.getElementById("image");
         var picref = data[x]['path'];
         image.setAttribute('src', picref);
 
@@ -445,7 +444,7 @@
             tm = window.setTimeout(countdown,1000);
         } else {
             clearTimeout(tm);
-            showAnswer()
+            showAnswer();
         }
         if(show.innerHTML<=10){
             show.style.color="#ff0000";
