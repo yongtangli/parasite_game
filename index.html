@@ -136,7 +136,7 @@
         }
 
         #showAnswer, #showExplanation {
-            flex-grow: 1; /* 這樣兩個 div 會佔滿剩餘空間 */
+            flex-grow: 1;
         }
 
         .next-button {
@@ -148,7 +148,7 @@
             border: solid 2px #fc9d38;
             border-radius: 15px;
             cursor: pointer;
-            align-self: flex-end; /* 將按鈕靠右對齊 */
+            align-self: flex-end;
         }
         .next-button:hover {
             background-color: #fc9d38;
@@ -217,7 +217,7 @@
             <button id="next" class="next-button">下一題</button>
         </div>
         <div class="card-actions">
-            <input id="answer" type="text" placeholder="請寫出畫面中的生物學名，或它是哪個生物的中間宿主，並且幹你娘。" class="answer-input">
+            <input id="answer" type="text" placeholder="請寫出畫面中的生物學名，或它是哪個生物的中間宿主。" class="answer-input">
             <button id="send" class="submit-button">→</button>
         </div>
     </div>
@@ -231,6 +231,7 @@
         var x; // number of image
         var state = 0;
         var correct = 0;
+        var wrong = 0;
         var total = 0;
         var done;
 
@@ -328,6 +329,12 @@
             alert("80 combo!!!");            
         }
     }
+
+    function updateWrong() {
+        wrong += 1;  // 每次錯誤就加1
+        var wng = document.getElementById("wrong");
+        wng.innerHTML = wrong;  // 更新畫面上的錯誤次數
+    }
     
     function update() {
         var getAns = document.getElementById("answer");
@@ -336,7 +343,7 @@
         var cardAnswer = document.querySelector(".card-answer");
         
         // 先隱藏再更新內容
-        cardAnswer.style.display = "block";  // 提交後顯示答案區塊
+        cardAnswer.style.display = "flex";  // 提交後顯示答案區塊
 
         if (checkAns(ans, data[x]['answer'])) {
             showAns.innerHTML = "正確!";
