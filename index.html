@@ -372,8 +372,11 @@
     }
     
     function showAnswer(){
-        var showAns=document.getElementById("showAnswer"); 
-        showAns.innerHTML="Wrong. Correct Answer is: "+data[x]['answer'];
+        var showAns = document.getElementById("showAnswer");
+        showAns.innerHTML = "錯誤! 正確答案是: " + data[x]['answer'];
+    
+        var cardAnswer = document.querySelector(".card-answer");
+        cardAnswer.style.display = "flex";  // 顯示答案區塊
     }
     
     function showExplanation(){
