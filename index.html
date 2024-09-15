@@ -241,7 +241,7 @@
         }
 
         .modal-content img {
-            height: 35vh;
+            height: 50vh;
             object-fit: contain;
             width: auto; /* 可选：保持宽度自适应 */
         }
@@ -578,7 +578,7 @@
                     content += '<li>';
                     content += '<p><strong>題目：</strong></p>';
                     if (item['path']) {
-                        content += '<img src="' + item['path'] + '" style="max-width:100%;height:auto;">';
+                        content += '<img src="' + item['path'] + '" style="max-width:100%;">';
                     }
                     content += '<p><strong>正確答案：</strong>' + item['answer'].join(' / ') + '</p>';
                     if (item['explanation']) {
@@ -606,7 +606,7 @@
                     content += '<li>';
                     content += '<p><strong>題目：</strong></p>';
                     if (item['path']) {
-                        content += '<img src="' + item['path'] + '" style="max-width:100%;height:auto;">';
+                        content += '<img src="' + item['path'] + '" style="max-width:100%;">';
                     }
                     content += '<p><strong>正確答案：</strong>' + item['answer'].join(' / ') + '</p>';
                     if (item['explanation']) {
