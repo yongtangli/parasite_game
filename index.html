@@ -372,11 +372,24 @@
     }
     
     function showAnswer(){
+        if (viewing){
+            return;
+        }
+        viewing = true;
         var showAns = document.getElementById("showAnswer");
         showAns.innerHTML = "錯誤! 正確答案是: " + data[x]['answer'];
     
         var cardAnswer = document.querySelector(".card-answer");
         cardAnswer.style.display = "flex";  // 顯示答案區塊
+    
+        showExplanation();  // 顯示詳解
+        updateWrong();      // 更新錯誤次數
+        total++;            // 更新總題數
+    
+        if (total === numOfProbs) {
+            alert("題庫結束，將會重新開始。");
+            done = new Array(numOfProbs + 1).fill(false);  // 重置done陣列
+        }
     }
     
     function showExplanation(){
