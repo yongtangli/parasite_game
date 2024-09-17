@@ -1,16 +1,19 @@
-<!Doctype html>
+form: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+<!DOCTYPE html>
 <html lang="zh-Hant-TW">
 
 <head>
+    <!-- 原有的 meta 和標籤 -->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Parasite Game">
     <meta name="keywords" content="parasites">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js"></script>
-    <script type="text/JavaScript"
-        src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <title>寄蟲跑台無限出題循環機</title>
     <style>
+        /* 原有的樣式 */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -218,18 +221,6 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.4);
         }
-/*         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            padding-top: 60px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        } */
 
         .modal-content {
             background-color: #fefefe;
@@ -245,7 +236,8 @@
         .modal-content img {
             height: 50vh;
             object-fit: contain;
-            width: auto; /* 可选：保持宽度自适应 */
+            width: auto;
+            /* 可选：保持宽度自適應 */
         }
 
         .close {
@@ -260,6 +252,62 @@
             color: black;
             text-decoration: none;
             cursor: pointer;
+        }
+
+        /* 新增的媒體查詢 */
+        @media screen and (max-width: 768px) {
+            /* 將 .card-answer 設為上下排列 */
+            .card-answer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            /* 調整 .card-answer 裡面的元素間距 */
+            .card-answer > div,
+            .card-answer > button {
+                margin-bottom: 10px;
+                margin-left: 0;
+            }
+
+            /* 調整 .next-button 寬度 */
+            .next-button {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            /* 調整 .card-actions 使其在手機上也上下排列 */
+            .card-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .answer-input {
+                width: 100%;
+                font-size: 16px;
+            }
+
+            .submit-button {
+                width: 100%;
+                font-size: 16px;
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            /* 縮小字體，避免文字超出框框 */
+            .answer-input::placeholder {
+                font-size: 16px;
+            }
+
+            /* 調整 .card-content 的高度 */
+            .card-content {
+                max-height: none;
+                margin-bottom: 10px;
+            }
+
+            /* 調整圖片尺寸 */
+            .card-content img {
+                max-height: 40vh;
+            }
         }
     </style>
 </head>
@@ -309,7 +357,6 @@
             <div id="modalBody"></div>
         </div>
     </div>
-
     <script>
         var TIME = 31;
         var numOfProbs;
