@@ -477,7 +477,7 @@
             cardAnswer.style.display = "flex";
 
             if (checkAns(ans, data[x]['answer'])) {
-                showAns.innerHTML = "正確!";
+                showAns.innerHTML = "正確！答案是: " + data[x]['answer'].join(' / ');
                 hideExplanation();
                 updateCorrect();
                 correctList.push(data[x]); // 加入正確列表
