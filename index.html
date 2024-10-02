@@ -356,8 +356,11 @@
         function parseMultiAns(data) {
             for (const item of Object.entries(data)) {
                 if (typeof item[1]['answer'] === 'undefined') { continue; }
-                var ans = JSON.stringify(item[1]['answer']).replace(/\"/g, "").split(" / ");
-                item[1]['answer'] = ans;
+                // 检查答案是否为字符串
+                if (typeof item[1]['answer'] === 'string') {
+                    var ans = item[1]['answer'].split(" / ");
+                    item[1]['answer'] = ans;
+                }
             }
             return data;
         }
