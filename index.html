@@ -3,368 +3,291 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Parasite Game">
   <meta name="keywords" content="parasites">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js"></script>
   <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
   <title>寄蟲跑台無限出題循環機</title>
   <style>
-    /* 全域樣式：極簡、乾淨的背景與字型 */
-    html, body {
+    /* 全局基本重設與極簡風調整 */
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
       height: 100%;
+      overflow: hidden;
       background-color: #ffffff;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
       color: #333;
     }
-    
-    /* 讓頁面內容使用 Pinterest 風格的卡片排版 */
-    .container {
-      display: flex;
-      flex-direction: column;
-      min-height: 100%;
-      overflow: hidden;
-    }
-    
+
     /* 開場畫面 */
     .start-screen {
-      flex: 1;
+      width: 100%;
+      height: 100%;
+      background-color: #ffffff;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
       padding: 20px;
     }
-    
+
     .start-title {
-      font-size: 28px;
-      margin-bottom: 30px;
-      color: #a35555;
+      font-size: 2rem;
       font-weight: bold;
+      margin-bottom: 30px;
+      color: #222;
     }
-    
+
     .start-button {
-      padding: 12px 25px;
-      font-size: 20px;
-      background-color: #a35555;
+      padding: 12px 30px;
+      font-size: 1.2rem;
+      background-color: #222;
       color: #fff;
       border: none;
-      border-radius: 25px;
+      border-radius: 50px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: background-color 0.2s ease, transform 0.2s ease;
     }
-    
+
     .start-button:hover {
-      background-color: #9a6262;
+      background-color: #555;
       transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
-    
-    /* 遊戲介面：基本卡片樣式，桌機下有陰影及圓角 */
+
+    /* 遊戲主要畫面 */
     .flashcard-container {
-      flex: 1;
-      margin: 30px auto;
-      max-width: 800px;
-      width: 95%;
-      background-color: #fff;
-      border-radius: 15px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      height: 100%;
       display: none;
       flex-direction: column;
-      overflow: hidden;
+      background-color: #ffffff;
+      padding: 10px;
     }
-    
+
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px;
-      border-bottom: 1px solid #eee;
-      background-color: #fafafa;
+      padding: 0 10px;
+      margin-bottom: 8px;
     }
-    
+
     .flashcard-title {
-      font-size: 24px;
+      font-size: 1.5rem;
       font-weight: bold;
-      color: #a35555;
+      color: #222;
     }
-    
+
     .timer {
-      font-size: 18px;
-      color: #666;
+      font-size: 1.2rem;
+      color: #555;
     }
-    
+
     .progress {
       display: flex;
-      justify-content: space-around;
-      padding: 15px 20px;
-      background-color: #fff;
-      border-bottom: 1px solid #eee;
+      justify-content: space-between;
+      padding: 0 10px;
+      margin-bottom: 8px;
     }
-    
+
     .progress-item {
       display: flex;
       align-items: center;
-      padding: 8px 15px;
+      padding: 5px 15px;
       border-radius: 20px;
+      font-size: 0.9rem;
       cursor: pointer;
-      font-size: 16px;
+      background-color: #f5f5f5;
     }
-    
-    .progress-item span {
-      margin: 0 5px;
-    }
-    
+
     .progress-number-orange {
-      color: #FFA500;
       font-weight: bold;
+      margin-right: 5px;
+      color: #d35400;
     }
-    
+
     .progress-number-green {
-      color: #4CAF50;
       font-weight: bold;
+      margin-left: 5px;
+      color: #27ae60;
     }
-    
-    .orange-bg {
-      background-color: #FFF3E0;
-    }
-    
-    .green-bg {
-      background-color: #E8F5E9;
-    }
-    
+
     .card-content {
-      flex: 1;
-      background-color: #f9f9f9;
+      flex-grow: 1;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      overflow: hidden;
     }
-    
+
     .card-content img {
       max-width: 100%;
-      max-height: 60vh;
+      max-height: 100%;
       object-fit: contain;
     }
-    
+
     .card-answer {
       display: none;
       flex-direction: column;
-      padding: 20px;
-      background-color: #fff1d8;
-      border-top: 1px solid #eee;
+      background-color: #fafafa;
+      padding: 15px;
+      border-top: 1px solid #ddd;
     }
-    
-    .card-answer > div {
+
+    .card-answer div {
       margin-bottom: 10px;
-      font-size: 18px;
+      font-size: 1rem;
     }
-    
+
     .next-button {
       align-self: flex-end;
       padding: 10px 20px;
-      font-size: 18px;
-      background-color: #fff;
-      color: #fc9d38;
-      border: 2px solid #fc9d38;
-      border-radius: 20px;
+      font-size: 1rem;
+      background-color: transparent;
+      color: #d35400;
+      border: 2px solid #d35400;
+      border-radius: 50px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: background-color 0.2s ease, transform 0.2s ease;
     }
-    
+
     .next-button:hover {
-      background-color: #fc9d38;
+      background-color: #d35400;
       color: #fff;
     }
-    
+
     .card-actions {
       display: flex;
-      padding: 20px;
-      border-top: 1px solid #eee;
-      background-color: #fafafa;
+      padding: 10px;
+      border-top: 1px solid #ddd;
     }
-    
+
     .answer-input {
-      flex: 1;
-      padding: 10px 15px;
-      font-size: 18px;
+      flex-grow: 1;
+      padding: 10px;
+      font-size: 1rem;
       border: 1px solid #ccc;
-      border-radius: 25px;
+      border-radius: 50px;
+      outline: none;
     }
-    
+
     .submit-button {
-      margin-left: 15px;
+      margin-left: 10px;
       padding: 10px 20px;
-      font-size: 18px;
-      background-color: #a35555;
+      font-size: 1rem;
+      background-color: #222;
       color: #fff;
       border: none;
-      border-radius: 25px;
+      border-radius: 50px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: background-color 0.2s ease, transform 0.2s ease;
     }
-    
+
     .submit-button:hover {
-      background-color: #9a6262;
+      background-color: #555;
       transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
-    
+
     /* 模態框 */
     .modal {
       display: none;
-      justify-content: center;
-      align-items: center;
       position: fixed;
-      z-index: 10;
-      top: 0;
+      z-index: 1000;
       left: 0;
+      top: 0;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
     }
-    
+
     .modal-content {
-      background-color: #fff;
-      margin: 5% auto;
-      padding: 20px;
       width: 90%;
-      max-width: 600px;
-      border-radius: 15px;
+      max-height: 80%;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
       overflow-y: auto;
-      max-height: 80vh;
     }
-    
+
     .modal-content img {
-      width: auto;
       max-width: 100%;
-      max-height: 50vh;
-      object-fit: contain;
+      height: auto;
       margin-bottom: 10px;
     }
-    
+
     .close {
+      font-size: 1.8rem;
       float: right;
-      font-size: 28px;
-      font-weight: bold;
       cursor: pointer;
       color: #aaa;
     }
-    
+
     .close:hover {
       color: #000;
     }
-    
-    /* 手機版調整：全螢幕遊戲畫面，取消卡片邊框、圓角及陰影 */
-    @media screen and (max-width: 768px) {
-      .start-screen,
+
+    /* 桌機版版面 */
+    @media screen and (min-width: 769px) {
       .flashcard-container {
-        margin: 0;
-        width: 100vw;
-        height: 100vh;
-        border-radius: 0;
-        box-shadow: none;
-      }
-    
-      .flashcard-container {
-        display: flex;
-        flex-direction: column;
-      }
-    
-      .header,
-      .progress,
-      .card-actions {
-        padding: 15px;
-      }
-    
-      .flashcard-title {
-        font-size: 22px;
-      }
-    
-      .timer {
-        font-size: 16px;
-      }
-    
-      .start-title {
-        font-size: 24px;
-      }
-    
-      .start-button {
-        font-size: 18px;
-        padding: 10px 20px;
-      }
-    
-      .card-content img {
-        max-height: 40vh;
-      }
-    
-      .answer-input,
-      .submit-button,
-      .next-button {
-        font-size: 16px;
-        padding: 8px 15px;
-      }
-    
-      .card-answer > div {
-        font-size: 16px;
-      }
-    
-      .card-actions {
-        flex-direction: column;
-        gap: 10px;
+        max-width: 800px;
+        margin: auto;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
     }
   </style>
 </head>
 
 <body onload="init();">
-  <div class="container">
-    <!-- 開場畫面 -->
-    <div class="start-screen">
-      <div class="start-title">寄蟲跑台無限出題循環機</div>
-      <button id="startGame" class="start-button">開始遊戲</button>
-    </div>
+  <div class="start-screen">
+    <div class="start-title">寄蟲跑台無限出題循環機</div>
+    <button id="startGame" class="start-button">開始遊戲</button>
+  </div>
 
-    <!-- 遊戲內容 -->
-    <div class="flashcard-container">
-      <div class="header">
-        <div class="flashcard-title">寄蟲跑台無限出題循環機</div>
-        <div class="timer"><span id="timer">30</span>s</div>
+  <div class="flashcard-container">
+    <div class="header">
+      <div class="flashcard-title">寄蟲跑台無限出題循環機</div>
+      <div class="timer"><span id="timer">30</span>s</div>
+    </div>
+    <div class="progress">
+      <div class="progress-item" id="wrongArea">
+        <span class="progress-number-orange" id="wrong">0</span>
+        <span>Still learning</span>
       </div>
-      <div class="progress">
-        <div class="progress-item orange-bg" id="wrongArea">
-          <span class="progress-number-orange" id="wrong">0</span>
-          <span>Still learning</span>
-        </div>
-        <div class="progress-item green-bg" id="correctArea">
-          <span>Know</span>
-          <span class="progress-number-green" id="correct">0</span>
-        </div>
-      </div>
-      <div class="card-content">
-        <img id="image" src="images/IMG_5719.jpg" alt="圖片描述">
-      </div>
-      <div class="card-answer">
-        <div id="showAnswer"></div>
-        <div id="showExplanation"></div>
-        <button id="next" class="next-button">下一題</button>
-      </div>
-      <div class="card-actions">
-        <input id="answer" type="text" placeholder="請寫出畫面中的生物學名，或它是哪個生物的中間宿主。" class="answer-input">
-        <button id="send" class="submit-button">→</button>
+      <div class="progress-item" id="correctArea">
+        <span>Know</span>
+        <span class="progress-number-green" id="correct">0</span>
       </div>
     </div>
+    <div class="card-content">
+      <img id="image" src="images/IMG_5719.jpg" alt="圖片描述">
+    </div>
+    <div class="card-answer">
+      <div id="showAnswer"></div>
+      <div id="showExplanation"></div>
+      <button id="next" class="next-button">下一題</button>
+    </div>
+    <div class="card-actions">
+      <input id="answer" type="text" placeholder="請寫出畫面中的生物學名，或它是哪個生物的中間宿主。" class="answer-input">
+      <button id="send" class="submit-button">→</button>
+    </div>
+  </div>
 
-    <!-- 模態框 -->
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <span id="closeModal" class="close">&times;</span>
-        <div id="modalBody"></div>
-      </div>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <div id="modalBody"></div>
     </div>
   </div>
 
@@ -385,7 +308,10 @@
 
     function parseMultiAns(data) {
       for (const item of Object.entries(data)) {
-        if (typeof item[1]['answer'] === 'undefined') { continue; }
+        if (typeof item[1]['answer'] === 'undefined') {
+          continue;
+        }
+        // 檢查答案是否為字串
         if (typeof item[1]['answer'] === 'string') {
           var ans = item[1]['answer'].split(" / ");
           item[1]['answer'] = ans;
@@ -426,6 +352,7 @@
               document.removeEventListener("keypress", enterPress);
               state = 1;
               done = new Array(numOfProbs + 1).fill(false);
+
               startGame();
             };
             var enterPress = function (event) {
@@ -433,7 +360,9 @@
                 handler();
               }
             }
+
             btn.addEventListener("click", handler);
+
             document.addEventListener("keypress", enterPress);
           });
         });
@@ -442,21 +371,30 @@
 
     function startGame() {
       document.addEventListener("keypress", enterKeyEvent);
+
       var send = document.getElementById("send");
       send.addEventListener("click", update);
+
       var next = document.getElementById("next");
       next.addEventListener("click", nextProb);
+
+      // 新增點擊事件監聽器
       document.getElementById('wrongArea').addEventListener('click', showWrongList);
       document.getElementById('correctArea').addEventListener('click', showCorrectList);
+
+      // 關閉模態框
       document.getElementById('closeModal').addEventListener('click', function () {
         document.getElementById('modal').style.display = "none";
       });
+
+      // 點擊模態框外部關閉
       window.onclick = function (event) {
         let modal = document.getElementById('modal');
         if (event.target == modal) {
           modal.style.display = "none";
         }
       };
+
       nextProb();
     }
 
@@ -469,6 +407,7 @@
       correct += 1;
       var cor = document.getElementById("correct");
       cor.innerHTML = correct;
+
       if (correct === 80) {
         alert("80 combo!!!");
       }
@@ -489,19 +428,22 @@
       var showAns = document.getElementById("showAnswer");
       var cardAnswer = document.querySelector(".card-answer");
       viewing = true;
+
       cardAnswer.style.display = "flex";
+
       if (checkAns(ans, data[x]['answer'])) {
         showAns.innerHTML = "正確！答案是: " + data[x]['answer'].join(' / ');
         hideExplanation();
         updateCorrect();
-        correctList.push(data[x]);
+        correctList.push(data[x]); // 加入正確列表
       } else {
         showAns.innerHTML = "錯誤! 正確答案是: " + data[x]['answer'].join(' / ');
         showExplanation();
         updateWrong();
-        wrongList.push(data[x]);
+        wrongList.push(data[x]); // 加入錯誤列表
       }
       total++;
+
       if (total === numOfProbs) {
         alert("題庫結束，將會重新開始。");
         done = new Array(numOfProbs + 1).fill(false);
@@ -520,12 +462,15 @@
       viewing = true;
       var showAns = document.getElementById("showAnswer");
       showAns.innerHTML = "錯誤! 正確答案是: " + data[x]['answer'].join(' / ');
+
       var cardAnswer = document.querySelector(".card-answer");
       cardAnswer.style.display = "flex";
+
       showExplanation();
       updateWrong();
-      wrongList.push(data[x]);
+      wrongList.push(data[x]); // 加入錯誤列表
       total++;
+
       if (total === numOfProbs) {
         alert("題庫結束，將會重新開始。");
         done = new Array(numOfProbs + 1).fill(false);
@@ -546,6 +491,7 @@
       viewing = false;
       resetTime();
       countdown();
+
       updateImage();
       var getAns = document.getElementById("answer");
       getAns.value = "";
@@ -586,7 +532,7 @@
     }
 
     function resetTime() {
-      var timer = document.getElementById("timer");
+      timer = document.getElementById("timer");
       timer.innerHTML = TIME;
       timer.style.color = "#000000";
       clearTimeout(tm);
@@ -598,9 +544,11 @@
       return Math.floor(Math.random() * (max - min) + min);
     }
 
+    // 顯示錯誤列表
     function showWrongList() {
       let modal = document.getElementById('modal');
       let modalBody = document.getElementById('modalBody');
+
       let content = '<h2>錯誤的題目與答案</h2>';
       if (wrongList.length === 0) {
         content += '<p>目前沒有錯誤的題目。</p>';
@@ -610,7 +558,7 @@
           content += '<li>';
           content += '<p><strong>題目：</strong></p>';
           if (item['path']) {
-            content += '<img src="' + item['path'] + '" style="max-width:100%;">';
+            content += '<img src="' + item['path'] + '">';
           }
           content += '<p><strong>正確答案：</strong>' + item['answer'].join(' / ') + '</p>';
           if (item['explanation']) {
@@ -624,9 +572,11 @@
       modal.style.display = "flex";
     }
 
+    // 顯示正確列表
     function showCorrectList() {
       let modal = document.getElementById('modal');
       let modalBody = document.getElementById('modalBody');
+
       let content = '<h2>正確的題目與答案</h2>';
       if (correctList.length === 0) {
         content += '<p>目前沒有正確的題目。</p>';
@@ -636,7 +586,7 @@
           content += '<li>';
           content += '<p><strong>題目：</strong></p>';
           if (item['path']) {
-            content += '<img src="' + item['path'] + '" style="max-width:100%;">';
+            content += '<img src="' + item['path'] + '">';
           }
           content += '<p><strong>正確答案：</strong>' + item['answer'].join(' / ') + '</p>';
           if (item['explanation']) {
