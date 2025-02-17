@@ -2,658 +2,649 @@
 <html lang="zh-Hant-TW">
 
 <head>
-    <!-- 原有的 meta 和標籤 -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Parasite Game">
-    <meta name="keywords" content="parasites">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js"></script>
-    <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <title>寄蟲跑台無限出題循環機</title>
-    <style>
-        /* 原有的樣式 */
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Parasite Game">
+  <meta name="keywords" content="parasites">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js"></script>
+  <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <title>寄蟲跑台無限出題循環機</title>
+  <style>
+    /* 全局樣式 */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: #fafafa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-        .start-screen {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            background-color: white;
-            flex-direction: column;
-            gap: 20px;
-        }
+    /* 開場畫面 */
+    .start-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 
-        .start-title {
-            font-size: 24px;
-            color: #a35555;
-            font-weight: bold;
-        }
+    .start-title {
+      font-size: 32px;
+      color: #333;
+      margin: 0;
+    }
 
-        .start-button {
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #a35555;
-            color: white;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-        }
+    .start-button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
 
-        .start-button:hover {
-            background-color: #9a6262;
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
+    .start-button:hover {
+      background-color: #444;
+    }
 
-        .flashcard-container {
-            width: 95%;
-            height: auto;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            box-sizing: border-box;
-            display: none;
-            /* 初始隱藏 */
-            flex-direction: column;
-        }
+    /* 遊戲容器 */
+    .flashcard-container {
+      flex-direction: column;
+      width: 100%;
+      max-width: 600px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      box-sizing: border-box;
+      margin: 20px;
+      display: none;
+    }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
 
-        .flashcard-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #a35555;
-        }
+    .flashcard-title {
+      font-size: 24px;
+      color: #333;
+      margin: 0;
+    }
 
-        .timer {
-            color: #666;
-            font-size: 18px;
-        }
+    .timer {
+      font-size: 18px;
+      color: #666;
+    }
 
-        .progress {
-            display: flex;
-            justify-content: flex-start;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
+    /* 進度區 */
+    .progress {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+    }
 
-        .progress-item {
-            display: flex;
-            align-items: center;
-            padding: 5px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
+    .progress-item {
+      display: flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background-color: #f2f2f2;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
 
-        .progress-number-orange {
-            font-weight: bold;
-            margin-right: 5px;
-            color: #FFA500;
-        }
+    .progress-item:hover {
+      background-color: #e0e0e0;
+    }
 
-        .progress-number-green {
-            font-weight: bold;
-            margin-left: 5px;
-            color: #4CAF50;
-        }
+    .progress-number {
+      font-weight: bold;
+      margin: 0 5px;
+    }
 
-        .orange-bg {
-            background-color: #FFF3E0;
-        }
+    #wrongArea .progress-number {
+      color: #e74c3c;
+    }
 
-        .green-bg {
-            background-color: #E8F5E9;
-            margin-left: auto;
-        }
+    #correctArea .progress-number {
+      color: #27ae60;
+    }
 
-        .card-content {
-            flex-grow: 1;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            max-height: 53vh;
-            margin-bottom: 10px;
-        }
+    /* 圖片區 */
+    .card-content {
+      width: 100%;
+      background-color: #fafafa;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .card-content img {
-            max-width: 100%;
-            max-height: 53vh;
-            object-fit: contain;
-        }
+    .card-content img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
 
-        .card-answer {
-            background-color: #fff1d8;
-            border: solid 2px #FFA500;
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            text-align: left;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+    /* 題目描述區（若有） */
+    #description {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 15px;
+      text-align: center;
+    }
 
-        #showAnswer,
-        #showExplanation {
-            flex-grow: 1;
-        }
+    /* 答案與詳解區 */
+    .card-answer {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-        .next-button {
-            margin-left: 20px;
-            padding: 10px;
-            font-size: 18px;
-            background-color: white;
-            color: #fc9d38;
-            border: solid 2px #fc9d38;
-            border-radius: 15px;
-            cursor: pointer;
-            align-self: flex-end;
-            width: 130px;
-        }
+    .card-answer div {
+      font-size: 16px;
+      color: #333;
+    }
 
-        .next-button:hover {
-            background-color: #fc9d38;
-            color: white;
-        }
+    .next-button {
+      align-self: flex-end;
+      padding: 8px 16px;
+      font-size: 16px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border: 1px solid #333;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
 
-        .card-actions {
-            display: flex;
-            justify-content: space-between;
-        }
+    .next-button:hover {
+      background-color: #444;
+    }
 
-        .answer-input {
-            flex-grow: 1;
-            padding: 10px;
-            font-size: 18px;
-            border-radius: 15px;
-            border: 1px solid #ccc;
-        }
+    /* 答題輸入區 */
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 0;
+    }
 
-        .submit-button {
-            margin-left: 10px;
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #a35555;
-            color: white;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-        }
+    .answer-input {
+      flex-grow: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
-        .submit-button:hover {
-            background-color: #9a6262;
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
+    .submit-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
 
-        /* Modal styles */
-        .modal {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
+    .submit-button:hover {
+      background-color: #444;
+    }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: none;
-            width: 80%;
-            max-height: 80%;
-            border-radius: 15px;
-            overflow: auto;
-        }
+    /* 模態框 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
 
-        .modal-content img {
-            height: 50vh;
-            object-fit: contain;
-            width: auto;
-            /* 可选：保持宽度自適應 */
-        }
+    .modal-content {
+      background-color: #fff;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80%;
+      border-radius: 8px;
+      padding: 20px;
+      overflow-y: auto;
+      position: relative;
+    }
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+    .close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 28px;
+      color: #aaa;
+      cursor: pointer;
+    }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    .close:hover {
+      color: #333;
+    }
 
-        /* 新增的媒體查詢 */
-        @media screen and (max-width: 768px) {
-            /* 將 .card-answer 設為上下排列 */
-            .card-answer {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+    .modal-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
 
-            /* 調整 .card-answer 裡面的元素間距 */
-            .card-answer > div,
-            .card-answer > button {
-                margin-bottom: 10px;
-                margin-left: 0;
-            }
+    /* 行動裝置響應 */
+    @media screen and (max-width: 768px) {
+      .flashcard-container {
+        margin: 10px;
+        padding: 15px;
+      }
 
-            /* 調整 .next-button 寬度 */
-            .next-button {
-                width: 100%;
-                margin-left: 0;
-            }
+      .start-screen {
+        padding: 30px;
+      }
 
-            /* 調整 .card-actions 使其在手機上也上下排列 */
-            .card-actions {
-                flex-direction: column;
-                align-items: stretch;
-            }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-            /* 調整 .card-content 的高度 */
-            .card-content {
-                max-height: none;
-                margin-bottom: 10px;
-            }
+      .card-actions {
+        flex-direction: column;
+      }
 
-            /* 調整圖片尺寸 */
-            .card-content img {
-                max-height: 40vh;
-            }
-        }
-    </style>
+      .next-button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body onload="init();">
+  <!-- 開場畫面 -->
+  <div class="start-screen">
+    <div class="start-title">寄蟲跑台無限出題循環機</div>
+    <button id="startGame" class="start-button">開始遊戲</button>
+  </div>
 
-    <!-- 開場畫面 -->
-    <div class="start-screen">
-        <div class="start-title">寄蟲跑台無限出題循環機</div>
-        <button id="startGame" class="start-button">開始遊戲</button>
+  <!-- 遊戲內容 -->
+  <div class="flashcard-container">
+    <div class="header">
+      <div class="flashcard-title">寄蟲跑台無限出題循環機</div>
+      <div class="timer"><span id="timer">30</span>s</div>
     </div>
-
-    <!-- 遊戲內容 -->
-    <div class="flashcard-container">
-        <div class="header">
-            <div class="flashcard-title">寄蟲跑台無限出題循環機</div>
-            <div class="timer"><span id="timer">30</span>s</div>
-        </div>
-        <div class="progress">
-            <div class="progress-item orange-bg" id="wrongArea">
-                <span class="progress-number-orange" id="wrong">0</span>
-                <span class="progress-text">Still learning</span>
-            </div>
-            <div class="progress-item green-bg" id="correctArea">
-                <span class="progress-text">Know</span>
-                <span class="progress-number-green" id="correct">0</span>
-            </div>
-        </div>
-        <div class="card-content">
-            <img id="image" src="images/IMG_5719.jpg" alt="圖片描述">
-        </div>
-        <div class="card-answer">
-            <div id="showAnswer"></div>
-            <div id="showExplanation"></div>
-            <button id="next" class="next-button">下一題</button>
-        </div>
-        <div class="card-actions">
-            <input id="answer" type="text" placeholder="請寫出畫面中的生物學名，或它是哪個生物的中間宿主。" class="answer-input">
-            <button id="send" class="submit-button">→</button>
-        </div>
+    <div class="progress">
+      <div class="progress-item" id="wrongArea">
+        <span class="progress-number" id="wrong">0</span>
+        <span class="progress-text">Still learning</span>
+      </div>
+      <div class="progress-item" id="correctArea">
+        <span class="progress-text">Know</span>
+        <span class="progress-number" id="correct">0</span>
+      </div>
     </div>
-
-    <!-- 顯示答題結果的模態框 -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span id="closeModal" class="close">&times;</span>
-            <div id="modalBody"></div>
-        </div>
+    <div class="card-content">
+      <img id="image" src="images/IMG_5719.jpg" alt="圖片描述">
     </div>
-    <script>
-        var TIME = 31;
-        var numOfProbs;
-        var tm; // timer (global)
-        var data; // answersheet
-        var x; // number of image
-        var state = 0;
-        var correct = 0;
-        var wrong = 0;
-        var total = 0;
-        var viewing = false;
-        var done;
-        var correctList = []; // 正確答案列表
-        var wrongList = []; // 錯誤答案列表
+    <div id="description"></div>
+    <div class="card-answer">
+      <div id="showAnswer"></div>
+      <div id="showExplanation"></div>
+      <button id="next" class="next-button">下一題</button>
+    </div>
+    <div class="card-actions">
+      <input id="answer" type="text" placeholder="請寫出畫面中的生物學名，或它是哪個生物的中間宿主。" class="answer-input">
+      <button id="send" class="submit-button">→</button>
+    </div>
+  </div>
 
-        function parseMultiAns(data) {
-            for (const item of Object.entries(data)) {
-                if (typeof item[1]['answer'] === 'undefined') { continue; }
-                // 检查答案是否为字符串
-                if (typeof item[1]['answer'] === 'string') {
-                    var ans = item[1]['answer'].split(" / ");
-                    item[1]['answer'] = ans;
-                }
-            }
-            return data;
+  <!-- 顯示答題結果的模態框 -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    var TIME = 31;
+    var numOfProbs;
+    var tm; // timer (global)
+    var data; // answersheet
+    var x; // number of image
+    var state = 0;
+    var correct = 0;
+    var wrong = 0;
+    var total = 0;
+    var viewing = false;
+    var done;
+    var correctList = []; // 正確答案列表
+    var wrongList = []; // 錯誤答案列表
+
+    function parseMultiAns(data) {
+      for (const item of Object.entries(data)) {
+        if (typeof item[1]['answer'] === 'undefined') { continue; }
+        // 檢查答案是否為字串
+        if (typeof item[1]['answer'] === 'string') {
+          var ans = item[1]['answer'].split(" / ");
+          item[1]['answer'] = ans;
         }
+      }
+      return data;
+    }
 
-        function enterKeyEvent(event) {
-            if (state === 1) {
-                var getAns = document.getElementById("answer");
-                if (getAns.value !== "" & event.keyCode == 13) {
-                    state = 3 - state;
-                    update();
-                }
-            } else {
-                if (event.keyCode == 13) {
-                    state = 3 - state;
-                    nextProb();
-                }
-            }
+    function enterKeyEvent(event) {
+      if (state === 1) {
+        var getAns = document.getElementById("answer");
+        if (getAns.value !== "" & event.keyCode == 13) {
+          state = 3 - state;
+          update();
         }
-
-        function init() {
-            $(document).ready(function () {
-                $.getScript("https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js", function () {
-                    $.get("./answersheet.csv", function (CSVdata) {
-                        data = $.csv.toObjects(CSVdata);
-                        numOfProbs = Object.keys(data).length;
-                        data = parseMultiAns(data);
-                        score = 0;
-
-                        var btn = document.getElementById("startGame");
-                        var handler = function () {
-                            btn.innerHTML += 1;
-                            document.querySelector('.start-screen').style.display = 'none';
-                            document.querySelector('.flashcard-container').style.display = 'flex';
-                            document.removeEventListener("keypress", enterPress);
-                            state = 1;
-                            done = new Array(numOfProbs + 1).fill(false);
-
-                            startGame();
-                        };
-                        var enterPress = function (event) {
-                            if (event.keyCode == 13) {
-                                handler();
-                            }
-                        }
-
-                        btn.addEventListener("click", handler);
-
-                        document.addEventListener("keypress", enterPress);
-                    });
-                });
-            });
+      } else {
+        if (event.keyCode == 13) {
+          state = 3 - state;
+          nextProb();
         }
+      }
+    }
 
-        function startGame() {
-            document.addEventListener("keypress", enterKeyEvent);
+    function init() {
+      $(document).ready(function () {
+        $.getScript("https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js", function () {
+          $.get("./answersheet.csv", function (CSVdata) {
+            data = $.csv.toObjects(CSVdata);
+            numOfProbs = Object.keys(data).length;
+            data = parseMultiAns(data);
+            score = 0;
 
-            var send = document.getElementById("send");
-            send.addEventListener("click", update);
+            var btn = document.getElementById("startGame");
+            var handler = function () {
+              btn.innerHTML += 1;
+              document.querySelector('.start-screen').style.display = 'none';
+              document.querySelector('.flashcard-container').style.display = 'flex';
+              document.removeEventListener("keypress", enterPress);
+              state = 1;
+              done = new Array(numOfProbs + 1).fill(false);
 
-            var next = document.getElementById("next");
-            next.addEventListener("click", nextProb);
-
-            // 新增點擊事件監聽器
-            document.getElementById('wrongArea').addEventListener('click', showWrongList);
-            document.getElementById('correctArea').addEventListener('click', showCorrectList);
-
-            // 關閉模態框
-            document.getElementById('closeModal').addEventListener('click', function () {
-                document.getElementById('modal').style.display = "none";
-            });
-
-            // 點擊模態框外部關閉
-            window.onclick = function (event) {
-                let modal = document.getElementById('modal');
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
+              startGame();
             };
-
-            nextProb();
-        }
-
-        function checkAns(input, ansArr) {
-            input = input.trim();
-            return ansArr.includes(input);
-        }
-
-        function updateCorrect() {
-            correct += 1;
-            var cor = document.getElementById("correct");
-            cor.innerHTML = correct;
-
-            if (correct === 80) {
-                alert("80 combo!!!");
+            var enterPress = function (event) {
+              if (event.keyCode == 13) {
+                handler();
+              }
             }
+
+            btn.addEventListener("click", handler);
+
+            document.addEventListener("keypress", enterPress);
+          });
+        });
+      });
+    }
+
+    function startGame() {
+      document.addEventListener("keypress", enterKeyEvent);
+
+      var send = document.getElementById("send");
+      send.addEventListener("click", update);
+
+      var next = document.getElementById("next");
+      next.addEventListener("click", nextProb);
+
+      // 新增點擊事件監聽器
+      document.getElementById('wrongArea').addEventListener('click', showWrongList);
+      document.getElementById('correctArea').addEventListener('click', showCorrectList);
+
+      // 關閉模態框
+      document.getElementById('closeModal').addEventListener('click', function () {
+        document.getElementById('modal').style.display = "none";
+      });
+
+      // 點擊模態框外部關閉
+      window.onclick = function (event) {
+        let modal = document.getElementById('modal');
+        if (event.target == modal) {
+          modal.style.display = "none";
         }
+      };
 
-        function updateWrong() {
-            wrong += 1;
-            var wng = document.getElementById("wrong");
-            wng.innerHTML = wrong;
+      nextProb();
+    }
+
+    function checkAns(input, ansArr) {
+      input = input.trim();
+      return ansArr.includes(input);
+    }
+
+    function updateCorrect() {
+      correct += 1;
+      var cor = document.getElementById("correct");
+      cor.innerHTML = correct;
+
+      if (correct === 80) {
+        alert("80 combo!!!");
+      }
+    }
+
+    function updateWrong() {
+      wrong += 1;
+      var wng = document.getElementById("wrong");
+      wng.innerHTML = wrong;
+    }
+
+    function update() {
+      if (viewing) {
+        return;
+      }
+      var getAns = document.getElementById("answer");
+      var ans = getAns.value;
+      var showAns = document.getElementById("showAnswer");
+      var cardAnswer = document.querySelector(".card-answer");
+      viewing = true;
+
+      cardAnswer.style.display = "flex";
+
+      if (checkAns(ans, data[x]['answer'])) {
+        showAns.innerHTML = "正確！答案是: " + data[x]['answer'].join(' / ');
+        hideExplanation();
+        updateCorrect();
+        correctList.push(data[x]); // 加入正確列表
+      } else {
+        showAns.innerHTML = "錯誤! 正確答案是: " + data[x]['answer'].join(' / ');
+        showExplanation();
+        updateWrong();
+        wrongList.push(data[x]); // 加入錯誤列表
+      }
+      total++;
+
+      if (total === numOfProbs) {
+        alert("題庫結束，將會重新開始。");
+        done = new Array(numOfProbs + 1).fill(false);
+      }
+    }
+
+    function hideExplanation() {
+      var exp = document.getElementById("showExplanation");
+      exp.innerHTML = "";
+    }
+
+    function showAnswer() {
+      if (viewing) {
+        return;
+      }
+      viewing = true;
+      var showAns = document.getElementById("showAnswer");
+      showAns.innerHTML = "錯誤! 正確答案是: " + data[x]['answer'].join(' / ');
+
+      var cardAnswer = document.querySelector(".card-answer");
+      cardAnswer.style.display = "flex";
+
+      showExplanation();
+      updateWrong();
+      wrongList.push(data[x]); // 加入錯誤列表
+      total++;
+
+      if (total === numOfProbs) {
+        alert("題庫結束，將會重新開始。");
+        done = new Array(numOfProbs + 1).fill(false);
+      }
+    }
+
+    function showExplanation() {
+      var exp = document.getElementById("showExplanation");
+      if (JSON.stringify(data[x]['explanation']) === "\"\"") {
+        exp.innerHTML = "詳解：還沒有人寫這題的詳解喔！"
+      } else {
+        exp.innerHTML = "詳解：" + data[x]['explanation'];
+      }
+    }
+
+    function nextProb() {
+      document.querySelector('.card-answer').style.display = 'none';
+      viewing = false;
+      resetTime();
+      countdown();
+
+      updateImage();
+      var getAns = document.getElementById("answer");
+      getAns.value = "";
+      var showAns = document.getElementById("showAnswer");
+      showAns.innerHTML = "";
+      var des = document.getElementById("description");
+      des.value = "";
+      var exp = document.getElementById("showExplanation");
+      exp.innerHTML = "";
+    }
+
+    function pickNewImage() {
+      x = getRandomInt(1, numOfProbs);
+      while (done[x] === true) {
+        x = getRandomInt(1, numOfProbs);
+      }
+      done[x] = true;
+      return x;
+    }
+
+    function updateImage() {
+      x = pickNewImage();
+      var image = document.getElementById("image");
+      var picref = data[x]['path'];
+      image.setAttribute('src', picref);
+
+      var num = document.getElementById("num");
+      num.innerHTML = data[x]['num'];
+
+      var des = document.getElementById("description");
+      des.innerHTML = data[x]['description'];
+    }
+
+    function countdown() {
+      var show = document.getElementById("timer");
+      if (show.innerHTML > 0) {
+        show.innerHTML -= 1;
+        tm = window.setTimeout(countdown, 1000);
+      } else {
+        showAnswer();
+        clearTimeout(tm);
+      }
+      if (show.innerHTML <= 10) {
+        show.style.color = "#ff0000";
+      }
+    }
+
+    function resetTime() {
+      timer = document.getElementById("timer");
+      timer.innerHTML = TIME;
+      timer.style.color = "#000000";
+      clearTimeout(tm);
+    }
+
+    function getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    // 顯示錯誤列表
+    function showWrongList() {
+      let modal = document.getElementById('modal');
+      let modalBody = document.getElementById('modalBody');
+
+      let content = '<h2>錯誤的題目與答案</h2>';
+      if (wrongList.length === 0) {
+        content += '<p>目前沒有錯誤的題目。</p>';
+      } else {
+        content += '<ol>';
+        for (let item of wrongList) {
+          content += '<li>';
+          content += '<p><strong>題目：</strong></p>';
+          if (item['path']) {
+            content += '<img src="' + item['path'] + '" style="max-width:100%;">';
+          }
+          content += '<p><strong>正確答案：</strong>' + item['answer'].join(' / ') + '</p>';
+          if (item['explanation']) {
+            content += '<p><strong>詳解：</strong>' + item['explanation'] + '</p>';
+          }
+          content += '</li>';
         }
+        content += '</ol>';
+      }
+      modalBody.innerHTML = content;
+      modal.style.display = "block";
+    }
 
-        function update() {
-            if (viewing) {
-                return;
-            }
-            var getAns = document.getElementById("answer");
-            var ans = getAns.value;
-            var showAns = document.getElementById("showAnswer");
-            var cardAnswer = document.querySelector(".card-answer");
-            viewing = true;
+    // 顯示正確列表
+    function showCorrectList() {
+      let modal = document.getElementById('modal');
+      let modalBody = document.getElementById('modalBody');
 
-            cardAnswer.style.display = "flex";
-
-            if (checkAns(ans, data[x]['answer'])) {
-                showAns.innerHTML = "正確！答案是: " + data[x]['answer'].join(' / ');
-                hideExplanation();
-                updateCorrect();
-                correctList.push(data[x]); // 加入正確列表
-            } else {
-                showAns.innerHTML = "錯誤! 正確答案是: " + data[x]['answer'].join(' / ');
-                showExplanation();
-                updateWrong();
-                wrongList.push(data[x]); // 加入錯誤列表
-            }
-            total++;
-
-            if (total === numOfProbs) {
-                alert("題庫結束，將會重新開始。");
-                done = new Array(numOfProbs + 1).fill(false);
-            }
+      let content = '<h2>正確的題目與答案</h2>';
+      if (correctList.length === 0) {
+        content += '<p>目前沒有正確的題目。</p>';
+      } else {
+        content += '<ol>';
+        for (let item of correctList) {
+          content += '<li>';
+          content += '<p><strong>題目：</strong></p>';
+          if (item['path']) {
+            content += '<img src="' + item['path'] + '" style="max-width:100%;">';
+          }
+          content += '<p><strong>正確答案：</strong>' + item['answer'].join(' / ') + '</p>';
+          if (item['explanation']) {
+            content += '<p><strong>詳解：</strong>' + item['explanation'] + '</p>';
+          }
+          content += '</li>';
         }
-
-        function hideExplanation() {
-            var exp = document.getElementById("showExplanation");
-            exp.innerHTML = "";
-        }
-
-        function showAnswer() {
-            if (viewing) {
-                return;
-            }
-            viewing = true;
-            var showAns = document.getElementById("showAnswer");
-            showAns.innerHTML = "錯誤! 正確答案是: " + data[x]['answer'].join(' / ');
-
-            var cardAnswer = document.querySelector(".card-answer");
-            cardAnswer.style.display = "flex";
-
-            showExplanation();
-            updateWrong();
-            wrongList.push(data[x]); // 加入錯誤列表
-            total++;
-
-            if (total === numOfProbs) {
-                alert("題庫結束，將會重新開始。");
-                done = new Array(numOfProbs + 1).fill(false);
-            }
-        }
-
-        function showExplanation() {
-            var exp = document.getElementById("showExplanation");
-            if (JSON.stringify(data[x]['explanation']) === "\"\"") {
-                exp.innerHTML = "詳解：還沒有人寫這題的詳解喔！"
-            } else {
-                exp.innerHTML = "詳解：" + data[x]['explanation'];
-            }
-        }
-
-        function nextProb() {
-            document.querySelector('.card-answer').style.display = 'none';
-            viewing = false;
-            resetTime();
-            countdown();
-
-            updateImage();
-            var getAns = document.getElementById("answer");
-            getAns.value = "";
-            var showAns = document.getElementById("showAnswer");
-            showAns.innerHTML = "";
-            var des = document.getElementById("description");
-            des.value = "";
-            var exp = document.getElementById("showExplanation");
-            exp.innerHTML = "";
-        }
-
-        function pickNewImage() {
-            x = getRandomInt(1, numOfProbs);
-            while (done[x] === true) {
-                x = getRandomInt(1, numOfProbs);
-            }
-            done[x] = true;
-            return x;
-        }
-
-        function updateImage() {
-            x = pickNewImage();
-            var image = document.getElementById("image");
-            var picref = data[x]['path'];
-            image.setAttribute('src', picref);
-
-            var num = document.getElementById("num");
-            num.innerHTML = data[x]['num'];
-
-            var des = document.getElementById("description");
-            des.innerHTML = data[x]['description'];
-        }
-
-        function countdown() {
-            var show = document.getElementById("timer");
-            if (show.innerHTML > 0) {
-                show.innerHTML -= 1;
-                tm = window.setTimeout(countdown, 1000);
-            } else {
-                showAnswer();
-                clearTimeout(tm);
-            }
-            if (show.innerHTML <= 10) {
-                show.style.color = "#ff0000";
-            }
-        }
-
-        function resetTime() {
-            timer = document.getElementById("timer");
-            timer.innerHTML = TIME;
-            timer.style.color = "#000000";
-            clearTimeout(tm);
-        }
-
-        function getRandomInt(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min) + min);
-        }
-
-        // 顯示錯誤列表
-        function showWrongList() {
-            let modal = document.getElementById('modal');
-            let modalBody = document.getElementById('modalBody');
-
-            let content = '<h2>錯誤的題目與答案</h2>';
-            if (wrongList.length === 0) {
-                content += '<p>目前沒有錯誤的題目。</p>';
-            } else {
-                content += '<ol>';
-                for (let item of wrongList) {
-                    content += '<li>';
-                    content += '<p><strong>題目：</strong></p>';
-                    if (item['path']) {
-                        content += '<img src="' + item['path'] + '" style="max-width:100%;">';
-                    }
-                    content += '<p><strong>正確答案：</strong>' + item['answer'].join(' / ') + '</p>';
-                    if (item['explanation']) {
-                        content += '<p><strong>詳解：</strong>' + item['explanation'] + '</p>';
-                    }
-                    content += '</li>';
-                }
-                content += '</ol>';
-            }
-            modalBody.innerHTML = content;
-            modal.style.display = "block";
-        }
-
-        // 顯示正確列表
-        function showCorrectList() {
-            let modal = document.getElementById('modal');
-            let modalBody = document.getElementById('modalBody');
-
-            let content = '<h2>正確的題目與答案</h2>';
-            if (correctList.length === 0) {
-                content += '<p>目前沒有正確的題目。</p>';
-            } else {
-                content += '<ol>';
-                for (let item of correctList) {
-                    content += '<li>';
-                    content += '<p><strong>題目：</strong></p>';
-                    if (item['path']) {
-                        content += '<img src="' + item['path'] + '" style="max-width:100%;">';
-                    }
-                    content += '<p><strong>正確答案：</strong>' + item['answer'].join(' / ') + '</p>';
-                    if (item['explanation']) {
-                        content += '<p><strong>詳解：</strong>' + item['explanation'] + '</p>';
-                    }
-                    content += '</li>';
-                }
-                content += '</ol>';
-            }
-            modalBody.innerHTML = content;
-            modal.style.display = "block";
-        }
-    </script>
-
+        content += '</ol>';
+      }
+      modalBody.innerHTML = content;
+      modal.style.display = "block";
+    }
+  </script>
 </body>
 
 </html>
