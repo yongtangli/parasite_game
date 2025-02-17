@@ -121,6 +121,19 @@
       color: #27ae60;
     }
 
+    /* 修改進度文字 */
+    #wrongArea span:last-child {
+      /* 原來是 Still learning */
+      content: "錯誤";
+    }
+
+    #correctArea span:first-child {
+      /* 原來是 Know */
+      content: "正確";
+    }
+
+    /* 為確保顯示正確文字，直接改寫 HTML 下方 */
+
     .card-content {
       flex-grow: 1;
       display: flex;
@@ -304,10 +317,10 @@
     <div class="progress">
       <div class="progress-item" id="wrongArea">
         <span class="progress-number-orange" id="wrong">0</span>
-        <span>Still learning</span>
+        <span>錯誤</span>
       </div>
       <div class="progress-item" id="correctArea">
-        <span>Know</span>
+        <span>正確</span>
         <span class="progress-number-green" id="correct">0</span>
       </div>
     </div>
@@ -367,7 +380,7 @@
     function enterKeyEvent(event) {
       if (state === 1) {
         var getAns = document.getElementById("answer");
-        if (getAns.value !== "" & event.keyCode == 13) {
+        if (getAns.value !== "" && event.keyCode == 13) {
           state = 3 - state;
           update();
         }
@@ -474,6 +487,8 @@
       viewing = true;
 
       cardAnswer.style.display = "flex";
+      // 隱藏答案輸入區
+      document.querySelector('.card-actions').style.display = "none";
 
       if (checkAns(ans, data[x]['answer'])) {
         showAns.innerHTML = "正確！答案是: " + data[x]['answer'].join(' / ');
@@ -509,6 +524,8 @@
 
       var cardAnswer = document.querySelector(".card-answer");
       cardAnswer.style.display = "flex";
+      // 隱藏答案輸入區
+      document.querySelector('.card-actions').style.display = "none";
 
       showExplanation();
       updateWrong();
@@ -533,6 +550,8 @@
     function nextProb() {
       document.querySelector('.card-answer').style.display = 'none';
       viewing = false;
+      // 恢復答案輸入區
+      document.querySelector('.card-actions').style.display = "flex";
       resetTime();
       countdown();
 
