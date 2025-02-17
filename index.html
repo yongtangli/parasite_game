@@ -52,7 +52,7 @@
       background-color: #222;
       color: #fff;
       border: none;
-      border-radius: 50px;
+      border-radius: 15px;
       cursor: pointer;
       transition: background-color 0.2s ease, transform 0.2s ease;
     }
@@ -103,7 +103,7 @@
       display: flex;
       align-items: center;
       padding: 5px 15px;
-      border-radius: 20px;
+      border-radius: 8px;
       font-size: 0.9rem;
       cursor: pointer;
       background-color: #f5f5f5;
@@ -121,18 +121,7 @@
       color: #27ae60;
     }
 
-    /* 修改進度文字 */
-    #wrongArea span:last-child {
-      /* 原來是 Still learning */
-      content: "錯誤";
-    }
-
-    #correctArea span:first-child {
-      /* 原來是 Know */
-      content: "正確";
-    }
-
-    /* 為確保顯示正確文字，直接改寫 HTML 下方 */
+    /* 修改進度區的文字直接寫在 HTML 裡 */
 
     .card-content {
       flex-grow: 1;
@@ -194,11 +183,12 @@
       background-color: #fafafa;
       padding: 15px;
       border-top: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
     }
 
     .card-answer div {
       margin-bottom: 10px;
-      font-size: 1rem;
     }
 
     .next-button {
@@ -208,7 +198,7 @@
       background-color: transparent;
       color: #d35400;
       border: 2px solid #d35400;
-      border-radius: 50px;
+      border-radius: 15px;
       cursor: pointer;
       transition: background-color 0.2s ease, transform 0.2s ease;
     }
@@ -229,7 +219,7 @@
       padding: 10px;
       font-size: 1rem;
       border: 1px solid #ccc;
-      border-radius: 50px;
+      border-radius: 15px;
       outline: none;
     }
 
@@ -240,7 +230,7 @@
       background-color: #222;
       color: #fff;
       border: none;
-      border-radius: 50px;
+      border-radius: 15px;
       cursor: pointer;
       transition: background-color 0.2s ease, transform 0.2s ease;
     }
@@ -269,7 +259,7 @@
       max-height: 80%;
       background-color: #fff;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 8px;
       overflow-y: auto;
     }
 
@@ -296,7 +286,7 @@
         max-width: 800px;
         margin: auto;
         border: 1px solid #ddd;
-        border-radius: 10px;
+        border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       }
     }
