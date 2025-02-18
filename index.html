@@ -37,6 +37,7 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
+      position: relative;
     }
 
     .start-title {
@@ -60,6 +61,24 @@
     .start-button:hover {
       background-color: #555;
       transform: scale(1.05);
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .footer a {
+      color: #aaa;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
     }
 
     /* 遊戲主要畫面 */
@@ -178,13 +197,16 @@
 
     .card-answer {
       display: none;
-      flex-direction: column;
-      background-color: #fafafa;
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background-color: rgba(250,250,250,0.8);
       padding: 15px;
-      border-top: 1px solid #ddd;
       border-radius: 8px;
       /* 與「下一題」按鈕字體大小相同 */
       font-size: 1.2rem;
+      z-index: 1;
     }
 
     .card-answer div {
@@ -297,6 +319,9 @@
   <div class="start-screen">
     <div class="start-title">寄蟲跑台無限出題循環機</div>
     <button id="startGame" class="start-button">開始遊戲</button>
+    <div class="footer">
+      <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往初版（by 鄭宇彤學姊）</a>｜<a href="https://line.me/ti/p/~jedieason" target="_blank">問題回報</a>
+    </div>
   </div>
 
   <div class="flashcard-container">
