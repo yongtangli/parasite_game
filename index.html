@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Parasite Game">
   <meta name="keywords" content="parasites">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js"></script>
-  <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
   <title>寄蟲跑台無限出題循環機</title>
   <style>
-    /* 全局基本重設與極簡風調整 */
+    /* 引入 Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@400;600&display=swap');
+
+    /* 全局基本重設與極簡風 */
     * {
       margin: 0;
       padding: 0;
@@ -20,56 +23,77 @@
       height: 100%;
       overflow: hidden;
       background-color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      /* 使用設計範例推薦的字型 */
+      font-family: "source-han-serif-tc", "Noto Serif TC", "PMingLiU", "SimSun", serif;
       color: #333;
     }
+
     /* 開場畫面 */
     .start-screen {
       width: 100%;
       height: 100%;
-      background-color: #ffffff;
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 20px;
       position: relative;
+      transition: all 0.4s ease;
     }
     .start-title {
       font-size: 2rem;
       font-weight: bold;
       margin-bottom: 30px;
       color: #222;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #2D3436 0%, #1A1A1A 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+    /* 按鈕共用基底（其他按鈕可參考此調整） */
+    button {
+      font-family: inherit;
+      outline: none;
+    }
+
+    /* 開始遊戲按鈕 */
     .start-button {
-      padding: 12px 30px;
+      padding: 14px 36px;
       font-size: 1.2rem;
-      background-color: #222;
-      color: #fff;
+      background-color: #62597a;
+      color: #FFFFFF;
       border: none;
-      border-radius: 15px;
+      border-radius: 30px;
       cursor: pointer;
-      transition: background-color 0.2s ease, transform 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(74, 58, 222, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .start-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: all 0.6s;
+    }
+    .start-button:hover::before {
+      left: 100%;
     }
     .start-button:hover {
-      background-color: #555;
-      transform: scale(1.05);
+      background-color: #564e6a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(58, 42, 206, 0.25);
     }
-    .footer {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #aaa;
+    .start-button:active {
+      transform: scale(0.98);
     }
-    .footer a {
-      color: #aaa;
-      text-decoration: none;
-    }
-    .footer a:hover {
-      text-decoration: underline;
-    }
+
     /* 遊戲主要畫面 */
     .flashcard-container {
       width: 100%;
@@ -131,7 +155,6 @@
       overflow: hidden;
       position: relative;
     }
-    /* 載入中畫面 */
     .loading-screen {
       position: absolute;
       top: 0;
@@ -166,7 +189,6 @@
     .card-content img.loaded {
       opacity: 1;
     }
-    /* 詳解區塊絕對定位於圖片上層 */
     .card-answer {
       display: none;
       position: absolute;
@@ -178,33 +200,96 @@
       border-radius: 8px;
       font-size: 1.2rem;
       z-index: 3;
-      display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
     }
-    
     .answer-details {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
+
+    /* 選項 / 提交 按鈕，參考設計範例 */
+    .submit-button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #FFFFFF;
+      color: #4A5568;
+      border: 2px solid #62597a;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      min-width: 120px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+    .submit-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(107, 92, 212, 0.05), transparent);
+      transition: all 0.6s;
+    }
+    .submit-button:hover::before {
+      left: 100%;
+    }
+    .submit-button:hover,
+    .submit-button.selected {
+      background-color: #62597a;
+      color: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(107, 92, 212, 0.2);
+    }
+    .submit-button:active {
+      transform: scale(0.98);
+    }
+
+    /* 下一題按鈕 */
     .next-button {
-      align-self: flex-end;
-      padding: 10px 2px;
+      display: block;
+      padding: 10px 20px;
       font-size: 1.2rem;
-      background-color: transparent;
-      color: #d35400;
-      border: 2px solid #d35400;
+      background-color: #f9f9f9;
+      color: #fc9d38;
+      border: 2px solid #fc9d38;
       border-radius: 15px;
       cursor: pointer;
-      width: 130px;
-      transition: background-color 0.2s ease, transform 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .next-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: all 0.6s;
+    }
+    .next-button:hover::before {
+      left: 100%;
     }
     .next-button:hover {
-      background-color: #d35400;
+      background-color: #fc9d38;
       color: #fff;
+      transform: translateY(-2px);
     }
+    .next-button:active {
+      transform: scale(0.95);
+    }
+
+    /* 輸入區與按鈕容器 */
     .card-actions {
       position: absolute;
       bottom: 20px;
@@ -225,22 +310,25 @@
       border-radius: 15px;
       outline: none;
     }
-    .submit-button {
-      margin-left: 10px;
-      padding: 10px 20px;
-      font-size: 1.2rem;
-      background-color: #222;
-      color: #fff;
-      border: none;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: background-color 0.2s ease, transform 0.2s ease;
+
+    /* footer */
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
     }
-    .submit-button:hover {
-      background-color: #555;
-      transform: scale(1.05);
+    .footer a {
+      color: #aaa;
+      text-decoration: none;
     }
-    /* 模態框與內部內容設計：更高級、極簡排版 */
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* 模態框 */
     .modal {
       display: none;
       position: fixed;
@@ -264,7 +352,7 @@
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
       animation: fadeIn 0.3s ease-in-out;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-family: "source-han-serif-tc", "Noto Serif TC", "PMingLiU", "SimSun", serif;
       color: #333;
       position: relative;
     }
@@ -278,7 +366,8 @@
       border-bottom: 1px solid #eee;
       padding-bottom: 10px;
     }
-    .modal-content p {
+    .modal-content p,
+    .modal-content li {
       font-size: 1.1rem;
       line-height: 1.6;
       margin-bottom: 15px;
@@ -286,11 +375,6 @@
     .modal-content ol {
       padding-left: 20px;
       margin-bottom: 15px;
-    }
-    .modal-content li {
-      margin-bottom: 15px;
-      border-bottom: 1px solid #f0f0f0;
-      padding-bottom: 10px;
     }
     .modal-content li:last-child {
       border-bottom: none;
@@ -311,7 +395,10 @@
       color: #aaa;
       transition: color 0.2s ease;
     }
-    .close:hover { color: #333; }
+    .close:hover {
+      color: #333;
+    }
+
     /* 桌機版版面 */
     @media screen and (min-width: 769px) {
       .flashcard-container {
@@ -378,7 +465,7 @@
     var numOfProbs;
     var tm; // timer (global)
     var data; // answersheet
-    var x; // number of image
+    var x; // image index
     var state = 0;
     var correct = 0;
     var wrong = 0;
