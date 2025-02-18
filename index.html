@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
 <head>
-  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Parasite Game">
   <meta name="keywords" content="parasites">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
   <title>寄蟲跑台無限出題循環機</title>
+  <!-- 引入 Google Fonts（可依需求調整） -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* 引入 Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@400;600&display=swap');
-
-    /* 全局基本重設與極簡風 */
+    /* 全局基本重設與字型設定 */
     * {
       margin: 0;
       padding: 0;
@@ -23,9 +22,8 @@
       height: 100%;
       overflow: hidden;
       background-color: #ffffff;
-      /* 使用設計範例推薦的字型 */
       font-family: "source-han-serif-tc", "Noto Serif TC", "PMingLiU", "SimSun", serif;
-      color: #333;
+      color: #2D3436;
     }
 
     /* 開場畫面 */
@@ -39,36 +37,24 @@
       align-items: center;
       padding: 20px;
       position: relative;
-      transition: all 0.4s ease;
     }
     .start-title {
       font-size: 2rem;
       font-weight: bold;
       margin-bottom: 30px;
       color: #222;
-      letter-spacing: 2px;
-      background: linear-gradient(135deg, #2D3436 0%, #1A1A1A 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
-    /* 按鈕共用基底（其他按鈕可參考此調整） */
-    button {
-      font-family: inherit;
-      outline: none;
-    }
-
-    /* 開始遊戲按鈕 */
+    /* 改良後的開場按鈕 */
     .start-button {
       padding: 14px 36px;
       font-size: 1.2rem;
       background-color: #62597a;
-      color: #FFFFFF;
+      color: #ffffff;
       border: none;
       border-radius: 30px;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       font-weight: 500;
-      box-shadow: 0 4px 12px rgba(74, 58, 222, 0.15);
       position: relative;
       overflow: hidden;
     }
@@ -90,8 +76,21 @@
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(58, 42, 206, 0.25);
     }
-    .start-button:active {
-      transform: scale(0.98);
+
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+    .footer a {
+      color: #aaa;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
     }
 
     /* 遊戲主要畫面 */
@@ -155,6 +154,7 @@
       overflow: hidden;
       position: relative;
     }
+    /* 載入中畫面 */
     .loading-screen {
       position: absolute;
       top: 0;
@@ -189,6 +189,7 @@
     .card-content img.loaded {
       opacity: 1;
     }
+    /* 詳解區塊 */
     .card-answer {
       display: none;
       position: absolute;
@@ -200,58 +201,10 @@
       border-radius: 8px;
       font-size: 1.2rem;
       z-index: 3;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .answer-details {
-      display: flex;
       flex-direction: column;
       gap: 10px;
     }
-
-    /* 選項 / 提交 按鈕，參考設計範例 */
-    .submit-button {
-      padding: 12px 24px;
-      font-size: 1rem;
-      background-color: #FFFFFF;
-      color: #4A5568;
-      border: 2px solid #62597a;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      min-width: 120px;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-      font-weight: 500;
-      position: relative;
-      overflow: hidden;
-    }
-    .submit-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(120deg, transparent, rgba(107, 92, 212, 0.05), transparent);
-      transition: all 0.6s;
-    }
-    .submit-button:hover::before {
-      left: 100%;
-    }
-    .submit-button:hover,
-    .submit-button.selected {
-      background-color: #62597a;
-      color: #FFFFFF;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(107, 92, 212, 0.2);
-    }
-    .submit-button:active {
-      transform: scale(0.98);
-    }
-
-    /* 下一題按鈕 */
+    /* 改良後的下一題按鈕 */
     .next-button {
       display: block;
       padding: 10px 20px;
@@ -261,11 +214,13 @@
       border: 2px solid #fc9d38;
       border-radius: 15px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
       font-weight: 600;
       letter-spacing: 0.5px;
+      align-self: flex-end;
+      margin-top: 10px;
     }
     .next-button::before {
       content: '';
@@ -282,14 +237,13 @@
     }
     .next-button:hover {
       background-color: #fc9d38;
-      color: #fff;
+      color: white;
       transform: translateY(-2px);
     }
     .next-button:active {
       transform: scale(0.95);
     }
-
-    /* 輸入區與按鈕容器 */
+    /* 卡片下方的回答區 */
     .card-actions {
       position: absolute;
       bottom: 20px;
@@ -310,25 +264,44 @@
       border-radius: 15px;
       outline: none;
     }
-
-    /* footer */
-    .footer {
+    /* 改良後的送出按鈕 */
+    .submit-button {
+      margin-left: 10px;
+      padding: 12px 24px;
+      font-size: 1.2rem;
+      background-color: #6d687e;
+      color: #ffffff;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+    .submit-button::before {
+      content: '';
       position: absolute;
-      bottom: 10px;
+      top: 0;
+      left: -100%;
       width: 100%;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #aaa;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: all 0.6s;
     }
-    .footer a {
-      color: #aaa;
-      text-decoration: none;
+    .submit-button:hover::before {
+      left: 100%;
     }
-    .footer a:hover {
-      text-decoration: underline;
+    .submit-button:hover {
+      background-color: #564e6a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(58, 42, 206, 0.25);
+    }
+    .submit-button:active {
+      transform: scale(0.98);
     }
 
-    /* 模態框 */
+    /* 模態窗口（保留原有設計） */
     .modal {
       display: none;
       position: fixed;
@@ -366,8 +339,7 @@
       border-bottom: 1px solid #eee;
       padding-bottom: 10px;
     }
-    .modal-content p,
-    .modal-content li {
+    .modal-content p {
       font-size: 1.1rem;
       line-height: 1.6;
       margin-bottom: 15px;
@@ -375,6 +347,11 @@
     .modal-content ol {
       padding-left: 20px;
       margin-bottom: 15px;
+    }
+    .modal-content li {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 10px;
     }
     .modal-content li:last-child {
       border-bottom: none;
@@ -395,11 +372,9 @@
       color: #aaa;
       transition: color 0.2s ease;
     }
-    .close:hover {
-      color: #333;
-    }
+    .close:hover { color: #333; }
 
-    /* 桌機版版面 */
+    /* 桌機版調整 */
     @media screen and (min-width: 769px) {
       .flashcard-container {
         max-width: 800px;
@@ -416,7 +391,8 @@
     <div class="start-title">寄蟲跑台無限出題循環機</div>
     <button id="startGame" class="start-button">開始遊戲</button>
     <div class="footer">
-      <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往初版（by 鄭宇彤學姊）</a>｜<a href="https://line.me/ti/p/~jedieason" target="_blank">問題回報</a>
+      <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往初版（by 鄭宇彤學姊）</a>｜
+      <a href="https://line.me/ti/p/~jedieason" target="_blank">問題回報</a>
     </div>
   </div>
   <div class="flashcard-container">
@@ -441,10 +417,8 @@
       <img id="image" onload="this.classList.add('loaded');document.querySelector('.loading-screen').style.display='none';" src="images/IMG_5719.jpg" alt="圖片描述">
     </div>
     <div class="card-answer">
-      <div class="answer-details">
-        <div id="showAnswer"></div>
-        <div id="showExplanation"></div>
-      </div>
+      <div id="showAnswer"></div>
+      <div id="showExplanation"></div>
       <button id="next" class="next-button">下一題</button>
     </div>
     <div class="card-actions">
@@ -465,7 +439,7 @@
     var numOfProbs;
     var tm; // timer (global)
     var data; // answersheet
-    var x; // image index
+    var x; // number of image
     var state = 0;
     var correct = 0;
     var wrong = 0;
