@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
-
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -16,9 +15,7 @@
       padding: 0;
       box-sizing: border-box;
     }
-
-    html,
-    body {
+    html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
@@ -26,7 +23,6 @@
       font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
       color: #333;
     }
-
     /* 開場畫面 */
     .start-screen {
       width: 100%;
@@ -39,14 +35,12 @@
       padding: 20px;
       position: relative;
     }
-
     .start-title {
       font-size: 2rem;
       font-weight: bold;
       margin-bottom: 30px;
       color: #222;
     }
-
     .start-button {
       padding: 12px 30px;
       font-size: 1.2rem;
@@ -57,12 +51,10 @@
       cursor: pointer;
       transition: background-color 0.2s ease, transform 0.2s ease;
     }
-
     .start-button:hover {
       background-color: #555;
       transform: scale(1.05);
     }
-
     .footer {
       position: absolute;
       bottom: 10px;
@@ -71,16 +63,13 @@
       font-size: 0.9rem;
       color: #aaa;
     }
-
     .footer a {
       color: #aaa;
       text-decoration: none;
     }
-
     .footer a:hover {
       text-decoration: underline;
     }
-
     /* 遊戲主要畫面 */
     .flashcard-container {
       width: 100%;
@@ -91,7 +80,6 @@
       padding: 10px;
       position: relative;
     }
-
     .header {
       display: flex;
       justify-content: space-between;
@@ -100,18 +88,15 @@
       margin-bottom: 8px;
       z-index: 2;
     }
-
     .flashcard-title {
       font-size: 1.5rem;
       font-weight: bold;
       color: #222;
     }
-
     .timer {
       font-size: 1.2rem;
       color: #555;
     }
-
     .progress {
       display: flex;
       justify-content: space-between;
@@ -119,7 +104,6 @@
       margin-bottom: 8px;
       z-index: 2;
     }
-
     .progress-item {
       display: flex;
       align-items: center;
@@ -129,19 +113,16 @@
       cursor: pointer;
       background-color: #f5f5f5;
     }
-
     .progress-number-orange {
       font-weight: bold;
       margin-right: 5px;
       color: #d35400;
     }
-
     .progress-number-green {
       font-weight: bold;
       margin-left: 5px;
       color: #27ae60;
     }
-
     .card-content {
       flex-grow: 1;
       display: flex;
@@ -150,7 +131,6 @@
       overflow: hidden;
       position: relative;
     }
-
     /* 載入中畫面 */
     .loading-screen {
       position: absolute;
@@ -164,7 +144,6 @@
       align-items: center;
       z-index: 2;
     }
-
     .spinner {
       border: 4px solid #f3f3f3;
       border-top: 4px solid #222;
@@ -173,17 +152,10 @@
       height: 40px;
       animation: spin 1s linear infinite;
     }
-
     @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-
-      100% {
-        transform: rotate(360deg);
-      }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-
     .card-content img {
       max-width: 100%;
       max-height: 100%;
@@ -191,16 +163,14 @@
       transition: opacity 0.3s ease;
       opacity: 0;
     }
-
     .card-content img.loaded {
       opacity: 1;
     }
-
-    /* 將詳解區塊絕對定位在圖片上層，保持原本上下排列 */
+    /* 詳解區塊絕對定位於圖片上層 */
     .card-answer {
       display: none;
       position: absolute;
-      bottom: 80px;
+      bottom: 20px;
       left: 20px;
       right: 20px;
       background-color: rgba(250, 250, 250, 0.8);
@@ -208,12 +178,9 @@
       border-radius: 8px;
       font-size: 1.2rem;
       z-index: 3;
-      /* 保持垂直排列 */
-      display: flex;
       flex-direction: column;
       gap: 10px;
     }
-
     .next-button {
       align-self: flex-end;
       padding: 10px 20px;
@@ -225,13 +192,11 @@
       cursor: pointer;
       transition: background-color 0.2s ease, transform 0.2s ease;
     }
-
     .next-button:hover {
       background-color: #d35400;
       color: #fff;
     }
-
-    /* 將答案輸入區塊也改為絕對定位，不影響圖片 */
+    /* 答案輸入區 */
     .card-actions {
       position: absolute;
       bottom: 20px;
@@ -244,7 +209,6 @@
       background-color: rgba(255, 255, 255, 0.8);
       z-index: 3;
     }
-
     .answer-input {
       flex-grow: 1;
       padding: 10px;
@@ -253,7 +217,6 @@
       border-radius: 15px;
       outline: none;
     }
-
     .submit-button {
       margin-left: 10px;
       padding: 10px 20px;
@@ -265,13 +228,11 @@
       cursor: pointer;
       transition: background-color 0.2s ease, transform 0.2s ease;
     }
-
     .submit-button:hover {
       background-color: #555;
       transform: scale(1.05);
     }
-
-    /* 模態框 */
+    /* 模態框與內部內容設計：更高級、極簡排版 */
     .modal {
       display: none;
       position: fixed;
@@ -280,37 +241,67 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
       justify-content: center;
       align-items: center;
     }
-
     .modal-content {
       width: 90%;
-      max-height: 80%;
+      max-width: 600px;
       background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      overflow-y: auto;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.3s ease-in-out;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #333;
+      position: relative;
     }
-
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-content h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    .modal-content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+    .modal-content ol {
+      padding-left: 20px;
+      margin-bottom: 15px;
+    }
+    .modal-content li {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 10px;
+    }
+    .modal-content li:last-child {
+      border-bottom: none;
+    }
     .modal-content img {
       max-width: 100%;
       height: auto;
-      margin-bottom: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
     }
-
     .close {
-      font-size: 1.8rem;
-      float: right;
+      font-size: 1.6rem;
+      font-weight: bold;
+      position: absolute;
+      right: 20px;
+      top: 20px;
       cursor: pointer;
       color: #aaa;
+      transition: color 0.2s ease;
     }
-
-    .close:hover {
-      color: #000;
-    }
-
+    .close:hover { color: #333; }
     /* 桌機版版面 */
     @media screen and (min-width: 769px) {
       .flashcard-container {
@@ -323,7 +314,6 @@
     }
   </style>
 </head>
-
 <body onload="init();">
   <div class="start-screen">
     <div class="start-title">寄蟲跑台無限出題循環機</div>
@@ -332,7 +322,6 @@
       <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往初版（by 鄭宇彤學姊）</a>｜<a href="https://line.me/ti/p/~jedieason" target="_blank">問題回報</a>
     </div>
   </div>
-
   <div class="flashcard-container">
     <div class="header">
       <div class="flashcard-title">寄蟲跑台無限出題循環機</div>
@@ -364,14 +353,14 @@
       <button id="send" class="submit-button">→</button>
     </div>
   </div>
-
   <div id="modal" class="modal">
     <div class="modal-content">
       <span id="closeModal" class="close">&times;</span>
-      <div id="modalBody"></div>
+      <div id="modalBody">
+        <!-- 內容會由 JS 動態注入 -->
+      </div>
     </div>
   </div>
-
   <script>
     var TIME = 31;
     var numOfProbs;
@@ -389,10 +378,7 @@
 
     function parseMultiAns(data) {
       for (const item of Object.entries(data)) {
-        if (typeof item[1]['answer'] === 'undefined') {
-          continue;
-        }
-        // 檢查答案是否為字串
+        if (typeof item[1]['answer'] === 'undefined') continue;
         if (typeof item[1]['answer'] === 'string') {
           var ans = item[1]['answer'].split(" / ");
           item[1]['answer'] = ans;
@@ -404,12 +390,12 @@
     function enterKeyEvent(event) {
       if (state === 1) {
         var getAns = document.getElementById("answer");
-        if (getAns.value !== "" && event.keyCode == 13) {
+        if (getAns.value !== "" && event.keyCode === 13) {
           state = 3 - state;
           update();
         }
       } else {
-        if (event.keyCode == 13) {
+        if (event.keyCode === 13) {
           state = 3 - state;
           nextProb();
         }
@@ -423,27 +409,19 @@
             data = $.csv.toObjects(CSVdata);
             numOfProbs = Object.keys(data).length;
             data = parseMultiAns(data);
-            score = 0;
-
             var btn = document.getElementById("startGame");
             var handler = function () {
-              btn.innerHTML += 1;
               document.querySelector('.start-screen').style.display = 'none';
               document.querySelector('.flashcard-container').style.display = 'flex';
               document.removeEventListener("keypress", enterPress);
               state = 1;
               done = new Array(numOfProbs + 1).fill(false);
-
               startGame();
             };
             var enterPress = function (event) {
-              if (event.keyCode == 13) {
-                handler();
-              }
-            }
-
+              if (event.keyCode === 13) handler();
+            };
             btn.addEventListener("click", handler);
-
             document.addEventListener("keypress", enterPress);
           });
         });
@@ -452,30 +430,17 @@
 
     function startGame() {
       document.addEventListener("keypress", enterKeyEvent);
-
-      var send = document.getElementById("send");
-      send.addEventListener("click", update);
-
-      var next = document.getElementById("next");
-      next.addEventListener("click", nextProb);
-
-      // 新增點擊事件監聽器
+      document.getElementById("send").addEventListener("click", update);
+      document.getElementById("next").addEventListener("click", nextProb);
       document.getElementById('wrongArea').addEventListener('click', showWrongList);
       document.getElementById('correctArea').addEventListener('click', showCorrectList);
-
-      // 關閉模態框
       document.getElementById('closeModal').addEventListener('click', function () {
         document.getElementById('modal').style.display = "none";
       });
-
-      // 點擊模態框外部關閉
       window.onclick = function (event) {
         let modal = document.getElementById('modal');
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
+        if (event.target === modal) modal.style.display = "none";
       };
-
       nextProb();
     }
 
@@ -486,47 +451,36 @@
 
     function updateCorrect() {
       correct += 1;
-      var cor = document.getElementById("correct");
-      cor.innerHTML = correct;
-
-      if (correct === 80) {
-        alert("80 combo!!!");
-      }
+      document.getElementById("correct").innerHTML = correct;
+      if (correct === 80) alert("80 combo!!!");
     }
 
     function updateWrong() {
       wrong += 1;
-      var wng = document.getElementById("wrong");
-      wng.innerHTML = wrong;
+      document.getElementById("wrong").innerHTML = wrong;
     }
 
     function update() {
-      if (viewing) {
-        return;
-      }
+      if (viewing) return;
       var getAns = document.getElementById("answer");
       var ans = getAns.value;
       var showAns = document.getElementById("showAnswer");
       var cardAnswer = document.querySelector(".card-answer");
       viewing = true;
-
       cardAnswer.style.display = "flex";
-      // 隱藏答案輸入區
       document.querySelector('.card-actions').style.display = "none";
-
       if (checkAns(ans, data[x]['answer'])) {
         showAns.innerHTML = "正確！答案是: " + data[x]['answer'].join(' / ');
         hideExplanation();
         updateCorrect();
-        correctList.push(data[x]); // 加入正確列表
+        correctList.push(data[x]);
       } else {
         showAns.innerHTML = "錯誤! 正確答案是: " + data[x]['answer'].join(' / ');
         showExplanation();
         updateWrong();
-        wrongList.push(data[x]); // 加入錯誤列表
+        wrongList.push(data[x]);
       }
       total++;
-
       if (total === numOfProbs) {
         alert("題庫結束，將會重新開始。");
         done = new Array(numOfProbs + 1).fill(false);
@@ -534,28 +488,21 @@
     }
 
     function hideExplanation() {
-      var exp = document.getElementById("showExplanation");
-      exp.innerHTML = "";
+      document.getElementById("showExplanation").innerHTML = "";
     }
 
     function showAnswer() {
-      if (viewing) {
-        return;
-      }
+      if (viewing) return;
       viewing = true;
       var showAns = document.getElementById("showAnswer");
       showAns.innerHTML = "錯誤! 正確答案是: " + data[x]['answer'].join(' / ');
-
       var cardAnswer = document.querySelector(".card-answer");
       cardAnswer.style.display = "flex";
-      // 隱藏答案輸入區
       document.querySelector('.card-actions').style.display = "none";
-
       showExplanation();
       updateWrong();
-      wrongList.push(data[x]); // 加入錯誤列表
+      wrongList.push(data[x]);
       total++;
-
       if (total === numOfProbs) {
         alert("題庫結束，將會重新開始。");
         done = new Array(numOfProbs + 1).fill(false);
@@ -565,7 +512,7 @@
     function showExplanation() {
       var exp = document.getElementById("showExplanation");
       if (JSON.stringify(data[x]['explanation']) === "\"\"") {
-        exp.innerHTML = "詳解：還沒有人寫這題的詳解喔！"
+        exp.innerHTML = "詳解：還沒有人寫這題的詳解喔！";
       } else {
         exp.innerHTML = "詳解：" + data[x]['explanation'];
       }
@@ -573,19 +520,14 @@
 
     function nextProb() {
       document.querySelector('.card-answer').style.display = 'none';
-      // 恢復答案輸入區（若曾隱藏）
       document.querySelector('.card-actions').style.display = "flex";
       viewing = false;
       resetTime();
       countdown();
-
       updateImage();
-      var getAns = document.getElementById("answer");
-      getAns.value = "";
-      var showAns = document.getElementById("showAnswer");
-      showAns.innerHTML = "";
-      var exp = document.getElementById("showExplanation");
-      exp.innerHTML = "";
+      document.getElementById("answer").value = "";
+      document.getElementById("showAnswer").innerHTML = "";
+      document.getElementById("showExplanation").innerHTML = "";
     }
 
     function pickNewImage() {
@@ -598,11 +540,9 @@
     }
 
     function updateImage() {
-      // 顯示載入中畫面並移除圖片的 loaded 樣式
       document.querySelector('.loading-screen').style.display = 'flex';
       var image = document.getElementById("image");
       image.classList.remove('loaded');
-
       x = pickNewImage();
       var picref = data[x]['path'];
       image.setAttribute('src', picref);
@@ -617,9 +557,7 @@
         showAnswer();
         clearTimeout(tm);
       }
-      if (show.innerHTML <= 10) {
-        show.style.color = "#ff0000";
-      }
+      if (show.innerHTML <= 10) show.style.color = "#ff0000";
     }
 
     function resetTime() {
@@ -639,7 +577,6 @@
     function showWrongList() {
       let modal = document.getElementById('modal');
       let modalBody = document.getElementById('modalBody');
-
       let content = '<h2>錯誤的題目與答案</h2>';
       if (wrongList.length === 0) {
         content += '<p>目前沒有錯誤的題目。</p>';
@@ -667,7 +604,6 @@
     function showCorrectList() {
       let modal = document.getElementById('modal');
       let modalBody = document.getElementById('modalBody');
-
       let content = '<h2>正確的題目與答案</h2>';
       if (correctList.length === 0) {
         content += '<p>目前沒有正確的題目。</p>';
@@ -692,5 +628,4 @@
     }
   </script>
 </body>
-
 </html>
