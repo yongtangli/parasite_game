@@ -98,6 +98,7 @@
       align-items: center;
       padding: 0 10px;
       margin-bottom: 8px;
+      z-index: 2;
     }
 
     .flashcard-title {
@@ -116,6 +117,7 @@
       justify-content: space-between;
       padding: 0 10px;
       margin-bottom: 8px;
+      z-index: 2;
     }
 
     .progress-item {
@@ -123,7 +125,6 @@
       align-items: center;
       padding: 5px 15px;
       border-radius: 8px;
-      /* 將進度區字體大小調整為 1.2rem */
       font-size: 1.2rem;
       cursor: pointer;
       background-color: #f5f5f5;
@@ -195,22 +196,22 @@
       opacity: 1;
     }
 
+    /* 將詳解區塊絕對定位在圖片上層，保持原本上下排列 */
     .card-answer {
       display: none;
       position: absolute;
-      bottom: 20px;
+      bottom: 80px;
       left: 20px;
       right: 20px;
-      background-color: rgba(250,250,250,0.8);
+      background-color: rgba(250, 250, 250, 0.8);
       padding: 15px;
       border-radius: 8px;
-      /* 與「下一題」按鈕字體大小相同 */
       font-size: 1.2rem;
-      z-index: 1;
-    }
-
-    .card-answer div {
-      margin-bottom: 10px;
+      z-index: 3;
+      /* 保持垂直排列 */
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .next-button {
@@ -230,10 +231,18 @@
       color: #fff;
     }
 
+    /* 將答案輸入區塊也改為絕對定位，不影響圖片 */
     .card-actions {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
       display: flex;
+      align-items: center;
       padding: 10px;
       border-top: 1px solid #ddd;
+      background-color: rgba(255, 255, 255, 0.8);
+      z-index: 3;
     }
 
     .answer-input {
@@ -564,9 +573,9 @@
 
     function nextProb() {
       document.querySelector('.card-answer').style.display = 'none';
-      viewing = false;
-      // 恢復答案輸入區
+      // 恢復答案輸入區（若曾隱藏）
       document.querySelector('.card-actions').style.display = "flex";
+      viewing = false;
       resetTime();
       countdown();
 
