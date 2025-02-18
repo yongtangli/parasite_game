@@ -178,6 +178,14 @@
       border-radius: 8px;
       font-size: 1.2rem;
       z-index: 3;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .answer-details {
+      display: flex;
       flex-direction: column;
       gap: 10px;
     }
@@ -345,8 +353,10 @@
       <img id="image" onload="this.classList.add('loaded');document.querySelector('.loading-screen').style.display='none';" src="images/IMG_5719.jpg" alt="圖片描述">
     </div>
     <div class="card-answer">
-      <div id="showAnswer"></div>
-      <div id="showExplanation"></div>
+      <div class="answer-details">
+        <div id="showAnswer"></div>
+        <div id="showExplanation"></div>
+      </div>
       <button id="next" class="next-button">下一題</button>
     </div>
     <div class="card-actions">
