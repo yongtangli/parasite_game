@@ -432,7 +432,7 @@
       <button id="next" class="next-button">下一題</button>
     </div>
     <div class="card-actions">
-      <input id="answer" type="text" placeholder="輸入生物學名或中間宿主⋯" class="answer-input">
+      <input id="answer" type="text" placeholder="輸入生物學名或中間宿主⋯（按/來快速輸入）" class="answer-input">
       <button id="send" class="submit-button">→</button>
     </div>
   </div>
@@ -709,6 +709,14 @@
       modalBody.innerHTML = content;
       modal.style.display = "flex";
     }
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "/") {
+        e.preventDefault();
+        document.getElementById("answer").focus();
+      }
+    });
+
   </script>
 </body>
 </html>
