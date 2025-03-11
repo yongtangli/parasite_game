@@ -5,7 +5,7 @@
   <key>ConsentText</key>
   <dict>
     <key>default</key>
-    <string>點擊「Install」並輸入裝置密碼</string>
+    <string>點擊「下一步」來下載</string>
   </dict>
   <key>PayloadContent</key>
   <array>
