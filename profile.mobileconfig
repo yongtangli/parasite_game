@@ -5,7 +5,7 @@
   <key>ConsentText</key>
   <dict>
     <key>default</key>
-    <string>Choose 'Install' and enter passcode if prompted.</string>
+    <string>點擊「Install」並輸入裝置密碼</string>
   </dict>
   <key>PayloadContent</key>
   <array>
@@ -36,11 +36,11 @@
       <key>Precomposed</key>
       <false/>
       <key>URL</key>
-      <string>https://jedieason.github.io/parastie_game/</string>
+      <string>https://jedieason.github.io/parasite_game/</string>
     </dict>
   </array>
   <key>PayloadDescription</key>
-  <string>Download Parasite iOS app!</string>
+  <string>下載寄蟲跑台無限出題循環機iOS版應用程式</string>
   <key>PayloadDisplayName</key>
   <string>Parasite</string>
   <key>PayloadIdentifier</key>
