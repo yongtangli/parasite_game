@@ -15,7 +15,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: "source-han-serif-tc", "Noto Serif TC", "PMingLiU", "SimSun", serif;
+      font-family: "source-han-serif-tc", "Noto Serif TC", "NotoSerifCJKtc", "Songti TC", "Poppins", "PMingLiU", "NotoSerifTC", "SimSun", serif;
     }
     html, body {
       width: 100%;
@@ -26,12 +26,20 @@
     }
 
     @font-face {
-      font-family: 'YuWeiShuFaYunMoFanTi';
+      font-family: 'fonts/YuWeiShuFaYunMoFanTi';
       src: url('YuWeiShuFaYunMoFanTi.woff2') format('woff2');
       font-weight: 900;
       font-style: normal;
       font-display: swap;
   }
+
+    @font-face {
+    font-family: 'fonts/NotoSerifCJKtc';
+    src: url('fonts/NotoSerifCJKtc.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
     /* 開場畫面 */
     .start-screen {
@@ -140,7 +148,7 @@
       display: flex;
       align-items: center;
       padding: 5px 15px;
-      border-radius: 8px;
+      border-radius: 16px;
       font-size: 1.2rem;
       cursor: pointer;
       background-color: #F8F9FA;
