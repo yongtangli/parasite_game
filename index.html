@@ -12,36 +12,57 @@
     <!-- Using a simple sans-serif font stack -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        @font-face {
+                @font-face {
             font-family: 'Germgoth';
             src: url('fonts/Germgoth.woff') format('woff');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
         }
-        .flashcard-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #222;
-            font-family: "Germgoth", serif;
-            margin-bottom: 5px;
-            text-align: center;
-        }
+
+        /* --- Refined Styles for Sophistication & Elegance --- */
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            /* Using Cormorant Garamond for headings and Inter for body */
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+
         html, body {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #ffffff; /* White background */
-            color: #1C1C1E; /* Default text color */
+            background-color: #F9F7F3; /* Elegant warm off-white */
+            color: #404040; /* Dark gray for text */
         }
 
-        /* Start screen styles (keeping minimal) */
+        /* Title Styling with Germgoth */
+        .flashcard-title, .start-title {
+            font-family: "Germgoth", serif; /* Using the provided gothic font */
+            color: #383838; /* Slightly darker heading color */
+            font-weight: normal; /* Germgoth might only have one weight */
+            letter-spacing: 0.5px; /* Subtle spacing */
+            text-align: center;
+            padding-bottom: 5px; /* Space below title */
+            /* Removed text-shadow for cleaner look */
+        }
+
+        .start-title {
+            font-size: 2.8rem; /* Larger start title */
+            margin-bottom: 40px; /* More space below */
+        }
+
+        .flashcard-title {
+            font-size: 1.8rem; /* Slightly larger in-game title */
+            margin-bottom: 15px; /* Adjusted space */
+        }
+
+        /* Start screen styles */
         .start-screen {
             width: 100%;
             height: 100%;
@@ -50,41 +71,57 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards; /* Fade in start screen */
         }
-        .start-title {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 30px;
-            color: #1C1C1E;
-            font-family: "Germgoth", serif;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
         .start-button {
-            padding: 12px 28px;
-            font-size: 1rem;
-            background-color: #4F46E5; /* Blue */
+            padding: 14px 35px; /* Generous padding */
+            font-size: 1.1rem;
+            font-weight: 500;
+            background-color: #6D8A96; /* Muted Blue-Gray */
             color: #ffffff;
             border: none;
-            border-radius: 8px;
+            border-radius: 8px; /* Consistent radius */
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         .start-button:hover {
-            background-color: #4338CA; /* Darker Blue */
+            background-color: #5A7580; /* Darker shade */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px); /* Subtle lift */
         }
+
+        .start-button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
         .footer {
             position: absolute;
-            bottom: 10px;
+            bottom: 15px; /* Slightly higher */
             width: 100%;
             text-align: center;
-            font-size: 0.9rem;
-            color: #aaa;
+            font-size: 0.85rem; /* Smaller font */
+            color: #999; /* Lighter gray */
         }
+
         .footer a {
-            color: #aaa;
+            color: #888; /* Slightly darker link */
             text-decoration: none;
+            transition: color 0.3s ease;
         }
+
         .footer a:hover {
-            text-decoration: underline;
+            color: #6D8A96; /* Accent color on hover */
+            text-decoration: none; /* Keep no underline */
         }
 
         /* Game Screen */
@@ -93,216 +130,288 @@
             height: 100%;
             display: none; /* Hidden initially */
             flex-direction: column;
-            background-color: #ffffff;
-            padding: 20px;
+            background-color: #F9F7F3; /* Match body background */
+            padding: 25px; /* Slightly more padding */
             position: relative;
-            max-width: 800px; /* Limit max width for better desktop view */
+            max-width: 1400px; /* Slightly narrower max width */
             margin: 0 auto; /* Center container */
+            opacity: 0;
+            animation: fadeIn 0.6s 0.2s ease-out forwards; /* Delayed fade in */
         }
 
         /* Progress Bar Area */
         .progress {
             display: flex;
-            justify-content: space-between; /* Space out items */
-            margin-bottom: 10px; /* Space below progress */
-            gap: 10px; /* Space between items */
+            justify-content: space-between;
+            margin-bottom: 18px; /* More space below */
+            gap: 15px;
         }
+
         .progress-item {
             display: flex;
             align-items: center;
-            padding: 6px 12px; /* Padding inside item */
-            border-radius: 16px; /* Rounded corners */
-            font-size: 1rem; /* Font size */
-            font-weight: 500; /* Medium weight */
-            background-color: #F3F4F6; /* Light gray background */
-            color: #374151; /* Gray text */
-            cursor: pointer; /* Indicate clickable */
-            transition: background-color 0.2s ease;
-        }
-        .progress-item:hover {
-            background-color: #E5E7EB; /* Slightly darker gray on hover */
-        }
-        .progress-number-orange {
-            margin-right: 6px; /* Space between number and text */
-            color: #FB923C; /* Orange */
-            font-weight: 600; /* Bolder number */
-        }
-        .progress-number-green {
-            margin-left: 6px; /* Space between text and number */
-            color: #34D399; /* Green */
-            font-weight: 600; /* Bolder number */
+            padding: 8px 15px; /* Adjusted padding */
+            border-radius: 20px; /* More rounded */
+            font-size: 0.95rem;
+            font-weight: 500;
+            background-color: transparent; /* No background */
+            color: #666; /* Muted text color */
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+            border: 1px solid #E0E0E0; /* Subtle border */
         }
 
-        /* Image Area (replaces Chinese text) */
+        .progress-item:hover {
+            background-color: #FFFFFF; /* White background on hover */
+            border-color: #D0D0D0;
+            transform: scale(1.03); /* Slight scale effect */
+        }
+
+        .progress-number-orange {
+            margin-right: 8px;
+            color: #D98C60; /* Muted Orange */
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .progress-number-green {
+            margin-left: 8px;
+            color: #79A88F; /* Muted Green */
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Image Area */
         .card-content {
             position: relative;
-            flex-grow: 1; /* Takes remaining vertical space */
+            flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Prevent image overflow */
-            margin-bottom: 24px; /* Space below image */
-            border-radius: 8px; /* Optional: round corners for image container */
-            background-color: #F9FAFB; /* Very light gray background for contrast */
+            overflow: hidden;
+            margin-bottom: 20px; /* Adjusted space */
+            border-radius: 10px; /* Slightly larger radius */
+            background-color: #FFFFFF; /* White background for card */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); /* Soft shadow */
+            border: 1px solid #EAEAEA; /* Very light border */
         }
+
         .loading-screen {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%; /* Cover the card content area */
-            background-color: #F9FAFB;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 2;
-            border-radius: 8px;
+            border-radius: 10px; /* Match parent */
+            transition: opacity 0.3s ease-out;
         }
+
         .spinner {
-            border: 3px solid #E5E7EB; /* Light gray border */
-            border-top: 3px solid #4F46E5; /* Blue spinner part */
+            border: 4px solid #E0E0E0;
+            border-top: 4px solid #6D8A96; /* Accent color spinner */
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
+            width: 40px;
+            height: 40px;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite; /* Smoother spin */
         }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
         .card-content img {
-            display: block; /* Remove extra space below image */
+            display: block;
             max-width: 100%;
-            max-height: 100%; /* Fill the container height */
-            object-fit: contain; /* Scale image while preserving aspect ratio */
-            transition: opacity 0.3s ease;
-            opacity: 0; /* Hidden until loaded */
-            border-radius: 8px; /* Match container rounding */
+            max-height: 100%;
+            object-fit: contain;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+            border-radius: 10px; /* Match container */
         }
+
         .card-content img.loaded {
-            opacity: 1; /* Show when loaded */
+            opacity: 1;
         }
 
         /* Answer Area */
         .your-answer-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem; /* Smaller label */
             font-weight: 500;
-            color: #6B7280; /* Medium gray */
-            margin-bottom: 8px; /* Space below label */
+            color: #888; /* Lighter gray */
+            margin-bottom: 6px;
+            text-transform: uppercase; /* Uppercase for style */
+            letter-spacing: 0.5px;
+            padding-left: 5px;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease; /* Delay visibility change */
         }
+
         .answer-input-container {
-            margin-bottom: 16px; /* Space below input */
+            margin-bottom: 20px; /* More space below input */
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease; /* Delay visibility change */
         }
+
         .answer-input {
             width: 100%;
-            padding: 12px 16px; /* Comfortable padding */
-            font-size: 1rem; /* Standard input font size */
-            border: 1px solid #D1D5DB; /* Gray border */
-            border-radius: 8px; /* Rounded corners */
-            background-color: #F9FAFB; /* Light background */
-            color: #1F2937; /* Dark text */
-            outline: none; /* Remove default outline */
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            padding: 14px 18px; /* More padding */
+            font-size: 1.05rem; /* Slightly larger text */
+            border: 1px solid #D8D8D8; /* Lighter border */
+            border-radius: 8px;
+            background-color: #FFFFFF; /* White background */
+            color: #404040; /* Dark gray text */
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            appearance: none; /* Remove default styles */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset; /* Subtle inner shadow */
         }
+
         .answer-input::placeholder {
-            color: #9CA3AF; /* Lighter placeholder text */
+            color: #B0B0B0; /* Lighter placeholder */
+            font-weight: 400;
         }
+
         .answer-input:focus {
-            border-color: #4F46E5; /* Blue border on focus */
-            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2); /* Subtle focus ring */
+            border-color: #6D8A96; /* Accent color border */
+            box-shadow: 0 0 0 3px rgba(109, 138, 150, 0.15), 0 1px 3px rgba(0, 0, 0, 0.05) inset; /* Focus ring + inner shadow */
         }
 
         /* Bottom Buttons Area */
         .bottom-buttons {
             display: flex;
-            justify-content: flex-end; /* Align buttons to the right */
-            align-items: center; /* Vertically align buttons */
-            gap: 12px; /* Space between buttons */
+            justify-content: space-between; /* Space between Don't Know and Answer */
+            align-items: center;
+            gap: 12px;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease; /* Delay visibility change */
         }
+
         .dont-know-button, .answer-button {
-            padding: 10px 20px; /* Button padding */
-            font-size: 1rem; /* Button font size */
-            font-weight: 500; /* Medium weight */
+            padding: 12px 24px; /* Adjusted padding */
+            font-size: 1rem;
+            font-weight: 500;
             border: none;
-            border-radius: 8px; /* Rounded corners */
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
         }
+
         .dont-know-button {
-            background-color: transparent; /* No background */
-            color: #4F46E5; /* Blue text */
+            background-color: transparent;
+            color: #6D8A96; /* Accent color */
+            border: 1px solid transparent; /* Placeholder for smooth transition */
         }
+
         .dont-know-button:hover {
-            background-color: rgba(79, 70, 229, 0.05); /* Very light blue background on hover */
+            color: #5A7580; /* Darker accent */
+            background-color: rgba(109, 138, 150, 0.08); /* Very subtle background */
+            transform: scale(1.02); /* Slight scale */
         }
+
         .answer-button {
-            background-color: #4F46E5; /* Blue background */
-            color: #ffffff; /* White text */
+            background-color: #6D8A96; /* Muted Blue-Gray */
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
         .answer-button:hover {
-            background-color: #4338CA; /* Darker blue on hover */
+            background-color: #5A7580; /* Darker shade */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px); /* Subtle lift */
         }
+
         .dont-know-button:active, .answer-button:active {
-            transform: scale(0.98); /* Slight scale down on click */
+            transform: scale(0.98); /* Keep slight scale down */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-
-        /* 詳解區塊 */
+        /* Answer Display Area */
         .card-answer {
-          display: none;
-          position: absolute;
-          bottom: 10px;
-          left: 20px;
-          right: 20px;
-          background-color: rgba(250, 250, 250, 0.8);
-          padding: 15px;
-          border-radius: 8px;
-          font-size: 1.2rem;
-          z-index: 3;
-          flex-direction: column;
-          gap: 10px;
-        }
-        /* 改良後的下一題按鈕 */
-        .next-button {
-          display: block;
-          padding: 10px 20px;
-          font-size: 1.2rem;
-          background-color: #f9f9f9;
-          color: #fc9d38;
-          border: 2px solid #fc9d38;
-          border-radius: 15px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          position: relative;
-          overflow: hidden;
-          font-weight: 600;
-          letter-spacing: 0.5px;
-          align-self: flex-end;
-          margin-top: 10px;
-        }
-        .next-button::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-          transition: all 0.6s;
-        }
-        .next-button:hover::before {
-          left: 100%;
-        }
-        .next-button:hover {
-          background-color: #fc9d38;
-          color: white;
-          transform: translateY(-2px);
-        }
-        .next-button:active {
-          transform: scale(0.95);
+            display: none; /* Initially hidden */
+            position: absolute;
+            /* Position it over the input/button area */
+            bottom: 25px; /* Match container padding */
+            left: 25px;
+            right: 25px;
+            background-color: rgba(249, 247, 243, 0.85); /* Semi-transparent background matching page */
+            backdrop-filter: blur(8px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(8px); /* Safari support */
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Subtle light border */
+            font-size: 1.05rem; /* Match input text size */
+            z-index: 3;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeSlideIn 0.4s ease-out forwards;
+            color: #404040; /* Ensure text readability */
+            text-align: center;
         }
 
-        /* Modal styles (keeping minimal) */
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #showAnswer strong { /* Style Correct/Incorrect/Answer labels */
+             font-weight: 600;
+             margin-right: 5px;
+        }
+        #showAnswer strong[style*="#10B981"] { color: #60A77C !important; } /* Muted Green */
+        #showAnswer strong[style*="#EF4444"] { color: #C76D6D !important; } /* Muted Red */
+        #showAnswer strong[style*="#F59E0B"] { color: #C9875A !important; } /* Muted Orange */
+
+
+        #showExplanation {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+            margin-top: 5px;
+            max-height: 100px; /* Limit height if needed */
+            overflow-y: auto; /* Add scroll if explanation is long */
+        }
+         #showExplanation strong {
+            font-weight: 600;
+            color: #404040;
+         }
+
+        /* Next Button */
+        .next-button {
+            display: block;
+            padding: 10px 22px;
+            font-size: 1rem; /* Slightly smaller than main button */
+            font-weight: 500;
+            background-color: transparent;
+            color: #6D8A96; /* Accent color */
+            border: 1px solid #B0C0C8; /* Border matching accent */
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: center; /* Center the button */
+            margin-top: 15px; /* Space above button */
+            /* Remove flashy effects */
+        }
+
+        .next-button:hover {
+            background-color: #6D8A96;
+            color: white;
+            border-color: #6D8A96;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(109, 138, 150, 0.2);
+        }
+
+        .next-button:active {
+            transform: scale(0.97);
+            box-shadow: none;
+        }
+
+        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -311,63 +420,131 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(40, 40, 40, 0.6); /* Darker overlay */
             justify-content: center;
             align-items: center;
-        }
-        .modal-content {
-            width: 90%;
-            max-width: 600px;
-            max-height: 90%; /* Limit height */
-            overflow-y: auto; /* Add scroll if content overflows */
-            background-color: #fff;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            position: relative;
-        }
-        .close {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #9CA3AF;
-            cursor: pointer;
-            line-height: 1;
-        }
-        .close:hover { color: #1F2937; }
-        .modal-content h2 {
-          font-size: 1.25rem; /* 20px */
-          margin-bottom: 16px;
-          color: #111827; /* Darker heading */
-        }
-        .modal-content p {
-          font-size: 1rem; /* 16px */
-          line-height: 1.6;
-          margin-bottom: 12px;
-          color: #374151; /* Slightly lighter text */
-        }
-        .modal-content ol {
-            padding-left: 20px;
-            margin-bottom: 16px;
-        }
-        .modal-content li {
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #E5E7EB; /* Light separator */
-        }
-         .modal-content li:last-child {
-            border-bottom: none;
-        }
-        .modal-content img {
-            max-width: 100%;
-            height: auto;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #E5E7EB;
+            opacity: 0;
+            animation: fadeInModal 0.4s ease forwards;
         }
 
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+
+        .modal-content {
+            width: 90%;
+            max-width: 650px; /* Slightly wider modal */
+            max-height: 85%;
+            overflow-y: auto;
+            background-color: #FDFBF8; /* Slightly different off-white for modal */
+            padding: 30px; /* More padding */
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            transform: scale(0.95);
+            animation: scaleUpModal 0.4s ease forwards;
+        }
+
+         @keyframes scaleUpModal {
+            from { transform: scale(0.95); opacity: 0;}
+            to { transform: scale(1); opacity: 1;}
+         }
+
+
+        .close {
+            position: absolute;
+            top: 15px; /* Position adjustment */
+            right: 20px;
+            font-size: 2rem; /* Larger close icon */
+            font-weight: 300; /* Thinner X */
+            color: #AAAAAA;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .close:hover {
+             color: #6D8A96; /* Accent color on hover */
+             transform: rotate(90deg); /* Rotate effect */
+        }
+
+        .modal-content h2 {
+          font-size: 1.5rem; /* Larger modal title */
+          margin-bottom: 20px;
+          color: #383838;
+          font-weight: 600; /* Slightly bolder */
+          border-bottom: 1px solid #EAEAEA; /* Separator line */
+          padding-bottom: 10px;
+        }
+
+        .modal-content p {
+          font-size: 1rem;
+          line-height: 1.7; /* More line spacing */
+          margin-bottom: 15px;
+          color: #505050; /* Slightly lighter text */
+        }
+
+        .modal-content ol {
+            padding-left: 25px; /* Indent list */
+            margin-bottom: 16px;
+        }
+
+        .modal-content li {
+            margin-bottom: 25px; /* More space between list items */
+            padding-bottom: 20px;
+            border-bottom: 1px solid #EAEAEA;
+            list-style-type: decimal; /* Ensure numbers are shown */
+        }
+
+         .modal-content li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+         .modal-content li p {
+            margin-bottom: 8px; /* Less space between text within li */
+         }
+         .modal-content li p strong {
+             color: #404040;
+         }
+         .modal-content li em { /* Style explanation hint */
+            color: #777;
+         }
+
+        .modal-content img {
+            max-width: 150px; /* Smaller image size in list */
+            height: auto;
+            margin-bottom: 12px; /* Adjusted margin */
+            border-radius: 6px; /* Smaller radius */
+            border: 1px solid #E0E0E0; /* Consistent border */
+            display: block; /* Prevent extra space */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        /* Utility for hiding elements visually but keeping accessible */
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border-width: 0;
+        }
+
+        /* Hide input area when answer is shown using visibility and opacity */
+        .answer-input-container[style*="hidden"],
+        .bottom-buttons[style*="hidden"],
+        .your-answer-label[style*="hidden"] {
+            opacity: 0;
+            visibility: hidden;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease;
+        }
     </style>
 </head>
 <body onload="init();">
@@ -386,8 +563,6 @@
 
     <!-- Game Screen (Modified Layout) -->  
     <div class="flashcard-container">
-
-        <div class="flashcard-title">Parasitology</div>
         <div class="progress">
             <div class="progress-item" id="wrongArea">
                 <span class="progress-number-orange" id="wrong">0</span>
