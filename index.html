@@ -545,6 +545,271 @@
             visibility: hidden;
             transition: visibility 0s linear 0.3s, opacity 0.3s ease;
         }
+
+        @media (prefers-color-scheme: dark) {
+    /* --- Dark Theme Variables --- */
+    :root {
+        --dark-bg-primary: #121212;
+        --dark-bg-secondary: #1e1e1e;
+        --dark-bg-tertiary: #2a2a2a;
+        --dark-text-primary: #e0e0e0;
+        --dark-text-secondary: #a0a0a0;
+        --dark-text-muted: #757575;
+        --dark-border-primary: #383838;
+        --dark-border-secondary: #505050;
+        --dark-accent-blue: #7aa0b2;
+        --dark-accent-blue-hover: #95b9cd;
+        --dark-accent-green: #87c7a8;
+        --dark-accent-orange: #eaa67a;
+        --dark-accent-red: #e08484;
+        --dark-shadow-color: rgba(0, 0, 0, 0.5);
+        --dark-focus-ring: rgba(122, 160, 178, 0.3);
+    }
+
+    /* --- Apply Dark Theme Styles --- */
+
+    html, body {
+        background-color: var(--dark-bg-primary);
+        color: var(--dark-text-primary);
+    }
+
+    /* Titles */
+    .flashcard-title, .start-title {
+        color: var(--dark-text-primary); /* Light text for title */
+    }
+
+    /* Start Screen */
+    .start-screen {
+        /* Background already covered by body */
+    }
+
+    .start-button {
+        background-color: var(--dark-accent-blue);
+        color: var(--dark-bg-primary); /* Dark text on light button */
+        font-weight: 600;
+        box-shadow: 0 2px 5px var(--dark-shadow-color);
+    }
+
+    .start-button:hover {
+        background-color: var(--dark-accent-blue-hover);
+        box-shadow: 0 4px 8px var(--dark-shadow-color);
+        transform: translateY(-2px);
+    }
+
+    .start-button:active {
+        background-color: var(--dark-accent-blue);
+        transform: translateY(0);
+        box-shadow: 0 1px 3px var(--dark-shadow-color);
+    }
+
+    /* Footer */
+    .footer {
+        color: var(--dark-text-muted);
+    }
+
+    .footer a {
+        color: var(--dark-text-secondary);
+    }
+
+    .footer a:hover {
+        color: var(--dark-accent-blue-hover);
+    }
+
+    /* Game Screen */
+    .flashcard-container {
+        background-color: var(--dark-bg-primary); /* Match body */
+    }
+
+    /* Progress Bar */
+    .progress-item {
+        color: var(--dark-text-secondary);
+        border: 1px solid var(--dark-border-primary);
+        background-color: transparent; /* Keep transparent */
+    }
+
+    .progress-item:hover {
+        background-color: var(--dark-bg-secondary); /* Darker background on hover */
+        border-color: var(--dark-border-secondary);
+        color: var(--dark-text-primary);
+    }
+
+    .progress-number-orange {
+        color: var(--dark-accent-orange); /* Use brighter orange */
+    }
+
+    .progress-number-green {
+        color: var(--dark-accent-green); /* Use brighter green */
+    }
+
+    /* Image Area */
+    .card-content {
+        background-color: var(--dark-bg-secondary); /* Dark background for card */
+        box-shadow: 0 4px 15px var(--dark-shadow-color); /* Adjusted shadow */
+        border: 1px solid var(--dark-border-primary); /* Darker border */
+    }
+
+    /* Loading Spinner */
+    .loading-screen {
+        background-color: rgba(30, 30, 30, 0.9); /* Semi-transparent dark */
+    }
+
+    .spinner {
+        border: 4px solid var(--dark-border-primary);
+        border-top: 4px solid var(--dark-accent-blue); /* Accent color spinner */
+    }
+
+    /* Image styles */
+    .card-content img {
+        background-color: var(--dark-bg-secondary); /* Ensure bg matches if image is transparent */
+        /* Add a subtle filter to slightly desaturate images in dark mode if desired */
+        /* filter: brightness(0.95) contrast(0.95); */
+    }
+
+    /* Answer Area */
+    .your-answer-label {
+        color: var(--dark-text-secondary);
+    }
+
+    .answer-input {
+        background-color: var(--dark-bg-secondary); /* Dark input background */
+        color: var(--dark-text-primary); /* Light input text */
+        border: 1px solid var(--dark-border-secondary); /* Darker border */
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) inset; /* Adjusted inner shadow */
+    }
+
+    .answer-input::placeholder {
+        color: var(--dark-text-muted); /* Lighter placeholder */
+    }
+
+    .answer-input:focus {
+        border-color: var(--dark-accent-blue); /* Accent color border */
+        box-shadow: 0 0 0 3px var(--dark-focus-ring), 0 1px 3px rgba(0, 0, 0, 0.3) inset; /* Focus ring + inner shadow */
+    }
+
+    /* Bottom Buttons */
+    .dont-know-button {
+        color: var(--dark-accent-blue);
+        background-color: transparent;
+        border: 1px solid transparent;
+    }
+
+    .dont-know-button:hover {
+        color: var(--dark-accent-blue-hover);
+        background-color: rgba(122, 160, 178, 0.15); /* Subtle accent background */
+    }
+
+    .answer-button {
+        background-color: var(--dark-accent-blue);
+        color: var(--dark-bg-primary); /* Dark text */
+        font-weight: 600;
+        box-shadow: 0 2px 5px var(--dark-shadow-color);
+    }
+
+    .answer-button:hover {
+        background-color: var(--dark-accent-blue-hover);
+        box-shadow: 0 4px 8px var(--dark-shadow-color);
+        transform: translateY(-2px);
+    }
+
+    .dont-know-button:active, .answer-button:active {
+        transform: scale(0.98);
+        box-shadow: 0 1px 3px var(--dark-shadow-color);
+    }
+
+    /* Answer Display Area */
+    .card-answer {
+        background-color: rgba(42, 42, 42, 0.9); /* Dark semi-transparent background */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        color: var(--dark-text-primary); /* Light text */
+        box-shadow: 0 5px 20px var(--dark-shadow-color);
+        border: 1px solid var(--dark-border-secondary); /* Add subtle border */
+    }
+
+    /* Answer feedback colors */
+    #showAnswer strong[style*="#10B981"] { color: var(--dark-accent-green) !important; } /* Brighter Green */
+    #showAnswer strong[style*="#EF4444"] { color: var(--dark-accent-red) !important; } /* Brighter Red */
+    #showAnswer strong[style*="#F59E0B"] { color: var(--dark-accent-orange) !important; } /* Brighter Orange */
+
+    #showExplanation {
+        color: var(--dark-text-secondary); /* Lighter explanation text */
+    }
+    #showExplanation strong {
+       color: var(--dark-text-primary); /* Primary text color for 'Explanation:' */
+    }
+
+    /* Next Button */
+    .next-button {
+        background-color: transparent;
+        color: var(--dark-accent-blue);
+        border: 1px solid var(--dark-accent-blue); /* Accent border */
+    }
+
+    .next-button:hover {
+        background-color: var(--dark-accent-blue);
+        color: var(--dark-bg-primary); /* Dark text on hover */
+        border-color: var(--dark-accent-blue);
+        box-shadow: 0 2px 6px rgba(122, 160, 178, 0.3);
+    }
+
+    .next-button:active {
+        transform: scale(0.97);
+        box-shadow: none;
+    }
+
+    /* Modal styles */
+    .modal {
+        background-color: rgba(18, 18, 18, 0.75); /* Darker overlay */
+    }
+
+    .modal-content {
+        background-color: var(--dark-bg-secondary); /* Dark modal background */
+        box-shadow: 0 8px 30px var(--dark-shadow-color);
+        border: 1px solid var(--dark-border-primary);
+    }
+
+    .close {
+        color: var(--dark-text-secondary);
+    }
+
+    .close:hover {
+         color: var(--dark-accent-blue-hover);
+         transform: rotate(90deg);
+    }
+
+    .modal-content h2 {
+      color: var(--dark-text-primary);
+      border-bottom: 1px solid var(--dark-border-primary);
+    }
+
+    .modal-content p {
+      color: var(--dark-text-primary);
+    }
+
+    .modal-content ol {
+        /* No color changes needed */
+    }
+
+    .modal-content li {
+       border-bottom: 1px solid var(--dark-border-primary);
+    }
+
+    .modal-content li p strong {
+        color: var(--dark-text-primary);
+    }
+    .modal-content li em { /* Style explanation hint */
+       color: var(--dark-text-secondary);
+    }
+
+    .modal-content img {
+        border: 1px solid var(--dark-border-secondary);
+        box-shadow: 0 2px 5px var(--dark-shadow-color);
+        background-color: var(--dark-bg-tertiary); /* Add subtle background for image */
+         /* filter: brightness(0.95) contrast(0.95); */ /* Match filter on main image if applied */
+    }
+
+    /* Ensure visibility transitions still work (no changes needed here) */
+}
     </style>
 </head>
 <body onload="init();">
