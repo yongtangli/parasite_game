@@ -810,6 +810,123 @@
 
     /* Ensure visibility transitions still work (no changes needed here) */
 }
+
+/* --- Swear Word Warning Modal Styles --- */
+.swear-modal {
+    display: none; /* Hidden by default */
+    /* Reusing existing modal styles for overlay */
+    position: fixed;
+    z-index: 1001; /* Ensure it's above the other modal if needed */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(40, 40, 40, 0.7);
+    justify-content: center;
+    align-items: center;
+    /* Use flex to make it easier to show/hide */
+    opacity: 0; /* Start fully transparent for fade-in */
+    transition: opacity 0.3s ease; /* Smooth fade transition for the overlay */
+}
+
+.swear-modal.visible {
+    display: flex; /* Show using flex */
+    opacity: 1; /* Fade in overlay */
+}
+
+
+.swear-modal-content {
+    background-color: #FDFBF8; /* Light background */
+    padding: 35px 45px; /* More padding */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Softer shadow */
+    text-align: center;
+    max-width: 420px; /* Slightly wider */
+    position: relative; /* For potential absolute elements inside */
+    /* Animation properties */
+    opacity: 0;
+    transform: scale(0.7) rotate(-5deg); /* Start smaller and slightly rotated */
+    transition: opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Springy transition */
+}
+
+.swear-modal.visible .swear-modal-content {
+    opacity: 1;
+    transform: scale(1) rotate(0deg); /* Animate to normal state */
+    /* Add shake animation after entry */
+    animation: shake 0.7s 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.swear-modal-content p {
+    font-size: 1.3rem; /* Larger text */
+    font-weight: 600; /* Bolder */
+    color: #D9534F; /* Warning red color */
+    margin-top: 0; /* Remove default top margin if span is used */
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.swear-close-button {
+    padding: 12px 30px; /* Generous padding */
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: #6D8A96; /* Use accent color */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px; /* Space above button */
+}
+
+.swear-close-button:hover {
+    background-color: #5A7580; /* Darker shade on hover */
+    transform: translateY(-2px); /* Slight lift */
+}
+.swear-close-button:active {
+     transform: translateY(0px); /* Push down on click */
+}
+
+/* Shake Animation */
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0) rotate(0deg); /* Keep rotation at 0 during shake */
+  }
+  20%, 80% {
+    transform: translate3d(2px, 0, 0) rotate(0deg);
+  }
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0) rotate(0deg);
+  }
+  40%, 60% {
+    transform: translate3d(4px, 0, 0) rotate(0deg);
+  }
+}
+
+
+/* --- Dark Theme for Swear Modal --- */
+@media (prefers-color-scheme: dark) {
+    .swear-modal {
+         background-color: rgba(18, 18, 18, 0.8); /* Darker overlay */
+    }
+
+    .swear-modal-content {
+        background-color: var(--dark-bg-secondary); /* Dark background */
+        color: var(--dark-text-primary); /* Light text */
+        box-shadow: 0 8px 30px var(--dark-shadow-color);
+    }
+
+    .swear-modal-content p {
+        color: var(--dark-accent-red); /* Use dark theme red */
+    }
+
+    .swear-close-button {
+        background-color: var(--dark-accent-blue);
+        color: var(--dark-bg-primary); /* Dark text on button */
+    }
+    .swear-close-button:hover {
+        background-color: var(--dark-accent-blue-hover);
+    }
+}
     </style>
 </head>
 <body onload="init();">
@@ -877,12 +994,21 @@
         </div>
     </div>
 
+    <!-- Swear Word Warning Modal -->
+    <div id="swearWarningModal" class="modal swear-modal">
+        <div class="modal-content swear-modal-content">
+            <!-- 你可以換成更活潑的圖示 -->
+            <span style="font-size: 3rem; display: block; margin-bottom: 15px;">😠</span>
+            <p id="swearWarningMessage">幹你娘罵什麼髒話！整天Loa loa loa loa的有夠煩</p>
+            <button id="closeSwearWarning" class="swear-close-button">嗚嗚好嘛</button>
+        </div>
+    </div>
     <script>
-        // --- Original JavaScript (with minor adjustments for new IDs) ---
-        var TIME = 31; // Timer duration
+        // --- Game Variables ---
+        var TIME = 31; // Timer duration (currently unused in display logic)
         var numOfProbs;
         var tm; // timer (global)
-        var data; // answersheet
+        var data; // answersheet data
         var x; // index of current image/question
         var state = 0; // Game state (0: start, 1: answering, 2: showing answer)
         var correct = 0;
@@ -892,54 +1018,71 @@
         var done; // Array to track shown questions
         var correctList = []; // List of correctly answered items
         var wrongList = []; // List of incorrectly answered items
-
+    
+        // =============================================
+        // === 新增：定義髒話列表 (全部使用小寫) ===
+        // =============================================
+        // **請務必擴充這個列表，加入所有你想禁止的詞彙！**
+        const lowerCaseSwearWords = [
+            "幹", "靠", "操", "媽的", "他媽的", "幹你娘", "機掰", "雞掰", "哭邀", "靠北", "靠腰",
+            "操你媽", "王八蛋", "他媽", "賤人", "婊子", "俗辣", "垃圾", "智障", "白痴", "腦殘",
+            "低能", "肏", "淦", "靠杯", "三小", "啥小", "死", "屁", "幹您娘", "操機掰", "娘砲", "破麻",
+            "操你妈", "干", "他妈", "傻逼", "脑残", "屌", // 加入一些簡體或常見變體
+            "fuck", "fucking", "shit", "bitch", "damn", "asshole", "cunt", "fucker", "motherfucker",
+            "dick", "pussy", "wank", "slut", "whore", // 加入一些英文髒話
+            // *** 請繼續添加更多你認為是髒話的詞 ***
+            // 考慮加入諧音、拆字、簡寫等變體
+        ].map(word => word.toLowerCase()); // 確保所有詞都是小寫，方便比對
+        // =============================================
+    
+        // === 新增：髒話警告 Modal 的元素變數 ===
+        let swearModal, closeSwearButton;
+    
+    
         // Function to parse answers that might have multiple options separated by " / "
         function parseMultiAns(data) {
             if (!data) return []; // Handle case where data might be null/undefined
-            // Using Object.values might be cleaner if keys aren't important here
             Object.values(data).forEach(item => {
                 if (item && typeof item.answer === 'string') {
                     item.answer = item.answer.split(" / ").map(s => s.trim()).filter(s => s); // Split, trim, remove empty
                 } else if (!item || typeof item.answer === 'undefined') {
-                    // Handle items without an answer property if necessary
                     item.answer = []; // Default to empty array
                 }
             });
             return data;
         }
-
+    
         // Handle Enter key press for submitting answer or moving to next question
         function enterKeyEvent(event) {
-            if (event.key === 'Enter') { // Use event.key for modern browsers
+            if (event.key === 'Enter') {
                  if (!viewing && document.getElementById("answer").value.trim() !== "") {
-                    // If answering and input is not empty, submit answer
                     submitUserAnswer();
                 } else if (viewing) {
-                    // If viewing answer, proceed to next question
                     nextProb();
                 }
             }
         }
-
-        // Initialize the game - load data and set up start screen
+    
+        // Initialize the game - load data and set up start screen/modal listeners
         function init() {
             $(document).ready(function () {
-                // Use .fail() for better error handling with $.get
+                // Load CSV data
                 $.get("./answersheet.csv")
                     .done(function (CSVdata) {
                         try {
                             data = $.csv.toObjects(CSVdata);
-                            numOfProbs = data.length; // Use length for array
+                            numOfProbs = data.length;
                             if (numOfProbs === 0) throw new Error("No data loaded from CSV.");
                             data = parseMultiAns(data);
-
+    
+                            // Start Button Logic
                             var btn = document.getElementById("startGame");
                             var startHandler = function () {
                                 document.querySelector('.start-screen').style.display = 'none';
                                 document.querySelector('.flashcard-container').style.display = 'flex';
-                                document.removeEventListener("keypress", enterPressStart); // Remove start listener
-                                state = 1; // Set game state to answering
-                                done = new Array(numOfProbs).fill(false); // Initialize done array
+                                document.removeEventListener("keypress", enterPressStart);
+                                state = 1;
+                                done = new Array(numOfProbs).fill(false);
                                 correct = 0;
                                 wrong = 0;
                                 total = 0;
@@ -949,19 +1092,33 @@
                                 wrongList = [];
                                 startGame(); // Start the main game loop
                             };
-
-                            // Listener for Enter key on start screen
+    
                             var enterPressStart = function (event) {
                                 if (event.key === 'Enter') startHandler();
                             };
-
+    
                             btn.addEventListener("click", startHandler);
-                            document.addEventListener("keypress", enterPressStart); // Use keypress for Enter detection initially
+                            document.addEventListener("keypress", enterPressStart);
+    
+                            // === 新增：取得髒話 Modal 元素並設定監聽器 ===
+                            swearModal = document.getElementById('swearWarningModal');
+                            closeSwearButton = document.getElementById('closeSwearWarning');
+    
+                            if (swearModal && closeSwearButton) {
+                                // 為關閉按鈕添加事件
+                                closeSwearButton.addEventListener('click', () => {
+                                    swearModal.classList.remove('visible');
+                                    swearModal.style.display = 'none';
+                                });
 
+                            } else {
+                                console.error("Swear warning modal elements not found!");
+                            }
+                            // ==========================================
+    
                         } catch (error) {
                             console.error("Error processing CSV data:", error);
                             alert("Failed to load or process game data. Please check the console and the CSV file.");
-                            // Optionally disable the start button or show an error message on screen
                             document.getElementById("startGame").disabled = true;
                             document.getElementById("startGame").textContent = "Error Loading Data";
                         }
@@ -969,34 +1126,40 @@
                     .fail(function (jqXHR, textStatus, errorThrown) {
                         console.error("Failed to load answersheet.csv:", textStatus, errorThrown);
                         alert("Could not load answersheet.csv. Please ensure the file exists and is accessible.");
-                        // Disable start button
                          document.getElementById("startGame").disabled = true;
                          document.getElementById("startGame").textContent = "Error Loading Data";
                     });
+    
+                // Adjust placeholder text on load
+                adjustPlaceholder();
             });
+    
+            // Adjust placeholder text on window resize
+            window.addEventListener('resize', adjustPlaceholder);
         }
-
-
+    
+    
         // Set up event listeners for the game screen
         function startGame() {
-            document.addEventListener("keydown", enterKeyEvent); // Use keydown for Enter key during game
+            document.addEventListener("keydown", enterKeyEvent); // Enter key during game
             document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
-            document.getElementById("dontKnow").addEventListener("click", showAnswer); // "Don't know" button shows the answer
-            document.getElementById("next").addEventListener("click", nextProb); // "Next" button in the hidden answer area
+            document.getElementById("dontKnow").addEventListener("click", showAnswer);
+            document.getElementById("next").addEventListener("click", nextProb);
             document.getElementById('wrongArea').addEventListener('click', showWrongList);
             document.getElementById('correctArea').addEventListener('click', showCorrectList);
-            document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('closeModal').addEventListener('click', function() { // Close the regular modal
                 document.getElementById('modal').style.display = "none";
             });
-
-            // Close modal if clicking outside the content
-            window.onclick = function(event) {
-                let modal = document.getElementById('modal');
-                if (event.target === modal) {
-                    modal.style.display = "none";
+    
+            // Close regular modal if clicking outside the content
+            window.addEventListener('click', function(event) {
+                let regularModal = document.getElementById('modal');
+                if (event.target === regularModal) {
+                    regularModal.style.display = "none";
                 }
-            };
-
+                // Note: The swear modal background click is handled in init()
+            });
+    
              // Shortcut '/' to focus input
             document.addEventListener("keydown", function(e) {
                 if (e.key === "/" && document.activeElement !== document.getElementById("answer")) {
@@ -1004,302 +1167,310 @@
                     document.getElementById("answer").focus();
                 }
             });
-
+    
             nextProb(); // Load the first question
         }
-
-        // Check if the user's input matches any of the correct answers
+    
+        // Check if the user's input matches any of the correct answers (case-insensitive)
         function checkAns(input, ansArr) {
-            if (!Array.isArray(ansArr)) return false; // Guard against non-array answers
-            const normalizedInput = input.trim().toLowerCase(); // Normalize input
-            return ansArr.some(ans => ans.trim().toLowerCase() === normalizedInput); // Case-insensitive check
+            if (!Array.isArray(ansArr)) return false;
+            const normalizedInput = input.trim().toLowerCase();
+            return ansArr.some(ans => ans.trim().toLowerCase() === normalizedInput);
         }
-
+    
         // Update correct score and list
         function updateCorrect() {
             correct += 1;
             document.getElementById("correct").innerHTML = correct;
-            if (data[x]) correctList.push(data[x]); // Add current item to correct list
-            // Optional: Add combo alert or other feedback
-             if (correct > 0 && correct % 10 === 0) { // Example: Message every 10 correct
-               // console.log(`${correct} correct in a row!`);
-             }
+            if (data[x]) correctList.push(data[x]);
         }
-
+    
         // Update wrong score and list
         function updateWrong() {
             wrong += 1;
             document.getElementById("wrong").innerHTML = wrong;
-             if (data[x]) wrongList.push(data[x]); // Add current item to wrong list
+             if (data[x]) wrongList.push(data[x]);
         }
-
+    
         // Function called when user clicks "Answer" button or presses Enter
         function submitUserAnswer() {
-            if (viewing) return; // Prevent multiple submissions
-            clearTimeout(tm); // Stop the timer
-
-            var userAnswer = document.getElementById("answer").value;
+            var userAnswerRaw = document.getElementById("answer").value;
+            var lowerUserAnswer = userAnswerRaw.trim().toLowerCase();
+    
+            // =============================================
+            // === 修改：檢查髒話，顯示美化 Modal ===
+            // =============================================
+            if (lowerUserAnswer && lowerCaseSwearWords.includes(lowerUserAnswer)) {
+                if (swearModal) { // Check if modal element exists
+                    // Ensure animation restarts: remove class, then add it after display change
+                    swearModal.classList.remove('visible');
+                     requestAnimationFrame(() => {
+                         swearModal.style.display = 'flex'; // Set display first
+                          requestAnimationFrame(() => { // Then add class to trigger animation
+                            swearModal.classList.add('visible');
+                          });
+                     });
+    
+                } else {
+                    // Fallback to standard alert if the modal element wasn't found
+                    alert("不要罵髒話！");
+                }
+                // document.getElementById("answer").value = ""; // Optional: Clear the input field
+                return; // Stop further execution
+            }
+            // =============================================
+            // === 髒話檢查結束 ===
+            // =============================================
+    
+            // ---- Original submitUserAnswer logic ----
+            if (viewing) return;
+            clearTimeout(tm); // Stop timer if it was running
+    
+            var userAnswer = userAnswerRaw; // Use raw input for checkAns if needed
             if (userAnswer.trim() === "") return; // Ignore empty submissions
-
+    
             viewing = true; // Enter viewing state
-            document.querySelector('.answer-input-container').style.visibility = 'hidden'; // Hide input
-            document.querySelector('.bottom-buttons').style.visibility = 'hidden'; // Hide buttons
-            document.querySelector('.your-answer-label').style.visibility = 'hidden'; // Hide label
-
-
+            // Hide input elements
+            document.querySelector('.answer-input-container').style.visibility = 'hidden';
+            document.querySelector('.bottom-buttons').style.visibility = 'hidden';
+            document.querySelector('.your-answer-label').style.visibility = 'hidden';
+    
+            // Prepare and show the answer display area
             var showAnsDiv = document.getElementById("showAnswer");
             var cardAnswerDiv = document.querySelector(".card-answer");
-            cardAnswerDiv.style.display = "flex"; // Show the answer/explanation area
-
+            cardAnswerDiv.style.display = "flex";
+    
+            // Check the answer
             if (checkAns(userAnswer, data[x].answer)) {
                 showAnsDiv.innerHTML = `<strong style="color: #10B981;">對了欸！！🥹</strong> 答案是：${data[x].answer.join(' / ')}`;
-                hideExplanation(); // Don't show explanation for correct answers unless needed
+                hideExplanation();
                 updateCorrect();
             } else {
                 showAnsDiv.innerHTML = `<strong style="color: #EF4444;">錯了錯了😭</strong> 正確答案是：${data[x].answer.join(' / ')}`;
-                showExplanation(); // Show explanation for wrong answers
+                showExplanation();
                 updateWrong();
             }
-
+    
             total++;
-            checkCompletion(); // Check if all questions have been shown
+            checkCompletion(); // Check if all questions have been answered
         }
-
+    
         // Hide the explanation area
         function hideExplanation() {
             document.getElementById("showExplanation").innerHTML = "";
             document.getElementById("showExplanation").style.display = "none";
         }
-
+    
          // Show the answer (called by "Don't know?" button or timer expiry)
         function showAnswer() {
             if (viewing) return;
-            clearTimeout(tm); // Stop the timer
-
+            clearTimeout(tm); // Stop timer if running
+    
             viewing = true; // Enter viewing state
-             document.querySelector('.answer-input-container').style.visibility = 'hidden'; // Hide input
-            document.querySelector('.bottom-buttons').style.visibility = 'hidden'; // Hide buttons
-             document.querySelector('.your-answer-label').style.visibility = 'hidden'; // Hide label
-
-
+            // Hide input elements
+            document.querySelector('.answer-input-container').style.visibility = 'hidden';
+            document.querySelector('.bottom-buttons').style.visibility = 'hidden';
+            document.querySelector('.your-answer-label').style.visibility = 'hidden';
+    
+            // Prepare and show the answer display area
             var showAnsDiv = document.getElementById("showAnswer");
             var cardAnswerDiv = document.querySelector(".card-answer");
-            cardAnswerDiv.style.display = "flex"; // Show the answer/explanation area
-            // Position answer overlay above the blank input area
-
+            cardAnswerDiv.style.display = "flex";
+    
+            // Display the correct answer
             showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
-            showExplanation(); // Show explanation when user didn't know
+            showExplanation(); // Show explanation when user clicks "don't know"
             updateWrong(); // Count "Don't know" as wrong
-
+    
             total++;
-            checkCompletion(); // Check if all questions have been shown
+            checkCompletion(); // Check if all questions have been answered
         }
-
+    
         // Display the explanation for the current question
         function showExplanation() {
             var expDiv = document.getElementById("showExplanation");
-            const explanationText = data[x]?.explanation?.trim(); // Optional chaining and trim
+            const explanationText = data[x]?.explanation?.trim();
             if (!explanationText || explanationText === "\"\"" || explanationText === "") {
                 expDiv.innerHTML = "<i>這題還沒有詳解⋯不過你可以貢獻一下！</i>";
             } else {
-                // Basic sanitization: replace potential script tags (more robust needed for untrusted content)
+                // Basic sanitization (replace with a more robust library if dealing with complex user input)
                 const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
                 expDiv.innerHTML = `<strong>偷偷告訴你為什麼：</strong>${sanitizedExplanation}`;
             }
              expDiv.style.display = "block"; // Ensure it's visible
         }
-
+    
         // Reset UI and load the next question
         function nextProb() {
             // Hide answer area, show input area
             document.querySelector('.card-answer').style.display = 'none';
-             document.querySelector('.answer-input-container').style.visibility = 'visible';
+            document.querySelector('.answer-input-container').style.visibility = 'visible';
             document.querySelector('.bottom-buttons').style.visibility = 'visible';
-             document.querySelector('.your-answer-label').style.visibility = 'visible';
-
+            document.querySelector('.your-answer-label').style.visibility = 'visible';
+    
             viewing = false; // Exit viewing state
-            resetTime(); // Reset and start timer
-            countdown();
+            resetTime(); // Reset timer
+            countdown(); // Start timer countdown
             updateImage(); // Load new image
             document.getElementById("answer").value = ""; // Clear input field
             document.getElementById("answer").focus(); // Focus on input field
             document.getElementById("showAnswer").innerHTML = ""; // Clear previous answer text
             document.getElementById("showExplanation").innerHTML = ""; // Clear previous explanation
         }
-
+    
         // Check if all questions are done and reset if needed
         function checkCompletion() {
-             // Check if all 'done' flags are true
              const allDone = done.every(status => status === true);
              if (allDone) {
                  alert("恭喜你完成了！🎉重新開始吧嘿嘿！！");
-                 // Reset the 'done' array to start over
-                 done.fill(false);
+                 done.fill(false); // Reset the 'done' array
                  total = 0; // Reset total count for the new cycle
              }
         }
-
-
+    
         // Select a new, unseen image index
         function pickNewImage() {
-             // Find indices of questions not yet done
             const availableIndices = [];
             for (let i = 0; i < numOfProbs; i++) {
                 if (!done[i]) {
                     availableIndices.push(i);
                 }
             }
-
+    
             if (availableIndices.length === 0) {
-                // This case should be handled by checkCompletion, but as a fallback:
                 console.warn("All questions shown, restarting cycle.");
-                done.fill(false); // Reset all
-                // Recalculate available indices (will include all now)
-                for (let i = 0; i < numOfProbs; i++) availableIndices.push(i);
+                checkCompletion(); // Trigger the completion logic again (which resets 'done')
+                // Re-calculate available indices after reset
+                for (let i = 0; i < numOfProbs; i++) {
+                    if (!done[i]) availableIndices.push(i);
+                }
                 if (availableIndices.length === 0) return -1; // Should not happen if numOfProbs > 0
             }
-
-            // Pick a random index from the available ones
+    
             const randomIndex = Math.floor(Math.random() * availableIndices.length);
             const selectedIndex = availableIndices[randomIndex];
-
-            done[selectedIndex] = true; // Mark as done
+    
+            done[selectedIndex] = true; // Mark as done for this cycle
             return selectedIndex;
         }
-
+    
         // Update the image display
         function updateImage() {
             document.querySelector('.loading-screen').style.display = 'flex'; // Show spinner
             var imageElement = document.getElementById("image");
-            imageElement.classList.remove('loaded'); // Prepare for new image
-            imageElement.src = ""; // Clear previous image src
-
-            x = pickNewImage(); // Get index of the next question
-             if (x === -1) { // Handle error case where no image could be picked
+            imageElement.classList.remove('loaded');
+            imageElement.src = ""; // Clear previous src to ensure onload fires
+    
+            x = pickNewImage();
+             if (x === -1) {
                 console.error("Could not pick a new image index.");
-                // Maybe display an error message or stop the game
+                // Handle error: Maybe display a message or stop the game?
+                document.querySelector('.loading-screen').style.display = 'none';
                 return;
             }
-
-            const picref = data[x]?.path; // Get image path safely
-
+    
+            const picref = data[x]?.path;
+    
             if (picref) {
                  imageElement.setAttribute('src', picref);
-                 // Alt text for accessibility
                  const altText = data[x]?.answer?.[0] || `Parasite image ${x + 1}`;
                  imageElement.setAttribute('alt', `Image for: ${altText}`);
+                 // The onload event in the HTML will hide the spinner
             } else {
                  console.warn(`No image path found for index ${x}.`);
-                 // Handle missing image path - maybe show a placeholder or skip?
                  imageElement.alt = "Image not available";
-                 // Hide loading spinner immediately if no image src is set
-                 document.querySelector('.loading-screen').style.display = 'none';
-                 // Consider skipping to the next question automatically or showing text
-                 // nextProb(); // Example: skip this question
+                 document.querySelector('.loading-screen').style.display = 'none'; // Hide spinner if no src
+                 // Consider skipping this question or showing placeholder text
             }
         }
-
-
-        // Timer countdown logic
+    
+        // Timer countdown logic (currently not displayed)
         function countdown() {
-            // Timer logic removed as it's not in the target UI
-            // If you want to add it back, uncomment the following lines
-            // and add a timer display element in the HTML.
-
-            // var show = document.getElementById("timerDisplay"); // Assuming you add <div id="timerDisplay"></div>
-            // if (!show) return; // Exit if timer display doesn't exist
-            // let currentTime = parseInt(show.innerHTML || TIME, 10);
-            // if (currentTime > 0 && !viewing) {
-            //     currentTime -= 1;
-            //     show.innerHTML = currentTime;
-            //     if (currentTime <= 10) show.style.color = "#EF4444"; // Red color for last 10 seconds
-            //     tm = window.setTimeout(countdown, 1000);
-            // } else if (currentTime === 0 && !viewing) {
-            //     showAnswer(); // Time's up, show the answer
+            // Placeholder for timer logic if you want to display it later
+            // Remember to uncomment and potentially modify if using the timer display
+            // clearTimeout(tm);
+            // let currentVal = parseInt(document.getElementById("timerDisplay")?.innerHTML || TIME, 10); // Example ID
+            // if (currentVal > 0 && !viewing) {
+            //     currentVal--;
+            //     document.getElementById("timerDisplay").innerHTML = currentVal;
+            //     tm = setTimeout(countdown, 1000);
+            // } else if (currentVal === 0 && !viewing) {
+            //     showAnswer(); // Time's up
             // }
         }
-
+    
         // Reset timer display and clear timeout
         function resetTime() {
-            clearTimeout(tm); // Clear any existing timer
-             // Timer logic removed as it's not in the target UI
-            // If you add it back, reset its appearance here:
-            // var timerDisplay = document.getElementById("timerDisplay");
-            // if (timerDisplay) {
-            //     timerDisplay.innerHTML = TIME; // Reset display to initial time
-            //     timerDisplay.style.color = "#1F2937"; // Reset color
-            // }
+            clearTimeout(tm);
+            // Reset timer display element if you add one
+            // Example: document.getElementById("timerDisplay")?.innerHTML = TIME;
         }
-
+    
          // Function to display the list of wrong answers in the modal
         function showWrongList() {
             displayListInModal(wrongList, "你答錯的");
         }
-
+    
         // Function to display the list of correct answers in the modal
         function showCorrectList() {
             displayListInModal(correctList, "你答對的");
         }
-
-        // Helper function to display a list (correct or wrong) in the modal
+    
+        // Helper function to display a list (correct or wrong) in the regular modal
         function displayListInModal(list, title) {
             let modal = document.getElementById('modal');
             let modalBody = document.getElementById('modalBody');
-            let content = `<h2>${title} (${list.length})</h2>`; // Show count in title
-
+            let content = `<h2>${title} (${list.length})</h2>`;
+    
             if (list.length === 0) {
-                content += `<p>你還沒有${title === "你答對的" ?"答對的":"答錯的"}欸⋯</p>`;
+                content += `<p>你還沒有${title === "你答對的" ? "答對的" : "答錯的"}欸⋯</p>`;
             } else {
                 content += '<ol>';
-                // Use a Set to store displayed image paths to avoid duplicates if needed,
-                // or simply iterate through the list as it preserves order.
-                for (let item of list) {
-                    if (!item) continue; // Skip if item is somehow undefined
-
+                list.forEach(item => {
+                    if (!item) return;
+    
                     content += '<li>';
-                    // Display image if path exists
                     if (item.path) {
-                         // Added width limit for consistency in modal
                         content += `<img src="${item.path}" alt="Image for ${item.answer?.[0] || 'item'}" style="max-width: 200px; margin-bottom: 8px; border-radius: 4px;">`;
                     } else {
-                         content += '<p><i>（沒跑出圖片）</i></p>';
+                        content += '<p><i>（沒跑出圖片）</i></p>';
                     }
-                    // Display answer(s)
                     const answerText = Array.isArray(item.answer) ? item.answer.join(' / ') : 'N/A';
                     content += `<p><strong>答案：</strong>${answerText}</p>`;
-
-                    // Display explanation if it exists and is meaningful
+    
                     const explanationText = item.explanation?.trim();
                      if (explanationText && explanationText !== "\"\"") {
                         const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
                         content += `<p style="font-size: 0.9rem; color: #4B5563;"><em>解釋：</em>${sanitizedExplanation}</p>`;
-                    }
+                     }
                     content += '</li>';
-                }
+                });
                 content += '</ol>';
             }
             modalBody.innerHTML = content;
-            modal.style.display = "flex"; // Show the modal
+            modal.style.display = "flex"; // Show the regular modal
         }
-
-    function adjustPlaceholder() {
-        const inputElement = document.getElementById('answer');
-        if (!inputElement) return; // 如果元素還沒載入，就先離開
-
-        // 設定一個寬度閾值來判斷是否為「電腦螢幕」 (例如 1024px)
-        const desktopBreakpoint = 1024;
-
-        if (window.innerWidth >= desktopBreakpoint) {
-            inputElement.placeholder = '把答案打在這，你可以偷按按看 / 看看';
+    
+        // Adjust placeholder text based on screen width
+        function adjustPlaceholder() {
+            const inputElement = document.getElementById('answer');
+            if (!inputElement) return;
+    
+            const desktopBreakpoint = 1024;
+    
+            if (window.innerWidth >= desktopBreakpoint) {
+                inputElement.placeholder = '把答案打在這，你可以偷按按看 / 看看';
+            } else {
+                inputElement.placeholder = '把答案打在這';
+            }
         }
-    }
-
-    // 在頁面載入時執行一次
-    adjustPlaceholder();
-
-    // (選擇性) 在視窗大小改變時也重新執行，以確保響應式
-    window.addEventListener('resize', adjustPlaceholder);
-
+    
+        // === Initialize the game when the body loads ===
+        // The 'onload' attribute is removed from <body>,
+        // initialization now happens inside jQuery's document.ready
+        // which is generally preferred. Calling init() directly works too.
+        // init(); // You can call init directly if not using onload in body
+    
     </script>
 </body>
 </html>
