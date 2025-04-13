@@ -817,11 +817,11 @@
     <!-- Start Screen (Unchanged Logic) -->
     <div class="start-screen">
         <div class="start-title">Parasitology</div>
-        <button id="startGame" class="start-button">Start</button>
+        <button id="startGame" class="start-button">開始吧</button>
         <div class="footer">
-          <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往初版</a>｜
-          <a href="https://line.me/ti/p/~jedieason" target="_blank">問題回報</a>｜
-          <a href="profile.mobileconfig" download="Parasite.mobileconfig">iOS下載</a>
+          <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往初版</a> ｜
+          <a href="https://line.me/ti/p/~jedieason" target="_blank">問題回報</a> ｜
+          <a href="profile.mobileconfig" download="Parasite.mobileconfig">蘋果下載</a>
         </div>
         <!-- Footer removed for cleaner look matching target -->
     </div>
@@ -831,10 +831,10 @@
         <div class="progress">
             <div class="progress-item" id="wrongArea">
                 <span class="progress-number-orange" id="wrong">0</span>
-                <span>Wrong</span> <!-- Changed text to English -->
+                <span>你錯的</span> <!-- Changed text to English -->
             </div>
             <div class="progress-item" id="correctArea">
-                <span>Correct</span> <!-- Changed text to English -->
+                <span>你對的</span> <!-- Changed text to English -->
                 <span class="progress-number-green" id="correct">0</span>
             </div>
         </div>
@@ -851,18 +851,18 @@
         <div class="card-answer">
             <div id="showAnswer"></div>
             <div id="showExplanation"></div>
-            <button id="next" class="next-button">Next</button> <!-- Changed text -->
+            <button id="next" class="next-button">下一個</button> <!-- Changed text -->
         </div>
         <!-- Answer Input Area -->
-        <div class="your-answer-label">Your answer</div>
+        <div class="your-answer-label">這是什麼？</div>
         <div class="answer-input-container">
-            <input id="answer" type="text" placeholder="Type the answer" class="answer-input">
+            <input id="answer" type="text" placeholder="把答案打在這" class="answer-input">
         </div>
 
         <!-- Bottom Buttons Area -->
         <div class="bottom-buttons">
-            <button id="dontKnow" class="dont-know-button">Don't know?</button>
-            <button id="submitAnswer" class="answer-button">Answer</button>
+            <button id="dontKnow" class="dont-know-button">母災</button>
+            <button id="submitAnswer" class="answer-button">確定</button>
         </div>
 
     </div>
@@ -1052,11 +1052,11 @@
             cardAnswerDiv.style.display = "flex"; // Show the answer/explanation area
 
             if (checkAns(userAnswer, data[x].answer)) {
-                showAnsDiv.innerHTML = `<strong style="color: #10B981;">Correct!</strong> The answer is: ${data[x].answer.join(' / ')}`;
+                showAnsDiv.innerHTML = `<strong style="color: #10B981;">對了欸！！🥹</strong> 答案是：${data[x].answer.join(' / ')}`;
                 hideExplanation(); // Don't show explanation for correct answers unless needed
                 updateCorrect();
             } else {
-                showAnsDiv.innerHTML = `<strong style="color: #EF4444;">Incorrect.</strong> The correct answer is: ${data[x].answer.join(' / ')}`;
+                showAnsDiv.innerHTML = `<strong style="color: #EF4444;">錯了錯了😭</strong> 正確答案是：${data[x].answer.join(' / ')}`;
                 showExplanation(); // Show explanation for wrong answers
                 updateWrong();
             }
@@ -1087,7 +1087,7 @@
             cardAnswerDiv.style.display = "flex"; // Show the answer/explanation area
             // Position answer overlay above the blank input area
 
-            showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">Answer:</strong> ${data[x].answer.join(' / ')}`;
+            showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
             showExplanation(); // Show explanation when user didn't know
             updateWrong(); // Count "Don't know" as wrong
 
@@ -1100,11 +1100,11 @@
             var expDiv = document.getElementById("showExplanation");
             const explanationText = data[x]?.explanation?.trim(); // Optional chaining and trim
             if (!explanationText || explanationText === "\"\"" || explanationText === "") {
-                expDiv.innerHTML = "<i>No explanation available for this item.</i>";
+                expDiv.innerHTML = "<i>這題還沒有詳解⋯不過你可以貢獻一下！</i>";
             } else {
                 // Basic sanitization: replace potential script tags (more robust needed for untrusted content)
                 const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
-                expDiv.innerHTML = `<strong>Explanation:</strong> ${sanitizedExplanation}`;
+                expDiv.innerHTML = `<strong>偷偷告訴你為什麼：</strong>${sanitizedExplanation}`;
             }
              expDiv.style.display = "block"; // Ensure it's visible
         }
@@ -1132,7 +1132,7 @@
              // Check if all 'done' flags are true
              const allDone = done.every(status => status === true);
              if (allDone) {
-                 alert("You have completed all questions! The cycle will now restart.");
+                 alert("恭喜你完成了！🎉重新開始吧嘿嘿！！");
                  // Reset the 'done' array to start over
                  done.fill(false);
                  total = 0; // Reset total count for the new cycle
@@ -1233,12 +1233,12 @@
 
          // Function to display the list of wrong answers in the modal
         function showWrongList() {
-            displayListInModal(wrongList, "Incorrect Answers");
+            displayListInModal(wrongList, "你答錯的");
         }
 
         // Function to display the list of correct answers in the modal
         function showCorrectList() {
-            displayListInModal(correctList, "Correct Answers");
+            displayListInModal(correctList, "你答對的");
         }
 
         // Helper function to display a list (correct or wrong) in the modal
@@ -1248,7 +1248,7 @@
             let content = `<h2>${title} (${list.length})</h2>`; // Show count in title
 
             if (list.length === 0) {
-                content += `<p>You haven't ${title === "Correct Answers" ? "answered any questions correctly" : "made any mistakes"} yet.</p>`;
+                content += `<p>你還沒有${title === "你答對的" ?"答對的":"答錯的"}欸⋯</p>`;
             } else {
                 content += '<ol>';
                 // Use a Set to store displayed image paths to avoid duplicates if needed,
@@ -1262,17 +1262,17 @@
                          // Added width limit for consistency in modal
                         content += `<img src="${item.path}" alt="Image for ${item.answer?.[0] || 'item'}" style="max-width: 200px; margin-bottom: 8px; border-radius: 4px;">`;
                     } else {
-                         content += '<p><i>(No image associated)</i></p>';
+                         content += '<p><i>（沒跑出圖片）</i></p>';
                     }
                     // Display answer(s)
                     const answerText = Array.isArray(item.answer) ? item.answer.join(' / ') : 'N/A';
-                    content += `<p><strong>Answer:</strong> ${answerText}</p>`;
+                    content += `<p><strong>答案：</strong>${answerText}</p>`;
 
                     // Display explanation if it exists and is meaningful
                     const explanationText = item.explanation?.trim();
                      if (explanationText && explanationText !== "\"\"") {
                         const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
-                        content += `<p style="font-size: 0.9rem; color: #4B5563;"><em>Explanation:</em> ${sanitizedExplanation}</p>`;
+                        content += `<p style="font-size: 0.9rem; color: #4B5563;"><em>解釋：</em>${sanitizedExplanation}</p>`;
                     }
                     content += '</li>';
                 }
@@ -1281,6 +1281,24 @@
             modalBody.innerHTML = content;
             modal.style.display = "flex"; // Show the modal
         }
+
+    function adjustPlaceholder() {
+        const inputElement = document.getElementById('answer');
+        if (!inputElement) return; // 如果元素還沒載入，就先離開
+
+        // 設定一個寬度閾值來判斷是否為「電腦螢幕」 (例如 1024px)
+        const desktopBreakpoint = 1024;
+
+        if (window.innerWidth >= desktopBreakpoint) {
+            inputElement.placeholder = '把答案打在這，你可以偷按按看 / 看看';
+        }
+    }
+
+    // 在頁面載入時執行一次
+    adjustPlaceholder();
+
+    // (選擇性) 在視窗大小改變時也重新執行，以確保響應式
+    window.addEventListener('resize', adjustPlaceholder);
 
     </script>
 </body>
