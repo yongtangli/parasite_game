@@ -742,6 +742,8 @@
         var done;
         var correctList = [];
         var wrongList = [];
+        var preloadedImages = {};
+        var preloadStarted = false;
 
         // List of swear words (lowercase)
         const lowerCaseSwearWords = [
@@ -781,6 +783,15 @@
             });
         }
 
+        function preloadImage(idx) {
+            if (idx < 0 || idx >= numOfProbs) return;
+            if (preloadedImages[idx]) return;
+            var img = new Image();
+            img.src = data[idx].path;
+            img.onload = function() {
+                preloadedImages[idx] = img;
+            };
+        }
 
         function parseMultiAns(data) {
             if (!data) return [];
@@ -1072,7 +1083,22 @@
             sendToGoogleDocs(content);
         }
 
+        function checkCompletion() {
+             const allDone = done.every(status => status === true);
+             if (allDone) {
+                 alert("恭喜你完成了！🎉重新開始吧嘿嘿！！");
+                 done.fill(false);
+                 total = 0;
+                 // Optionally clear correct/wrong lists?
+                 // correctList = [];
+                 // wrongList = [];
+             }
+        }
+
         function nextProb() {
+            // 在切換題目前，再往後多預載一張
+            preloadImage(x + 2);
+
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
             document.querySelector('.bottom-buttons').style.visibility = 'visible';
@@ -1086,19 +1112,7 @@
             document.getElementById("answer").focus();
             document.getElementById("showAnswer").innerHTML = "";
             document.getElementById("showExplanation").innerHTML = "";
-            document.getElementById("showExplanation").style.display = "none"; // Ensure explanation area is hidden initially
-        }
-
-        function checkCompletion() {
-             const allDone = done.every(status => status === true);
-             if (allDone) {
-                 alert("恭喜你完成了！🎉重新開始吧嘿嘿！！");
-                 done.fill(false);
-                 total = 0;
-                 // Optionally clear correct/wrong lists?
-                 // correctList = [];
-                 // wrongList = [];
-             }
+            document.getElementById("showExplanation").style.display = "none";
         }
 
         function pickNewImage() {
@@ -1120,30 +1134,37 @@
             done[selectedIndex] = true;
             return selectedIndex;
         }
-
+        
         function updateImage() {
             document.querySelector('.loading-screen').style.display = 'flex';
             var imageElement = document.getElementById("image");
             imageElement.classList.remove('loaded');
-            imageElement.src = ""; // Clear src
+            imageElement.src = "";
 
-            x = pickNewImage(); // Get index of the CURRENT question
-             if (x === -1) {
-                console.error("Could not pick a new image index.");
+            x = pickNewImage();
+            if (x === -1) {
                 document.querySelector('.loading-screen').style.display = 'none';
                 return;
             }
 
-            const picref = data[x]?.path;
-
+            var picref = data[x]?.path;
             if (picref) {
-                 imageElement.setAttribute('src', picref);
-                 const altText = data[x]?.answer?.[0] || `Parasite image ${x + 1}`;
-                 imageElement.setAttribute('alt', `Image for: ${altText}`);
+                // 優先使用快取
+                if (preloadedImages[x]) {
+                    imageElement.src = preloadedImages[x].src;
+                    delete preloadedImages[x];
+                } else {
+                    imageElement.src = picref;
+                }
+                // 圖片顯示後，隱藏載入畫面並開始預載下一張
+                imageElement.onload = function() {
+                    document.querySelector('.loading-screen').style.display = 'none';
+                    if (!preloadStarted) preloadStarted = true;
+                    var nextIdx = (x + 1) % numOfProbs;
+                    preloadImage(nextIdx);
+                };
             } else {
-                 console.warn(`No image path found for index ${x}.`);
-                 imageElement.alt = "Image not available";
-                 document.querySelector('.loading-screen').style.display = 'none';
+                document.querySelector('.loading-screen').style.display = 'none';
             }
         }
 
