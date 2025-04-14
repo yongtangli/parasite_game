@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW"> <!-- Changed lang to Traditional Chinese -->
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -203,7 +203,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
-            display: flex; /* Changed to flex initially */
+            display: flex;
             justify-content: center;
             align-items: center;
             z-index: 2;
@@ -465,7 +465,7 @@
             box-shadow: none;
         }
 
-        /* Modal styles */
+        /* Modal styles (for wrong/correct lists) */
         .modal {
             display: none;
             position: fixed;
@@ -600,96 +600,9 @@
             transition: visibility 0s linear 0.3s, opacity 0.3s ease;
         }
 
-        /* --- Swear Word Warning Modal Styles --- */
-        .swear-modal {
-            display: none; /* Hidden by default */
-            /* Reusing existing modal styles for overlay */
-            position: fixed;
-            z-index: 1001; /* Ensure it's above the other modal if needed */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(40, 40, 40, 0.7);
-            justify-content: center;
-            align-items: center;
-            /* Use flex to make it easier to show/hide */
-            opacity: 0; /* Start fully transparent for fade-in */
-            transition: opacity 0.3s ease; /* Smooth fade transition for the overlay */
-        }
+        /* --- REMOVED Swear Word Warning Modal Styles --- */
 
-        .swear-modal.visible {
-            display: flex; /* Show using flex */
-            opacity: 1; /* Fade in overlay */
-        }
-
-
-        .swear-modal-content {
-            background-color: #FDFBF8; /* Light background */
-            padding: 35px 45px; /* More padding */
-            border-radius: 15px; /* Rounded corners */
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Softer shadow */
-            text-align: center;
-            max-width: 420px; /* Slightly wider */
-            position: relative; /* For potential absolute elements inside */
-            /* Animation properties */
-            opacity: 0;
-            transform: scale(0.7) rotate(-5deg); /* Start smaller and slightly rotated */
-            transition: opacity 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Springy transition */
-        }
-
-        .swear-modal.visible .swear-modal-content {
-            opacity: 1;
-            transform: scale(1) rotate(0deg); /* Animate to normal state */
-            /* Add shake animation after entry */
-            animation: shake 0.7s 0.4s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        .swear-modal-content p {
-            font-size: 1.3rem; /* Larger text */
-            font-weight: 600; /* Bolder */
-            color: #D9534F; /* Warning red color */
-            margin-top: 0; /* Remove default top margin if span is used */
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        .swear-close-button {
-            padding: 12px 30px; /* Generous padding */
-            font-size: 1rem;
-            font-weight: 500;
-            background-color: #6D8A96; /* Use accent color */
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-top: 10px; /* Space above button */
-        }
-
-        .swear-close-button:hover {
-            background-color: #5A7580; /* Darker shade on hover */
-            transform: translateY(-2px); /* Slight lift */
-        }
-        .swear-close-button:active {
-             transform: translateY(0px); /* Push down on click */
-        }
-
-        /* Shake Animation */
-        @keyframes shake {
-          10%, 90% {
-            transform: translate3d(-1px, 0, 0) rotate(0deg); /* Keep rotation at 0 during shake */
-          }
-          20%, 80% {
-            transform: translate3d(2px, 0, 0) rotate(0deg);
-          }
-          30%, 50%, 70% {
-            transform: translate3d(-4px, 0, 0) rotate(0deg);
-          }
-          40%, 60% {
-            transform: translate3d(4px, 0, 0) rotate(0deg);
-          }
-        }
+        /* --- REMOVED Shake Animation --- */
 
         /* --- Dark Theme Styles --- */
         @media (prefers-color-scheme: dark) {
@@ -746,11 +659,7 @@
             .modal-content li p strong { color: var(--dark-text-primary); }
             .modal-content li em { color: var(--dark-text-secondary); }
             .modal-content img { border: 1px solid var(--dark-border-secondary); box-shadow: 0 2px 5px var(--dark-shadow-color); background-color: #2a2a2a; }
-            .swear-modal { background-color: rgba(18, 18, 18, 0.8); }
-            .swear-modal-content { background-color: var(--dark-bg-secondary); color: var(--dark-text-primary); box-shadow: 0 8px 30px var(--dark-shadow-color); }
-            .swear-modal-content p { color: var(--dark-accent-red); }
-            .swear-close-button { background-color: var(--dark-accent-blue); color: var(--dark-bg-primary); }
-            .swear-close-button:hover { background-color: var(--dark-accent-blue-hover); }
+            /* --- REMOVED Dark theme swear modal styles --- */
         }
 
     </style>
@@ -773,10 +682,10 @@
         <div class="progress">
             <div class="progress-item" id="wrongArea">
                 <span class="progress-number-orange" id="wrong">0</span>
-                <span>錯誤</span>
+                <span>你錯的</span>
             </div>
             <div class="progress-item" id="correctArea">
-                <span>正確</span>
+                <span>你對的</span>
                 <span class="progress-number-green" id="correct">0</span>
             </div>
         </div>
@@ -785,8 +694,7 @@
             <div class="loading-screen">
                 <div class="spinner"></div>
             </div>
-            <!-- MODIFIED: Removed inline onload -->
-            <img id="image" src="" alt="Parasite Image">
+            <img id="image" onload="this.classList.add('loaded'); document.querySelector('.loading-screen').style.display='none';" src="" alt="Parasite Image">
         </div>
 
         <div class="card-answer"> <!-- This div appears when showing answer -->
@@ -816,14 +724,7 @@
         </div>
     </div>
 
-    <!-- Swear Word Warning Modal -->
-    <div id="swearWarningModal" class="modal swear-modal">
-        <div class="modal-content swear-modal-content">
-            <span style="font-size: 3rem; display: block; margin-bottom: 15px;">😠</span>
-            <p id="swearWarningMessage">幹你娘罵什麼髒話！整天Loa loa loa loa的有夠煩</p>
-            <button id="closeSwearWarning" class="swear-close-button">嗚嗚好嘛</button>
-        </div>
-    </div>
+    <!-- REMOVED Swear Word Warning Modal HTML -->
 
     <script>
         // --- Game Variables ---
@@ -841,11 +742,7 @@
         var correctList = [];
         var wrongList = [];
 
-        // --- NEW: Preloading Variables ---
-        const PRELOAD_AHEAD = 3; // 一次預載接下來的幾張圖片
-        let preloadedImages = {}; // 儲存預載好的 Image 物件 { index: ImageObject }
-        let currentlyPreloading = new Set(); // 追蹤正在預載的索引，避免重複
-
+        // List of swear words (lowercase)
         const lowerCaseSwearWords = [
             "幹", "靠", "操", "媽的", "他媽的", "幹你娘", "機掰", "雞掰", "哭邀", "靠北", "靠腰",
             "操你媽", "王八蛋", "他媽", "賤人", "婊子", "俗辣", "垃圾", "智障", "白痴", "腦殘",
@@ -855,7 +752,7 @@
             "dick", "pussy", "wank", "slut", "whore"
         ].map(word => word.toLowerCase());
 
-        let swearModal, closeSwearButton;
+        // REMOVED Swear modal variables
 
         // --- NEW: Google Apps Script Function ---
         function sendToGoogleDocs(content) {
@@ -916,10 +813,6 @@
                             if (numOfProbs === 0) throw new Error("No data loaded from CSV.");
                             data = parseMultiAns(data);
 
-                            // --- MODIFIED: Reset preloading state ---
-                            preloadedImages = {};
-                            currentlyPreloading.clear();
-
                             var btn = document.getElementById("startGame");
                             var startHandler = function () {
                                 document.querySelector('.start-screen').style.display = 'none';
@@ -931,9 +824,6 @@
                                 document.getElementById("correct").innerHTML = correct;
                                 document.getElementById("wrong").innerHTML = wrong;
                                 correctList = []; wrongList = [];
-                                // Clear preloads again when restarting game from start screen
-                                preloadedImages = {};
-                                currentlyPreloading.clear();
                                 startGame();
                             };
 
@@ -944,23 +834,7 @@
                             btn.addEventListener("click", startHandler);
                             document.addEventListener("keypress", enterPressStart);
 
-                            swearModal = document.getElementById('swearWarningModal');
-                            closeSwearButton = document.getElementById('closeSwearWarning');
-
-                            if (swearModal && closeSwearButton) {
-                                closeSwearButton.addEventListener('click', () => {
-                                    swearModal.classList.remove('visible');
-                                     // Delay hiding to allow fade out animation
-                                    setTimeout(() => {
-                                         if (!swearModal.classList.contains('visible')) { // Check again in case it was re-opened
-                                             swearModal.style.display = 'none';
-                                         }
-                                    }, 300); // Match transition duration
-                                });
-
-                            } else {
-                                console.error("Swear warning modal elements not found!");
-                            }
+                            // --- REMOVED Swear Modal Initialization ---
 
                         } catch (error) {
                             console.error("Error processing CSV data:", error);
@@ -981,63 +855,6 @@
             window.addEventListener('resize', adjustPlaceholder);
         }
 
-        // --- NEW: Function to start preloading next images ---
-        function startPreloading(currentIndex) {
-            // 1. 找出所有尚未完成且不是當前題目的索引
-            let availableIndices = [];
-            for (let i = 0; i < numOfProbs; i++) {
-                if (!done[i] && i !== currentIndex) {
-                    availableIndices.push(i);
-                }
-            }
-
-            // 2. 隨機打亂這些可用的索引 (Fisher-Yates Shuffle)
-            for (let i = availableIndices.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [availableIndices[i], availableIndices[j]] = [availableIndices[j], availableIndices[i]];
-            }
-
-            // 3. 挑選前 PRELOAD_AHEAD 個進行預載
-            let count = 0;
-            for (const idx of availableIndices) {
-                if (count >= PRELOAD_AHEAD) break; // 預載足夠數量就停止
-
-                // 檢查是否已經預載完成或正在預載中
-                if (!preloadedImages[idx] && !currentlyPreloading.has(idx)) {
-                    const preloadPath = data[idx]?.path;
-                    if (preloadPath) {
-                        currentlyPreloading.add(idx); // 標記為正在預載
-                        const img = new Image();
-
-                        img.onload = () => {
-                            console.log(`Preloaded image for index: ${idx} (${preloadPath})`);
-                            preloadedImages[idx] = img; // 儲存 Image 物件
-                            currentlyPreloading.delete(idx); // 從正在預載集合中移除
-                        };
-
-                        img.onerror = () => {
-                            console.warn(`Failed to preload image for index: ${idx} (${preloadPath})`);
-                            currentlyPreloading.delete(idx); // 預載失敗也要移除
-                            // 不需要儲存到 preloadedImages
-                        };
-
-                        img.src = preloadPath; // 開始下載
-                        count++;
-                        console.log(`Starting preload for index: ${idx} (${preloadPath})`);
-                    } else {
-                         // 如果這個索引沒有圖片路徑，就不計入預載數量，繼續找下一個
-                         console.log(`Skipping preload for index ${idx}: No image path found.`);
-                    }
-                } else if (preloadedImages[idx]) {
-                    // console.log(`Index ${idx} already preloaded.`); // Optional: for debugging
-                } else {
-                    // console.log(`Index ${idx} currently preloading.`); // Optional: for debugging
-                }
-            }
-            // console.log("Preloading check complete. Current cache size:", Object.keys(preloadedImages).length);
-        }
-
-
         function startGame() {
             document.addEventListener("keydown", enterKeyEvent);
             document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
@@ -1054,15 +871,7 @@
                 if (event.target === regularModal) {
                     regularModal.style.display = "none";
                 }
-                 // Close swear modal on background click too
-                 if (event.target === swearModal) {
-                    swearModal.classList.remove('visible');
-                    setTimeout(() => {
-                          if (!swearModal.classList.contains('visible')) {
-                             swearModal.style.display = 'none';
-                          }
-                    }, 300);
-                 }
+                 // REMOVED Background click close for swear modal
             });
 
             document.addEventListener("keydown", function(e) {
@@ -1080,7 +889,7 @@
                 }
             });
 
-            nextProb(); // Load the first problem and trigger first preload
+            nextProb();
         }
 
         function checkAns(input, ansArr) {
@@ -1099,28 +908,29 @@
              if (data[x]) wrongList.push(data[x]);
         }
 
+        // --- **** MODIFIED FUNCTION **** ---
         function submitUserAnswer() {
             var userAnswerRaw = document.getElementById("answer").value;
             var lowerUserAnswer = userAnswerRaw.trim().toLowerCase();
 
-            if (lowerUserAnswer && lowerCaseSwearWords.includes(lowerUserAnswer)) {
-                if (swearModal) {
-                    swearModal.classList.remove('visible');
-                     requestAnimationFrame(() => {
-                         swearModal.style.display = 'flex';
-                          requestAnimationFrame(() => {
-                            swearModal.classList.add('visible');
-                          });
-                     });
-                } else { alert("不要罵髒話！"); }
-                return;
+            // --- REDIRECT LOGIC ---
+            // Check if the lowercase input contains any swear words
+            if (lowerUserAnswer && lowerCaseSwearWords.some(swearWord => lowerUserAnswer.includes(swearWord))) {
+                 // Open YouTube in a new tab
+                window.open('https://youtu.be/HmIMmFAV4BY', '_blank');
+                // Optional: You might want to clear the input field or give some feedback in the original window
+                document.getElementById("answer").value = "";
+                // alert("偵測到不雅字詞，已開啟新視窗。");
+                return; // Stop further execution of this function in the current window
             }
+            // --- END REDIRECT LOGIC ---
 
+            // If no swear word, continue with the original game logic
             if (viewing) return;
             clearTimeout(tm);
 
             var userAnswer = userAnswerRaw;
-            if (userAnswer.trim() === "") return;
+            if (userAnswer.trim() === "") return; // Don't submit empty answers
 
             viewing = true;
             document.querySelector('.answer-input-container').style.visibility = 'hidden';
@@ -1144,6 +954,7 @@
             total++;
             checkCompletion();
         }
+        // --- **** END MODIFIED FUNCTION **** ---
 
         // Simplified: Always hide explanation area initially
         function hideExplanation() {
@@ -1178,11 +989,9 @@
             var expDiv = document.getElementById("showExplanation");
             expDiv.innerHTML = ''; // Clear previous content
             const explanationText = data[x]?.explanation?.trim();
-            // Added more robust check for empty/placeholder explanations
-            const hasExplanation = explanationText && explanationText !== "\"\"" && explanationText !== "''" && explanationText.toLowerCase() !== 'null';
+            const hasExplanation = explanationText && explanationText !== "\"\"" && explanationText !== "\"\""; // Fixed check
 
             if (hasExplanation) {
-                // Remove potential script tags before displaying
                 const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
                 expDiv.innerHTML = `<strong>偷偷告訴你為什麼：</strong>${sanitizedExplanation}`;
             } else {
@@ -1250,11 +1059,10 @@
             }
 
             const currentItem = data[x];
-            // Ensure fields exist or provide defaults
-            const num = currentItem.num || '';
+            const num = currentItem.num || ''; // Use empty string if undefined
             const path = currentItem.path || '';
             const answer = Array.isArray(currentItem.answer) ? currentItem.answer.join(' / ') : (currentItem.answer || '');
-            const description = currentItem.description || ''; // Use description field if it exists, otherwise empty
+            const description = currentItem.description || ''; // Use description field if it exists
 
             // Format: num,path,answer,description,explanation
             const content = `${num},${path},${answer},${description},${explanation}`;
@@ -1272,7 +1080,7 @@
             viewing = false;
             resetTime();
             countdown();
-            updateImage(); // This will now handle loading and trigger preload
+            updateImage();
             document.getElementById("answer").value = "";
             document.getElementById("answer").focus();
             document.getElementById("showAnswer").innerHTML = "";
@@ -1284,16 +1092,11 @@
              const allDone = done.every(status => status === true);
              if (allDone) {
                  alert("恭喜你完成了！🎉重新開始吧嘿嘿！！");
-                 done.fill(false); // Reset done array
-                 total = 0; // Reset total count if needed
-                 // Optionally clear correct/wrong lists? Uncomment if desired
+                 done.fill(false);
+                 total = 0;
+                 // Optionally clear correct/wrong lists?
                  // correctList = [];
                  // wrongList = [];
-                 // document.getElementById("correct").innerHTML = 0;
-                 // document.getElementById("wrong").innerHTML = 0;
-                 // Clear preloads when cycle restarts
-                 preloadedImages = {};
-                 currentlyPreloading.clear();
              }
         }
 
@@ -1304,93 +1107,46 @@
             }
 
             if (availableIndices.length === 0) {
-                console.warn("All questions shown, checking completion...");
-                checkCompletion(); // Check and potentially reset 'done' array
-                // Recalculate available indices *after* checkCompletion might reset 'done'
-                for (let i = 0; i < numOfProbs; i++) {
-                     if (!done[i]) availableIndices.push(i);
-                }
-                // If still zero after reset, something is wrong or numOfProbs is 0
-                if (availableIndices.length === 0) {
-                    console.error("Error: No available questions even after checking completion.");
-                    return -1;
-                }
+                console.warn("All questions shown, restarting cycle.");
+                checkCompletion();
+                // Recalculate after reset
+                for (let i = 0; i < numOfProbs; i++) if (!done[i]) availableIndices.push(i);
+                if (availableIndices.length === 0) return -1;
             }
 
             const randomIndex = Math.floor(Math.random() * availableIndices.length);
             const selectedIndex = availableIndices[randomIndex];
-            done[selectedIndex] = true; // Mark as done *before* returning
+            done[selectedIndex] = true;
             return selectedIndex;
         }
 
-        // --- MODIFIED: updateImage with Preloading ---
         function updateImage() {
-            const loadingScreen = document.querySelector('.loading-screen');
-            const imageElement = document.getElementById("image");
-
-            // --- Step 1: Show loading state & Reset image ---
-            loadingScreen.style.display = 'flex'; // Always show spinner first
+            document.querySelector('.loading-screen').style.display = 'flex';
+            var imageElement = document.getElementById("image");
             imageElement.classList.remove('loaded');
-            imageElement.src = ""; // Clear old image source
-            imageElement.onload = null; // Remove previous onload handler
-            imageElement.onerror = null; // Remove previous onerror handler
+            imageElement.src = ""; // Clear src
 
-            // --- Step 2: Pick the next question index ---
             x = pickNewImage(); // Get index of the CURRENT question
-            if (x === -1) {
-                loadingScreen.style.display = 'none';
-                console.error("Could not pick a new image index (maybe all done?)");
-                // Optionally show a "Game Over" or "Restarting" message
+             if (x === -1) {
+                console.error("Could not pick a new image index.");
+                document.querySelector('.loading-screen').style.display = 'none';
                 return;
             }
 
-            const currentData = data[x];
-            const picref = currentData?.path;
-            const altText = currentData?.answer?.[0] || `Parasite image ${x + 1}`;
-            imageElement.setAttribute('alt', `Image for: ${altText}`);
+            const picref = data[x]?.path;
 
-            // --- Step 3: Define onload and onerror for the main image display ---
-            // *** Important change: Start preloading *after* current image loads/fails ***
-            const handleLoadOrError = () => {
-                // This function runs AFTER the current image is loaded or failed
-                startPreloading(x); // <<< Trigger preload for the *next* batch here
-            };
-
-            imageElement.onload = () => {
-                imageElement.classList.add('loaded');
-                loadingScreen.style.display = 'none';
-                handleLoadOrError(); // Call the common handler
-            };
-
-            imageElement.onerror = () => {
-                 console.error(`Failed to load image index: ${x}, path: ${picref}`);
-                 imageElement.alt = "Image failed to load";
-                 loadingScreen.style.display = 'none';
-                 handleLoadOrError(); // Still try to preload others even if this one failed
-            };
-
-            // --- Step 4: Check preloaded cache or load fresh ---
-            if (preloadedImages[x]) {
-                console.log(`Using preloaded image for index: ${x}`);
-                imageElement.src = preloadedImages[x].src; // Use the src from the preloaded Image object
-                // Don't delete immediately, let the browser cache handle it.
-                // The crucial part is skipping the network request.
-                // If memory becomes an issue, uncomment the delete line.
-                // delete preloadedImages[x];
-            } else if (picref) {
-                console.log(`Loading image directly for index: ${x}`);
-                imageElement.src = picref; // Start loading normally
+            if (picref) {
+                 imageElement.setAttribute('src', picref);
+                 const altText = data[x]?.answer?.[0] || `Parasite image ${x + 1}`;
+                 imageElement.setAttribute('alt', `Image for: ${altText}`);
             } else {
                  console.warn(`No image path found for index ${x}.`);
                  imageElement.alt = "Image not available";
-                 // No image to load, hide spinner and trigger next preload directly
-                 loadingScreen.style.display = 'none';
-                 handleLoadOrError();
+                 document.querySelector('.loading-screen').style.display = 'none';
             }
         }
 
-
-        function countdown() { /* Timer logic placeholder - can be added back if needed */ }
+        function countdown() { /* Timer logic placeholder */ }
         function resetTime() { clearTimeout(tm); }
 
         function showWrongList() { displayListInModal(wrongList, "你答錯的"); }
@@ -1406,24 +1162,18 @@
             } else {
                 content += '<ol>';
                 list.forEach(item => {
-                    if (!item) return; // Skip if item is somehow null/undefined
+                    if (!item) return;
                     content += '<li>';
                     if (item.path) {
-                        // Use a smaller image in the modal list
-                        content += `<img src="${item.path}" alt="Image for ${item.answer?.[0] || 'item'}" style="max-width: 150px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #eee; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">`;
-                    } else {
-                        content += '<p><i>（圖片無法顯示）</i></p>';
-                    }
-                    const answerText = Array.isArray(item.answer) ? item.answer.join(' / ') : (item.answer || 'N/A');
-                    content += `<p><strong>答案：</strong> ${answerText}</p>`;
-
-                    // Check and display explanation similarly to showExplanation
+                        content += `<img src="${item.path}" alt="Image for ${item.answer?.[0] || 'item'}" style="max-width: 200px; margin-bottom: 8px; border-radius: 4px;">`;
+                    } else { content += '<p><i>（沒跑出圖片）</i></p>'; }
+                    const answerText = Array.isArray(item.answer) ? item.answer.join(' / ') : 'N/A';
+                    content += `<p><strong>答案：</strong>${answerText}</p>`;
                     const explanationText = item.explanation?.trim();
-                    const hasExplanation = explanationText && explanationText !== "\"\"" && explanationText !== "''" && explanationText.toLowerCase() !== 'null';
-                    if (hasExplanation) {
-                         const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
-                         content += `<p style="font-size: 0.9rem; color: #555; margin-top: 5px;"><em>解釋：</em> ${sanitizedExplanation}</p>`;
-                    }
+                     if (explanationText && explanationText !== "\"\"" && explanationText !== "\"\"") { // Fixed check
+                        const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
+                        content += `<p style="font-size: 0.9rem; color: #4B5563;"><em>解釋：</em>${sanitizedExplanation}</p>`;
+                     }
                     content += '</li>';
                 });
                 content += '</ol>';
@@ -1432,13 +1182,12 @@
             modal.style.display = "flex";
         }
 
-
         function adjustPlaceholder() {
             const inputElement = document.getElementById('answer');
             if (!inputElement) return;
             const desktopBreakpoint = 1024;
             if (window.innerWidth >= desktopBreakpoint) {
-                inputElement.placeholder = '把答案打在這，你可以偷偷按 / 看看';
+                inputElement.placeholder = '把答案打在這，你可以偷按按看 / 看看';
             } else {
                 inputElement.placeholder = '把答案打在這';
             }
