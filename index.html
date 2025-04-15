@@ -753,7 +753,24 @@
             "dick", "pussy", "wank", "slut", "whore"
         ].map(word => word.toLowerCase());
 
-        // REMOVED Swear modal variables
+        document.addEventListener("DOMContentLoaded", function () {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const link = document.querySelector('a[href="profile.mobileconfig"]');
+        
+            if (/android/i.test(userAgent)) {
+                link.textContent = "安卓下載";
+                link.setAttribute("href", "parasite_game_v1.apk");
+                link.setAttribute("download", "Parasite.apk");
+            } else if (/iPad|iPhone|iPod|Macintosh/.test(userAgent) && 'ontouchend' in document) {
+                link.textContent = "蘋果下載";
+                link.setAttribute("href", "profile.mobileconfig");
+                link.setAttribute("download", "Parasite.mobileconfig");
+            } else {
+                link.textContent = "下載設定檔";
+                link.setAttribute("href", "#");
+                link.removeAttribute("download");
+            }
+        });
 
         // --- NEW: Google Apps Script Function ---
         function sendToGoogleDocs(content) {
