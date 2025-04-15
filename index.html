@@ -435,6 +435,30 @@
             transform: scale(0.97);
         }
 
+        .contribution-area button.loading {
+            position: relative; /* Needed for absolute positioning of the pseudo-element */
+            color: transparent !important; /* Hide original text (use !important to override base styles if needed) */
+            pointer-events: none; /* Disable clicks while loading */
+            /* Optional: Slightly change background or opacity */
+            /* background-color: #5A7580; */
+        }
+
+        .contribution-area button.loading::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            width: 16px; /* Spinner size */
+            height: 16px; /* Spinner size */
+            margin-top: -8px; /* Half of height */
+            margin-left: -8px; /* Half of width */
+            border: 2px solid rgba(255, 255, 255, 0.4); /* Spinner track color */
+            border-top-color: #ffffff; /* Spinner active color */
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite; /* Reuse existing spin animation */
+        }
+
         /* Next Button */
         .next-button {
             display: block;
@@ -660,6 +684,10 @@
             .modal-content li em { color: var(--dark-text-secondary); }
             .modal-content img { border: 1px solid var(--dark-border-secondary); box-shadow: 0 2px 5px var(--dark-shadow-color); background-color: #2a2a2a; }
             /* --- REMOVED Dark theme swear modal styles --- */
+            .contribution-area button.loading::after {
+                border: 2px solid rgba(0, 0, 0, 0.4); /* Darker track for contrast */
+                border-top-color: var(--dark-bg-primary, #121212); /* Match dark button text color */
+            }
         }
 
     </style>
@@ -776,7 +804,8 @@
         function sendToGoogleDocs(content) {
             const url = 'https://script.google.com/macros/s/AKfycbzWbgs69CkM1nsQKCdtSp26b0LKmCqpzqlAnuetqzgqfd3KVkcZSjWB19vmNhcvlXeO/exec'; // Your Apps Script URL
             const submitButton = document.getElementById('submit-explanation-button'); // Get button if exists
-            if (submitButton) submitButton.disabled = true; // Disable button while sending
+
+            // 按鈕已經在 submitContribution 中被禁用了
 
             fetch(url, {
                 method: 'POST',
@@ -789,13 +818,27 @@
             .then(() => {
                 // Since mode is 'no-cors', we can't read the response. Assume success.
                 console.log("Data likely sent successfully (no-cors mode).");
-                hideContributionInput(); // Hide the input area after successful send
+                // UI update (hiding input) will happen after fetch call regardless due to no-cors behavior
             })
             .catch(error => {
                 console.error('Error sending data:', error);
                 alert('送出詳解時發生錯誤，請稍後再試。'); // Provide error feedback
-                if (submitButton) submitButton.disabled = false; // Re-enable button on error
-            });
+                // --- 如果 fetch 出錯，也要重置按鈕 ---
+                if (submitButton) {
+                    submitButton.disabled = false; // Re-enable button on error
+                    submitButton.classList.remove('loading'); // Remove loading class
+                }
+                // 在錯誤情況下，我們可能不想隱藏輸入框，所以不調用 hideContributionInput
+                return; // 提前返回，不執行下面的 hideContributionInput
+            })
+            // .finally(() => {
+            //    // 在 no-cors 模式下，finally 可能不會按預期工作 (等待伺服器響應)
+            // });
+
+            // 因為 no-cors 的 fetch 會立即 resolve (除非網路層錯誤)，
+            // 所以我們在這裡延遲調用 hideContributionInput 以提供視覺回饋
+            // 如果上面 catch 有錯誤並 return，這裡就不會執行
+            setTimeout(hideContributionInput, 300); // 延遲 300ms 再隱藏，讓使用者看到 loading
         }
 
 
@@ -1064,7 +1107,10 @@
             if (contribArea) {
                 contribArea.style.display = 'none';
                 if (textarea) textarea.value = ''; // Clear textarea
-                 if (submitButton) submitButton.disabled = false; // Re-enable button
+                 if (submitButton) {
+                    submitButton.disabled = false; // Re-enable button
+                    submitButton.classList.remove('loading'); // <<< 移除 loading class
+                 }
             }
              // Optionally show the initial message again (or a thank you message)
              if (noExplanationMsg) {
@@ -1074,9 +1120,11 @@
         }
 
         // --- NEW: Function to handle contribution submission ---
+        // --- NEW: Function to handle contribution submission ---
         function submitContribution() {
             const explanationInput = document.getElementById('explanation-input');
             const explanation = explanationInput.value.trim();
+            const submitButton = document.getElementById('submit-explanation-button'); // <<< 取得按鈕元素
 
             if (!explanation) {
                 alert("請輸入詳解內容！");
@@ -1089,6 +1137,13 @@
                 return;
             }
 
+            // --- 開始 Loading 狀態 ---
+            if (submitButton) {
+                submitButton.disabled = true; // 禁用按鈕
+                submitButton.classList.add('loading'); // 加入 loading class
+            }
+            // --- Loading 狀態結束 ---
+
             const currentItem = data[x];
             const num = currentItem.num || ''; // Use empty string if undefined
             const path = currentItem.path || '';
@@ -1099,7 +1154,7 @@
             const content = `${num},${path},${answer},${description},${explanation}`;
 
             console.log("Sending content:", content); // For debugging
-            sendToGoogleDocs(content);
+            sendToGoogleDocs(content); // 呼叫送出函數
         }
 
         function nextProb() {
