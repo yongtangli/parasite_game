@@ -796,10 +796,23 @@
 
         function enterKeyEvent(event) {
             if (event.key === 'Enter') {
-                 if (!viewing && document.getElementById("answer").value.trim() !== "") {
-                    submitUserAnswer();
-                } else if (viewing && document.querySelector('.card-answer').style.display === 'flex') { // Ensure answer is visible
-                    nextProb();
+                // 獲取詳解輸入框元素
+                const explanationInput = document.getElementById('explanation-input');
+
+                // 優先檢查：是否是詳解輸入框被按下 Enter 且該輸入框目前可見？
+                if (explanationInput && document.activeElement === explanationInput && explanationInput.offsetParent !== null) {
+                    // offsetParent !== null 是一個簡單判斷元素是否可見的方式
+                    event.preventDefault(); // 阻止 Enter 鍵的默認行為 (例如在 input 裡換行)
+                    submitContribution();   // 呼叫送出詳解的函數
+                }
+                // 否則，執行原有的邏輯
+                // 情況 1：還沒看答案，且主答案輸入框有內容
+                else if (!viewing && document.getElementById("answer").value.trim() !== "") {
+                    submitUserAnswer(); // 提交主答案
+                }
+                // 情況 2：正在看答案，準備按 Enter 到下一題
+                else if (viewing && document.querySelector('.card-answer').style.display === 'flex') { // 確保答案區塊是可見的
+                    nextProb(); // 進入下一題
                 }
             }
         }
