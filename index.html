@@ -701,7 +701,9 @@
         <div class="footer">
           <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往初版</a> ｜
           <a href="https://chromewebstore.google.com/detail/%E5%8F%B0%E5%A4%A7%E9%86%AB%E5%A1%AB%E5%95%8F%E5%8D%B7/ciioeecbkbnmnedkgmkfaicngidogdkj?authuser=0&hl=en" target="_blank">問卷外掛</a> ｜
-          <a href="profile.mobileconfig" download="Parasite.mobileconfig">蘋果下載</a> ｜
+          <span id="download-block">
+            <a href="profile.mobileconfig" download="Parasite.mobileconfig">蘋果下載</a> ｜
+          </span>
           <a href="https://line.me/ti/p/~jedieason" target="_blank">問題回報</a>
         </div>
     </div>
@@ -794,9 +796,8 @@
                 link.setAttribute("href", "profile.mobileconfig");
                 link.setAttribute("download", "Parasite.mobileconfig");
             } else {
-                link.textContent = "下載設定檔";
-                link.setAttribute("href", "#");
-                link.removeAttribute("download");
+                const iosBlock = document.getElementById("download-block");
+                if (iosBlock) iosBlock.style.display = "none";
             }
         });
 
