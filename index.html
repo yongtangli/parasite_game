@@ -491,38 +491,43 @@
 
         /* Modal styles (for wrong/correct lists) */
         .modal {
-            display: none;
+            display: none; /* Keep initial state */
             position: fixed;
             z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(40, 40, 40, 0.6); /* Darker overlay */
+            /* --- MODIFICATION START --- */
+            /* Use RGBA for semi-transparent background. Adjust alpha (0.7 here) as needed */
+            background-color: rgba(40, 40, 40, 0.7); /* Slightly darker overlay, semi-transparent */
+            /* Add backdrop filter for blur effect. Adjust blur radius (8px here) as needed */
+            backdrop-filter: blur(8px); /* Standard backdrop blur */
+            -webkit-backdrop-filter: blur(8px); /* Safari support for backdrop blur */
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            animation: fadeInModal 0.4s ease forwards;
+            opacity: 0; /* Keep for animation */
+            animation: fadeInModal 0.4s ease forwards; /* Keep animation */
         }
 
         @keyframes fadeInModal {
-            from { opacity: 0; }
+            from { opacity: 0; /* Keep starting from transparent for fade-in */ }
             to { opacity: 1; }
         }
 
 
         .modal-content {
             width: 90%;
-            max-width: 650px; /* Slightly wider modal */
+            max-width: 650px;
             max-height: 85%;
             overflow-y: auto;
-            background-color: #FDFBF8; /* Slightly different off-white for modal */
-            padding: 30px; /* More padding */
+            background-color: #FDFBF8; /* Solid background is important here */
+            padding: 30px;
             border-radius: 12px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
             position: relative;
-            transform: scale(0.95);
-            animation: scaleUpModal 0.4s ease forwards;
+            transform: scale(0.95); /* Keep for animation */
+            animation: scaleUpModal 0.4s ease forwards; /* Keep animation */
         }
 
          @keyframes scaleUpModal {
@@ -673,9 +678,18 @@
             .contribution-area button { background-color: var(--dark-accent-blue); color: var(--dark-bg-primary); }
             .contribution-area button:hover { background-color: var(--dark-accent-blue-hover); }
             .next-button { color: var(--dark-accent-blue); border: 1px solid var(--dark-accent-blue); }
+            .modal {
+                /* Dark theme overlay color - already semi-transparent */
+                background-color: rgba(18, 18, 18, 0.75);
+                /* Backdrop filter is already set in the base .modal rule, so it applies here too */
+            }
+
+            .modal-content {
+                background-color: var(--dark-bg-secondary); /* Solid dark background */
+                box-shadow: 0 8px 30px var(--dark-shadow-color);
+                border: 1px solid var(--dark-border-primary);
+            }
             .next-button:hover { background-color: var(--dark-accent-blue); color: var(--dark-bg-primary); border-color: var(--dark-accent-blue); box-shadow: 0 2px 6px rgba(122, 160, 178, 0.3); }
-            .modal { background-color: rgba(18, 18, 18, 0.75); }
-            .modal-content { background-color: var(--dark-bg-secondary); box-shadow: 0 8px 30px var(--dark-shadow-color); border: 1px solid var(--dark-border-primary); }
             .close { color: var(--dark-text-secondary); } .close:hover { color: var(--dark-accent-blue-hover); }
             .modal-content h2 { color: var(--dark-text-primary); border-bottom: 1px solid var(--dark-border-primary); }
             .modal-content p { color: var(--dark-text-primary); }
