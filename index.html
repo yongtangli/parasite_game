@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW"> <!-- Changed lang to Traditional Chinese -->
+<html lang="zh-TW">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -9,7 +9,6 @@
     <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js"></script>
     <title>Parasite Quiz</title>
-    <!-- Using a simple sans-serif font stack -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         @font-face {
@@ -20,13 +19,11 @@
             font-display: swap;
         }
 
-        /* --- Refined Styles for Sophistication & Elegance --- */
-
+        /* --- 基本和通用樣式 --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /* Using Cormorant Garamond for headings and Inter for body */
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
@@ -37,32 +34,71 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #F9F7F3; /* Elegant warm off-white */
-            color: #404040; /* Dark gray for text */
+            /* 預設為淺色模式 */
+            --bg-primary: #F9F7F3; /* 淺米白 */
+            --bg-secondary: #FFFFFF;
+            --text-primary: #404040; /* 深灰文字 */
+            --text-secondary: #666;
+            --text-muted: #999;
+            --heading-color: #383838;
+            --border-primary: #EAEAEA;
+            --border-secondary: #D8D8D8;
+            --accent-blue: #6D8A96; /* 主色調 - 藍灰 */
+            --accent-blue-hover: #5A7580;
+            --accent-green: #79A88F; /* 綠 */
+            --accent-orange: #D98C60; /* 橘 */
+            --accent-red: #C76D6D; /* 紅 */
+            --shadow-color: rgba(0, 0, 0, 0.07);
+            --focus-ring: rgba(109, 138, 150, 0.15);
+            --modal-bg: #FDFBF8;
+            --modal-overlay: rgba(249, 247, 243, 0.75); /* 淺色遮罩 */
+            --card-answer-bg: rgba(249, 247, 243, 0.85); /* 淺色答案背景 */
+            --toggle-icon-color: #2C3E50; /* Toggle 圖示顏色 */
+            --toggle-moon-mask: #F9F7F3; /* 月亮遮罩顏色 (需與背景相同) */
+
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.4s ease, color 0.4s ease; /* 主題切換過渡 */
         }
 
-        /* Title Styling with Germgoth */
+        /* 深色模式變數 */
+        body.dark-mode {
+            --bg-primary: #1e1e1e; /* 深灰背景 */
+            --bg-secondary: #2a2a2a;
+            --text-primary: #e0e0e0; /* 淺灰文字 */
+            --text-secondary: #a0a0a0;
+            --text-muted: #757575;
+            --heading-color: #e0e0e0;
+            --border-primary: #383838;
+            --border-secondary: #505050;
+            --accent-blue: #7aa0b2; /* 深色模式主色調 */
+            --accent-blue-hover: #95b9cd;
+            --accent-green: #87c7a8;
+            --accent-orange: #eaa67a;
+            --accent-red: #e08484;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --focus-ring: rgba(122, 160, 178, 0.3);
+            --modal-bg: #2a2a2a;
+            --modal-overlay: rgba(18, 18, 18, 0.75); /* 深色遮罩 */
+            --card-answer-bg: rgba(42, 42, 42, 0.9); /* 深色答案背景 */
+            --toggle-icon-color: #e0e0e0; /* 深色模式下的圖示顏色 */
+            --toggle-moon-mask: #1e1e1e; /* 深色模式月亮遮罩 (需與背景相同) */
+        }
+
+        /* 標題 */
         .flashcard-title, .start-title {
-            font-family: "Germgoth", serif; /* Using the provided gothic font */
-            color: #383838; /* Slightly darker heading color */
-            font-weight: normal; /* Germgoth might only have one weight */
-            letter-spacing: 0.5px; /* Subtle spacing */
+            font-family: "Germgoth", serif;
+            color: var(--heading-color);
+            font-weight: normal;
+            letter-spacing: 0.5px;
             text-align: center;
-            padding-bottom: 5px; /* Space below title */
-            /* Removed text-shadow for cleaner look */
+            padding-bottom: 5px;
+            transition: color 0.4s ease;
         }
+        .start-title { font-size: 2.8rem; margin-bottom: 40px; }
+        .flashcard-title { font-size: 1.8rem; margin-bottom: 15px; }
 
-        .start-title {
-            font-size: 2.8rem; /* Larger start title */
-            margin-bottom: 40px; /* More space below */
-        }
-
-        .flashcard-title {
-            font-size: 1.8rem; /* Slightly larger in-game title */
-            margin-bottom: 15px; /* Adjusted space */
-        }
-
-        /* Start screen styles */
+        /* --- 啟動畫面 --- */
         .start-screen {
             width: 100%;
             height: 100%;
@@ -72,641 +108,299 @@
             align-items: center;
             padding: 20px;
             opacity: 0;
-            animation: fadeIn 0.8s ease-out forwards; /* Fade in start screen */
+            animation: fadeIn 0.8s ease-out forwards;
+            position: relative; /* 為了定位 Toggle 按鈕 */
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .start-button {
-            padding: 14px 35px; /* Generous padding */
+            padding: 14px 35px;
             font-size: 1.1rem;
             font-weight: 500;
-            background-color: #6D8A96; /* Muted Blue-Gray */
-            color: #ffffff;
-            border: none;
-            border-radius: 8px; /* Consistent radius */
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .start-button:hover {
-            background-color: #5A7580; /* Darker shade */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px); /* Subtle lift */
-        }
-
-        .start-button:active {
-            transform: translateY(0);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .footer {
-            position: absolute;
-            bottom: 15px; /* Slightly higher */
-            width: 100%;
-            text-align: center;
-            font-size: 0.85rem; /* Smaller font */
-            color: #999; /* Lighter gray */
-        }
-
-        .footer a {
-            color: #888; /* Slightly darker link */
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: #6D8A96; /* Accent color on hover */
-            text-decoration: none; /* Keep no underline */
-        }
-
-        /* Game Screen */
-        .flashcard-container {
-            width: 100%;
-            height: 100%;
-            display: none; /* Hidden initially */
-            flex-direction: column;
-            background-color: #F9F7F3; /* Match body background */
-            padding: 25px; /* Slightly more padding */
-            position: relative;
-            max-width: 1400px; /* Slightly narrower max width */
-            margin: 0 auto; /* Center container */
-            opacity: 0;
-            animation: fadeIn 0.6s 0.2s ease-out forwards; /* Delayed fade in */
-        }
-
-        /* Progress Bar Area */
-        .progress {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 18px; /* More space below */
-            gap: 15px;
-        }
-
-        .progress-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 15px; /* Adjusted padding */
-            border-radius: 20px; /* More rounded */
-            font-size: 0.95rem;
-            font-weight: 500;
-            background-color: transparent; /* No background */
-            color: #666; /* Muted text color */
-            cursor: pointer;
-            transition: color 0.3s ease, transform 0.2s ease;
-            border: 1px solid #E0E0E0; /* Subtle border */
-        }
-
-        .progress-item:hover {
-            background-color: #FFFFFF; /* White background on hover */
-            border-color: #D0D0D0;
-            transform: scale(1.03); /* Slight scale effect */
-        }
-
-        .progress-number-orange {
-            margin-right: 8px;
-            color: #D98C60; /* Muted Orange */
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .progress-number-green {
-            margin-left: 8px;
-            color: #79A88F; /* Muted Green */
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        /* Image Area */
-        .card-content {
-            position: relative;
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            margin-bottom: 20px; /* Adjusted space */
-            border-radius: 10px; /* Slightly larger radius */
-            background-color: #FFFFFF; /* White background for card */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); /* Soft shadow */
-            border: 1px solid #EAEAEA; /* Very light border */
-        }
-
-        .loading-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-            border-radius: 10px; /* Match parent */
-            transition: opacity 0.3s ease-out;
-        }
-
-        .spinner {
-            border: 4px solid #E0E0E0;
-            border-top: 4px solid #6D8A96; /* Accent color spinner */
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite; /* Smoother spin */
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .card-content img {
-            display: block;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transition: opacity 0.5s ease-in-out;
-            opacity: 0;
-            border-radius: 10px; /* Match container */
-        }
-
-        .card-content img.loaded {
-            opacity: 1;
-        }
-
-        /* Answer Area */
-        .your-answer-label {
-            font-size: 0.8rem; /* Smaller label */
-            font-weight: 500;
-            color: #888; /* Lighter gray */
-            margin-bottom: 6px;
-            text-transform: uppercase; /* Uppercase for style */
-            letter-spacing: 0.5px;
-            padding-left: 5px;
-            transition: visibility 0s linear 0.3s, opacity 0.3s ease; /* Delay visibility change */
-        }
-
-        .answer-input-container {
-            margin-bottom: 20px; /* More space below input */
-            transition: visibility 0s linear 0.3s, opacity 0.3s ease; /* Delay visibility change */
-        }
-
-        .answer-input {
-            width: 100%;
-            padding: 14px 18px; /* More padding */
-            font-size: 1.05rem; /* Slightly larger text */
-            border: 1px solid #D8D8D8; /* Lighter border */
-            border-radius: 8px;
-            background-color: #FFFFFF; /* White background */
-            color: #404040; /* Dark gray text */
-            outline: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            appearance: none; /* Remove default styles */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset; /* Subtle inner shadow */
-        }
-
-        .answer-input::placeholder {
-            color: #B0B0B0; /* Lighter placeholder */
-            font-weight: 400;
-        }
-
-        .answer-input:focus {
-            border-color: #6D8A96; /* Accent color border */
-            box-shadow: 0 0 0 3px rgba(109, 138, 150, 0.15), 0 1px 3px rgba(0, 0, 0, 0.05) inset; /* Focus ring + inner shadow */
-        }
-
-        /* Bottom Buttons Area */
-        .bottom-buttons {
-            display: flex;
-            justify-content: space-between; /* Space between Don't Know and Answer */
-            align-items: center;
-            gap: 12px;
-            transition: visibility 0s linear 0.3s, opacity 0.3s ease; /* Delay visibility change */
-        }
-
-        .dont-know-button, .answer-button {
-            padding: 12px 24px; /* Adjusted padding */
-            font-size: 1rem;
-            font-weight: 500;
+            background-color: var(--accent-blue);
+            color: var(--bg-secondary); /* Use background color for contrast */
             border: none;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px var(--shadow-color);
         }
-
-        .dont-know-button {
-            background-color: transparent;
-            color: #6D8A96; /* Accent color */
-            border: 1px solid transparent; /* Placeholder for smooth transition */
+        .start-button:hover {
+            background-color: var(--accent-blue-hover);
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transform: translateY(-2px);
         }
+        .start-button:active { transform: translateY(0); box-shadow: 0 1px 3px var(--shadow-color); }
 
-        .dont-know-button:hover {
-            color: #5A7580; /* Darker accent */
-            background-color: rgba(109, 138, 150, 0.08); /* Very subtle background */
-            transform: scale(1.02); /* Slight scale */
-        }
-
-        .answer-button {
-            background-color: #6D8A96; /* Muted Blue-Gray */
-            color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .answer-button:hover {
-            background-color: #5A7580; /* Darker shade */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px); /* Subtle lift */
-        }
-
-        .dont-know-button:active, .answer-button:active {
-            transform: scale(0.98); /* Keep slight scale down */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Answer Display Area */
-        .card-answer {
-            display: none; /* Initially hidden */
+        /* 頁腳 */
+        .footer {
             position: absolute;
-            /* Position it over the input/button area */
-            bottom: 25px; /* Match container padding */
-            left: 25px;
-            right: 25px;
-            background-color: rgba(249, 247, 243, 0.85); /* Semi-transparent background matching page */
-            backdrop-filter: blur(8px); /* Frosted glass effect */
-            -webkit-backdrop-filter: blur(8px); /* Safari support */
-            padding: 20px;
-            border-radius: 10px;
-            border: none; /* Delete border */
-            font-size: 1.05rem; /* Match input text size */
-            z-index: 3;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeSlideIn 0.4s ease-out forwards;
-            color: #404040; /* Ensure text readability */
+            bottom: 15px;
+            width: 100%;
             text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: color 0.4s ease;
         }
+        .footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover { color: var(--accent-blue-hover); text-decoration: none; }
 
-        @keyframes fadeSlideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        #showAnswer strong { /* Style Correct/Incorrect/Answer labels */
-             font-weight: 600;
-             margin-right: 5px;
-        }
-        #showAnswer strong[style*="#10B981"] { color: #60A77C !important; } /* Muted Green */
-        #showAnswer strong[style*="#EF4444"] { color: #C76D6D !important; } /* Muted Red */
-        #showAnswer strong[style*="#F59E0B"] { color: #C9875A !important; } /* Muted Orange */
-
-
-        #showExplanation {
-            font-size: 0.9rem;
-            color: #555;
-            line-height: 1.5;
-            margin-top: 5px;
-            max-height: 100px; /* Limit height if needed */
-            overflow-y: auto; /* Add scroll if explanation is long */
-        }
-         #showExplanation strong {
-            font-weight: 600;
-            color: #404040;
-         }
-         /* Style for the contribution link */
-         #showExplanation .contribute-link {
-            color: #6D8A96;
-            cursor: pointer;
-            text-decoration: underline;
-            font-weight: 500;
-            margin-left: 5px; /* Space before link */
-         }
-         #showExplanation .contribute-link:hover {
-            color: #5A7580;
-         }
-
-        /* Styles for the contribution input area */
-        .contribution-area {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #eee; /* Separator */
-            display: flex;
-        }
-        .contribution-area input {
-            flex: 1;
-            padding: 8px 12px;
-            font-size: 0.95rem;
-            border: 1px solid #D8D8D8;
-            border-radius: 6px;
-            background-color: #FFFFFF;
-            color: #404040;
-            outline: none;
-            resize: vertical; /* Allow vertical resizing */
-            margin-right: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset;
-        }
-        .contribution-area input:focus {
-            border-color: #6D8A96;
-            box-shadow: 0 0 0 3px rgba(109, 138, 150, 0.15), 0 1px 3px rgba(0, 0, 0, 0.05) inset;
-        }
-        .contribution-area button {
-            padding: 8px 18px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            background-color: #6D8A96;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            float: right; /* Position button to the right */
-        }
-        .contribution-area button:hover {
-            background-color: #5A7580;
-        }
-        .contribution-area button:active {
-            transform: scale(0.97);
-        }
-
-        .contribution-area button.loading {
-            position: relative; /* Needed for absolute positioning of the pseudo-element */
-            color: transparent !important; /* Hide original text (use !important to override base styles if needed) */
-            pointer-events: none; /* Disable clicks while loading */
-            /* Optional: Slightly change background or opacity */
-            /* background-color: #5A7580; */
-        }
-
-        .contribution-area button.loading::after {
-            content: '';
-            display: block;
-            position: absolute;
-            top: 50%; /* Center vertically */
-            left: 50%; /* Center horizontally */
-            width: 16px; /* Spinner size */
-            height: 16px; /* Spinner size */
-            margin-top: -8px; /* Half of height */
-            margin-left: -8px; /* Half of width */
-            border: 2px solid rgba(255, 255, 255, 0.4); /* Spinner track color */
-            border-top-color: #ffffff; /* Spinner active color */
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite; /* Reuse existing spin animation */
-        }
-
-        /* Next Button */
-        .next-button {
-            display: block;
-            padding: 10px 22px;
-            font-size: 1rem; /* Slightly smaller than main button */
-            font-weight: 500;
+        /* --- Day/Night Toggle Button Styles (New) --- */
+        .day-night-toggle {
+            position: absolute; /* 相對於 .start-screen 定位 */
+            top: 20px;
+            right: 20px;
+            padding: 8px; /* 微調 padding */
             background-color: transparent;
-            color: #6D8A96; /* Accent color */
-            border: 1px solid #B0C0C8; /* Border matching accent */
-            border-radius: 8px;
+            border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
-            align-self: center; /* Center the button */
-            margin-top: 15px; /* Space above button */
-            /* Remove flashy effects */
+            border-radius: 50%; /* 圓形按鈕 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10; /* 確保在最上層 */
+            transition: transform 0.3s ease;
+        }
+        .day-night-toggle:focus { outline: none; }
+        .day-night-toggle:hover { transform: scale(1.1); }
+
+        .toggle-icon {
+            width: 32px; /* 調整圖示大小 */
+            height: 32px;
+            overflow: visible; /* 確保旋轉時完整顯示 */
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* 平滑旋轉 */
+        }
+        /* 太陽/月亮圖示顏色 */
+        .toggle-icon .icon-shape {
+            fill: var(--toggle-icon-color);
+            transition: fill 0.4s ease;
+        }
+        .toggle-icon .sun-ray {
+            stroke: var(--toggle-icon-color);
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke 0.4s ease, opacity 0.5s ease;
+        }
+        .toggle-icon .moon-mask {
+            fill: var(--toggle-moon-mask); /* 使用變數，以便主題切換 */
+            transition: fill 0.4s ease; /* Mask 顏色也需過渡 */
         }
 
-        .next-button:hover {
-            background-color: #6D8A96;
-            color: white;
-            border-color: #6D8A96;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(109, 138, 150, 0.2);
+        /* 旋轉動畫 */
+        .toggle-icon.rotate {
+            transform: rotate(180deg);
         }
+        /* 顯示/隱藏元素 (用於太陽光芒和月亮遮罩) */
+        .toggle-icon .sun-rays { opacity: 1; transition: opacity 0.5s 0.1s ease; } /* 淡入 */
+        .toggle-icon .moon-group { opacity: 1; transition: opacity 0.5s 0.1s ease; }
 
-        .next-button:active {
-            transform: scale(0.97);
-            box-shadow: none;
-        }
+        .toggle-icon.night .sun-rays { opacity: 0; }
+        .toggle-icon.day .moon-group { opacity: 0; }
 
-        /* Modal styles (for wrong/correct lists) */
-        .modal {
-            display: none; /* Keep initial state */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
+
+        /* --- 遊戲畫面 --- */
+        .flashcard-container {
             width: 100%;
             height: 100%;
-            background-color: transparent; /* Slightly darker overlay, semi-transparent */
-            backdrop-filter: blur(8px); /* Standard backdrop blur */
-            -webkit-backdrop-filter: blur(8px); /* Safari support for backdrop blur */
-            justify-content: center;
-            align-items: center;
-            opacity: 0; /* Keep for animation */
-            animation: fadeInModal 0.4s ease forwards; /* Keep animation */
-        }
-
-        @keyframes fadeInModal {
-            from { opacity: 0; /* Keep starting from transparent for fade-in */ }
-            to { opacity: 1; }
-        }
-
-
-        .modal-content {
-            width: 90%;
-            max-width: 650px;
-            max-height: 85%;
-            overflow-y: auto;
-            background-color: #FDFBF8; /* Solid background is important here */
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            background-color: var(--bg-primary);
+            padding: 25px;
             position: relative;
-            transform: scale(0.95); /* Keep for animation */
-            animation: scaleUpModal 0.4s ease forwards; /* Keep animation */
-        }
-
-         @keyframes scaleUpModal {
-            from { transform: scale(0.95); opacity: 0;}
-            to { transform: scale(1); opacity: 1;}
-         }
-
-
-        .close {
-            position: absolute;
-            top: 15px; /* Position adjustment */
-            right: 20px;
-            font-size: 2rem; /* Larger close icon */
-            font-weight: 300; /* Thinner X */
-            color: #AAAAAA;
-            cursor: pointer;
-            line-height: 1;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .close:hover {
-             color: #6D8A96; /* Accent color on hover */
-             transform: rotate(90deg); /* Rotate effect */
-        }
-
-        .modal-content h2 {
-          font-size: 1.5rem; /* Larger modal title */
-          margin-bottom: 20px;
-          color: #383838;
-          font-weight: 600; /* Slightly bolder */
-          border-bottom: 1px solid #EAEAEA; /* Separator line */
-          padding-bottom: 10px;
-        }
-
-        .modal-content p {
-          font-size: 1rem;
-          line-height: 1.7; /* More line spacing */
-          margin-bottom: 15px;
-          color: #505050; /* Slightly lighter text */
-        }
-
-        .modal-content ol {
-            padding-left: 25px; /* Indent list */
-            margin-bottom: 16px;
-        }
-
-        .modal-content li {
-            margin-bottom: 25px; /* More space between list items */
-            padding-bottom: 20px;
-            border-bottom: 1px solid #EAEAEA;
-            list-style-type: decimal; /* Ensure numbers are shown */
-        }
-
-         .modal-content li:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-         .modal-content li p {
-            margin-bottom: 8px; /* Less space between text within li */
-         }
-         .modal-content li p strong {
-             color: #404040;
-         }
-         .modal-content li em { /* Style explanation hint */
-            color: #777;
-         }
-
-        .modal-content img {
-            max-width: 150px; /* Smaller image size in list */
-            height: auto;
-            margin-bottom: 12px; /* Adjusted margin */
-            border-radius: 6px; /* Smaller radius */
-            border: 1px solid #E0E0E0; /* Consistent border */
-            display: block; /* Prevent extra space */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-        }
-
-        /* Utility for hiding elements visually but keeping accessible */
-        .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0, 0, 0, 0);
-          white-space: nowrap;
-          border-width: 0;
-        }
-
-        /* Hide input area when answer is shown using visibility and opacity */
-        .answer-input-container[style*="hidden"],
-        .bottom-buttons[style*="hidden"],
-        .your-answer-label[style*="hidden"] {
+            max-width: 1400px;
+            margin: 0 auto;
             opacity: 0;
-            visibility: hidden;
-            transition: visibility 0s linear 0.3s, opacity 0.3s ease;
+            animation: fadeIn 0.6s 0.2s ease-out forwards;
+            transition: background-color 0.4s ease; /* 主題切換 */
+        }
+        /* 進度條區域 */
+        .progress { display: flex; justify-content: space-between; margin-bottom: 18px; gap: 15px; }
+        .progress-item {
+            display: flex; align-items: center; padding: 8px 15px; border-radius: 20px; font-size: 0.95rem;
+            font-weight: 500; background-color: transparent; color: var(--text-secondary); cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
+            border: 1px solid var(--border-primary);
+        }
+        .progress-item:hover { background-color: var(--bg-secondary); border-color: var(--border-secondary); transform: scale(1.03); }
+        .progress-number-orange { margin-right: 8px; color: var(--accent-orange); font-weight: 600; font-size: 1rem; }
+        .progress-number-green { margin-left: 8px; color: var(--accent-green); font-weight: 600; font-size: 1rem; }
+
+        /* 圖片區域 */
+        .card-content {
+            position: relative; flex-grow: 1; display: flex; justify-content: center; align-items: center;
+            overflow: hidden; margin-bottom: 20px; border-radius: 10px; background-color: var(--bg-secondary);
+            box-shadow: 0 4px 15px var(--shadow-color); border: 1px solid var(--border-primary);
+            transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+        .loading-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(var(--bg-secondary-rgb, 255, 255, 255), 0.9); /* Use RGB for opacity */
+            display: flex; justify-content: center; align-items: center; z-index: 2; border-radius: 10px;
+            transition: background-color 0.4s ease, opacity 0.3s ease-out;
+        }
+        body.dark-mode .loading-screen { --bg-secondary-rgb: 42, 42, 42; } /* Define RGB for dark mode */
+        .spinner {
+            border: 4px solid var(--border-primary); border-top: 4px solid var(--accent-blue); border-radius: 50%;
+            width: 40px; height: 40px; animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            transition: border-color 0.4s ease;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .card-content img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; transition: opacity 0.5s ease-in-out; opacity: 0; border-radius: 10px; }
+        .card-content img.loaded { opacity: 1; }
+
+        /* 答案輸入區域 */
+        .your-answer-label {
+            font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase;
+            letter-spacing: 0.5px; padding-left: 5px; transition: visibility 0s linear 0.3s, opacity 0.3s ease, color 0.4s ease;
+        }
+        .answer-input-container { margin-bottom: 20px; transition: visibility 0s linear 0.3s, opacity 0.3s ease; }
+        .answer-input {
+            width: 100%; padding: 14px 18px; font-size: 1.05rem; border: 1px solid var(--border-secondary); border-radius: 8px;
+            background-color: var(--bg-secondary); color: var(--text-primary); outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease, color 0.4s ease;
+            appearance: none; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset;
+        }
+        .answer-input::placeholder { color: var(--text-muted); font-weight: 400; transition: color 0.4s ease; }
+        .answer-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--focus-ring), 0 1px 3px rgba(0, 0, 0, 0.05) inset; }
+
+        /* 底部按鈕 */
+        .bottom-buttons { display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: visibility 0s linear 0.3s, opacity 0.3s ease; }
+        .dont-know-button, .answer-button {
+            padding: 12px 24px; font-size: 1rem; font-weight: 500; border: none; border-radius: 8px; cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .dont-know-button { background-color: transparent; color: var(--accent-blue); border: 1px solid transparent; }
+        .dont-know-button:hover { color: var(--accent-blue-hover); background-color: rgba(var(--accent-blue-rgb, 109, 138, 150), 0.08); transform: scale(1.02); }
+        body.dark-mode .dont-know-button:hover { --accent-blue-rgb: 122, 160, 178; } /* Define RGB for dark */
+        .answer-button { background-color: var(--accent-blue); color: var(--bg-secondary); box-shadow: 0 2px 5px var(--shadow-color); }
+        .answer-button:hover { background-color: var(--accent-blue-hover); box-shadow: 0 4px 8px var(--shadow-color); transform: translateY(-2px); }
+        .dont-know-button:active, .answer-button:active { transform: scale(0.98); box-shadow: 0 1px 3px var(--shadow-color); }
+
+        /* 答案顯示區域 */
+        .card-answer {
+            display: none; position: absolute; bottom: 25px; left: 25px; right: 25px;
+            background-color: var(--card-answer-bg);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            padding: 20px; border-radius: 10px; border: none; font-size: 1.05rem; z-index: 3;
+            flex-direction: column; gap: 12px; box-shadow: 0 5px 20px var(--shadow-color);
+            opacity: 0; transform: translateY(10px); animation: fadeSlideIn 0.4s ease-out forwards;
+            color: var(--text-primary); text-align: center; transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+        }
+        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #showAnswer strong { font-weight: 600; margin-right: 5px; }
+        #showAnswer strong[style*="#10B981"] { color: var(--accent-green) !important; }
+        #showAnswer strong[style*="#EF4444"] { color: var(--accent-red) !important; }
+        #showAnswer strong[style*="#F59E0B"] { color: var(--accent-orange) !important; }
+
+        #showExplanation { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-top: 5px; max-height: 100px; overflow-y: auto; transition: color 0.4s ease;}
+        #showExplanation strong { font-weight: 600; color: var(--text-primary); transition: color 0.4s ease;}
+        #showExplanation .contribute-link { color: var(--accent-blue); cursor: pointer; text-decoration: underline; font-weight: 500; margin-left: 5px; transition: color 0.3s ease; }
+        #showExplanation .contribute-link:hover { color: var(--accent-blue-hover); }
+
+        /* 貢獻詳解區域 */
+        .contribution-area { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-primary); display: flex; transition: border-color 0.4s ease;}
+        .contribution-area input {
+            flex: 1; padding: 8px 12px; font-size: 0.95rem; border: 1px solid var(--border-secondary); border-radius: 6px;
+            background-color: var(--bg-secondary); color: var(--text-primary); outline: none; resize: vertical; margin-right: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset;
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .contribution-area input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--focus-ring), 0 1px 3px rgba(0, 0, 0, 0.05) inset; }
+        .contribution-area button {
+            padding: 8px 18px; font-size: 0.9rem; font-weight: 500; background-color: var(--accent-blue);
+            color: var(--bg-secondary); border: none; border-radius: 6px; cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; float: right;
+        }
+        .contribution-area button:hover { background-color: var(--accent-blue-hover); }
+        .contribution-area button:active { transform: scale(0.97); }
+        .contribution-area button.loading { position: relative; color: transparent !important; pointer-events: none; }
+        .contribution-area button.loading::after {
+            content: ''; display: block; position: absolute; top: 50%; left: 50%; width: 16px; height: 16px;
+            margin-top: -8px; margin-left: -8px; border: 2px solid rgba(var(--bg-secondary-rgb, 255, 255, 255), 0.4);
+            border-top-color: var(--bg-secondary); border-radius: 50%; animation: spin 0.8s linear infinite;
+            transition: border-color 0.4s ease;
+        }
+        body.dark-mode .contribution-area button.loading::after {
+            --bg-secondary-rgb: 42, 42, 42; /* Dark mode RGB for spinner track */
+            border-top-color: var(--bg-secondary); /* Match dark button text (which is now light) */
         }
 
-        /* --- REMOVED Swear Word Warning Modal Styles --- */
-
-        /* --- REMOVED Shake Animation --- */
-
-        /* --- Dark Theme Styles --- */
-        @media (prefers-color-scheme: dark) {
-            /* Dark theme variables (condensed for brevity) */
-            :root {
-                --dark-bg-primary: #121212; --dark-bg-secondary: #1e1e1e; --dark-text-primary: #e0e0e0;
-                --dark-text-secondary: #a0a0a0; --dark-text-muted: #757575; --dark-border-primary: #383838;
-                --dark-border-secondary: #505050; --dark-accent-blue: #7aa0b2; --dark-accent-blue-hover: #95b9cd;
-                --dark-accent-green: #87c7a8; --dark-accent-orange: #eaa67a; --dark-accent-red: #e08484;
-                --dark-shadow-color: rgba(0, 0, 0, 0.5); --dark-focus-ring: rgba(122, 160, 178, 0.3);
-            }
-            html, body { background-color: var(--dark-bg-primary); color: var(--dark-text-primary); }
-            .flashcard-title, .start-title { color: var(--dark-text-primary); }
-            .start-button { background-color: var(--dark-accent-blue); color: var(--dark-bg-primary); box-shadow: 0 2px 5px var(--dark-shadow-color); }
-            .start-button:hover { background-color: var(--dark-accent-blue-hover); box-shadow: 0 4px 8px var(--dark-shadow-color); }
-            .footer { color: var(--dark-text-muted); } .footer a { color: var(--dark-text-secondary); } .footer a:hover { color: var(--dark-accent-blue-hover); }
-            .flashcard-container { background-color: var(--dark-bg-primary); }
-            .progress-item { color: var(--dark-text-secondary); border: 1px solid var(--dark-border-primary); }
-            .progress-item:hover { background-color: var(--dark-bg-secondary); border-color: var(--dark-border-secondary); color: var(--dark-text-primary); }
-            .progress-number-orange { color: var(--dark-accent-orange); } .progress-number-green { color: var(--dark-accent-green); }
-            .card-content { background-color: var(--dark-bg-secondary); box-shadow: 0 4px 15px var(--dark-shadow-color); border: 1px solid var(--dark-border-primary); }
-            .loading-screen { background-color: rgba(30, 30, 30, 0.9); }
-            .spinner { border: 4px solid var(--dark-border-primary); border-top: 4px solid var(--dark-accent-blue); }
-            .card-content img { background-color: var(--dark-bg-secondary); }
-            .your-answer-label { color: var(--dark-text-secondary); }
-            .answer-input { background-color: var(--dark-bg-secondary); color: var(--dark-text-primary); border: 1px solid var(--dark-border-secondary); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) inset; }
-            .answer-input::placeholder { color: var(--dark-text-muted); }
-            .answer-input:focus { border-color: var(--dark-accent-blue); box-shadow: 0 0 0 3px var(--dark-focus-ring), 0 1px 3px rgba(0, 0, 0, 0.3) inset; }
-            .dont-know-button { color: var(--dark-accent-blue); }
-            .dont-know-button:hover { color: var(--dark-accent-blue-hover); background-color: rgba(122, 160, 178, 0.15); }
-            .answer-button { background-color: var(--dark-accent-blue); color: var(--dark-bg-primary); box-shadow: 0 2px 5px var(--dark-shadow-color); }
-            .answer-button:hover { background-color: var(--dark-accent-blue-hover); box-shadow: 0 4px 8px var(--dark-shadow-color); }
-            .card-answer { background-color: rgba(42, 42, 42, 0.9); color: var(--dark-text-primary); box-shadow: 0 5px 20px var(--dark-shadow-color); border: 1px solid var(--dark-border-secondary); }
-            #showAnswer strong[style*="#10B981"] { color: var(--dark-accent-green) !important; }
-            #showAnswer strong[style*="#EF4444"] { color: var(--dark-accent-red) !important; }
-            #showAnswer strong[style*="#F59E0B"] { color: var(--dark-accent-orange) !important; }
-            #showExplanation { color: var(--dark-text-secondary); }
-            #showExplanation strong { color: var(--dark-text-primary); }
-            #showExplanation .contribute-link { color: var(--dark-accent-blue); } /* Dark theme contribute link */
-            #showExplanation .contribute-link:hover { color: var(--dark-accent-blue-hover); }
-            .contribution-area { border-top: 1px solid var(--dark-border-primary); } /* Dark theme separator */
-            .contribution-area input { background-color: var(--dark-bg-secondary); color: var(--dark-text-primary); border: 1px solid var(--dark-border-secondary); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) inset; }
-            .contribution-area input:focus { border-color: var(--dark-accent-blue); box-shadow: 0 0 0 3px var(--dark-focus-ring), 0 1px 3px rgba(0, 0, 0, 0.3) inset; }
-            .contribution-area button { background-color: var(--dark-accent-blue); color: var(--dark-bg-primary); }
-            .contribution-area button:hover { background-color: var(--dark-accent-blue-hover); }
-            .next-button { color: var(--dark-accent-blue); border: 1px solid var(--dark-accent-blue); }
-            .modal {
-                /* Dark theme overlay color - already semi-transparent */
-                background-color: rgba(18, 18, 18, 0.75);
-                /* Backdrop filter is already set in the base .modal rule, so it applies here too */
-            }
-
-            .modal-content {
-                background-color: var(--dark-bg-secondary); /* Solid dark background */
-                box-shadow: 0 8px 30px var(--dark-shadow-color);
-                border: 1px solid var(--dark-border-primary);
-            }
-            .next-button:hover { background-color: var(--dark-accent-blue); color: var(--dark-bg-primary); border-color: var(--dark-accent-blue); box-shadow: 0 2px 6px rgba(122, 160, 178, 0.3); }
-            .close { color: var(--dark-text-secondary); } .close:hover { color: var(--dark-accent-blue-hover); }
-            .modal-content h2 { color: var(--dark-text-primary); border-bottom: 1px solid var(--dark-border-primary); }
-            .modal-content p { color: var(--dark-text-primary); }
-            .modal-content li { border-bottom: 1px solid var(--dark-border-primary); }
-            .modal-content li p strong { color: var(--dark-text-primary); }
-            .modal-content li em { color: var(--dark-text-secondary); }
-            .modal-content img { border: 1px solid var(--dark-border-secondary); box-shadow: 0 2px 5px var(--dark-shadow-color); background-color: #2a2a2a; }
-            /* --- REMOVED Dark theme swear modal styles --- */
-            .contribution-area button.loading::after {
-                border: 2px solid rgba(0, 0, 0, 0.4); /* Darker track for contrast */
-                border-top-color: var(--dark-bg-primary, #121212); /* Match dark button text color */
-            }
+        /* 下一題按鈕 */
+        .next-button {
+            display: block; padding: 10px 22px; font-size: 1rem; font-weight: 500; background-color: transparent;
+            color: var(--accent-blue); border: 1px solid var(--accent-blue); border-radius: 8px; cursor: pointer;
+            transition: all 0.3s ease; align-self: center; margin-top: 15px;
         }
+        .next-button:hover { background-color: var(--accent-blue); color: var(--bg-secondary); border-color: var(--accent-blue); transform: translateY(-1px); box-shadow: 0 2px 6px rgba(var(--accent-blue-rgb, 109, 138, 150), 0.2); }
+        body.dark-mode .next-button:hover { --accent-blue-rgb: 122, 160, 178; }
+        .next-button:active { transform: scale(0.97); box-shadow: none; }
+
+        /* 彈出視窗 (Modal) */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: var(--modal-overlay);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            justify-content: center; align-items: center; opacity: 0; animation: fadeInModal 0.4s ease forwards;
+            transition: background-color 0.4s ease;
+        }
+        @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content {
+            width: 90%; max-width: 650px; max-height: 85%; overflow-y: auto; background-color: var(--modal-bg);
+            padding: 30px; border-radius: 12px; box-shadow: 0 8px 30px var(--shadow-color);
+            position: relative; transform: scale(0.95); animation: scaleUpModal 0.4s ease forwards;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            border: 1px solid var(--border-primary); /* Add border for consistency */
+        }
+         @keyframes scaleUpModal { from { transform: scale(0.95); opacity: 0;} to { transform: scale(1); opacity: 1;} }
+        .close {
+            position: absolute; top: 15px; right: 20px; font-size: 2rem; font-weight: 300; color: var(--text-secondary);
+            cursor: pointer; line-height: 1; transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .close:hover { color: var(--accent-blue-hover); transform: rotate(90deg); }
+        .modal-content h2 {
+            font-size: 1.5rem; margin-bottom: 20px; color: var(--heading-color); font-weight: 600;
+            border-bottom: 1px solid var(--border-primary); padding-bottom: 10px;
+            transition: color 0.4s ease, border-color 0.4s ease;
+        }
+        .modal-content p { font-size: 1rem; line-height: 1.7; margin-bottom: 15px; color: var(--text-primary); transition: color 0.4s ease;}
+        .modal-content ol { padding-left: 25px; margin-bottom: 16px; }
+        .modal-content li { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-primary); list-style-type: decimal; transition: border-color 0.4s ease;}
+        .modal-content li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .modal-content li p { margin-bottom: 8px; }
+        .modal-content li p strong { color: var(--text-primary); }
+        .modal-content li em { color: var(--text-secondary); }
+        .modal-content img {
+            max-width: 150px; height: auto; margin-bottom: 12px; border-radius: 6px; border: 1px solid var(--border-primary);
+            display: block; box-shadow: 0 2px 5px var(--shadow-color); background-color: var(--bg-secondary); /* Add bg for dark mode */
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
+        }
+
+        /* --- Utility & Accessibility --- */
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+        .answer-input-container[style*="hidden"], .bottom-buttons[style*="hidden"], .your-answer-label[style*="hidden"] { opacity: 0; visibility: hidden; transition: visibility 0s linear 0.3s, opacity 0.3s ease; }
+
+        /* --- REMOVED Swear Word Warning Modal Styles & Shake Animation --- */
+
+        /* --- REMOVED @media (prefers-color-scheme: dark) --- */
+        /* The dark mode styles are now handled by the body.dark-mode class */
 
     </style>
 </head>
-<body onload="init();"> <!-- Keep onload or move init() call inside script -->
+<body onload="init();">
 
     <!-- Start Screen -->
     <div class="start-screen">
+        <!-- Day/Night Toggle Button (New) -->
+        <button id="dayNightToggle" class="day-night-toggle" aria-label="切換到夜晚模式">
+            <svg id="dayNightIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="toggle-icon day">
+                 <!-- SVG content will be generated by JS -->
+            </svg>
+        </button>
+
         <div class="start-title">Parasitology</div>
         <button id="startGame" class="start-button">開始吧</button>
         <div class="footer">
@@ -721,7 +415,8 @@
 
     <!-- Game Screen -->
     <div class="flashcard-container">
-        <div class="progress">
+        <!-- ... (Game screen content remains the same) ... -->
+         <div class="progress">
             <div class="progress-item" id="wrongArea">
                 <span class="progress-number-orange" id="wrong">0</span>
                 <span>錯誤</span>
@@ -769,12 +464,12 @@
     <!-- REMOVED Swear Word Warning Modal HTML -->
 
     <script>
-        // --- Game Variables ---
+        // --- Game Variables (Keep Existing) ---
         var TIME = 31;
         var numOfProbs;
         var tm;
         var data;
-        var x; // index of current question
+        var x;
         var state = 0;
         var correct = 0;
         var wrong = 0;
@@ -783,8 +478,6 @@
         var done;
         var correctList = [];
         var wrongList = [];
-
-        // List of swear words (lowercase)
         const lowerCaseSwearWords = [
             "幹", "靠", "操", "媽的", "他媽的", "幹你娘", "機掰", "雞掰", "哭邀", "靠北", "靠腰",
             "操你媽", "王八蛋", "他媽", "賤人", "婊子", "俗辣", "垃圾", "智障", "白痴", "腦殘",
@@ -794,102 +487,126 @@
             "dick", "pussy", "wank", "slut", "whore"
         ].map(word => word.toLowerCase());
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            const link = document.querySelector('a[href="profile.mobileconfig"]');
-        
-            if (/android/i.test(userAgent)) {
-                link.textContent = "安卓下載";
-                link.setAttribute("href", "parasite_game_v1.apk");
-                link.setAttribute("download", "Parasite.apk");
-            } else if (/iPad|iPhone|iPod|Macintosh/.test(userAgent) && 'ontouchend' in document) {
-                link.textContent = "蘋果下載";
-                link.setAttribute("href", "profile.mobileconfig");
-                link.setAttribute("download", "Parasite.mobileconfig");
+        // --- NEW: Day/Night Toggle Logic ---
+        const dayNightToggle = document.getElementById('dayNightToggle');
+        const dayNightIcon = document.getElementById('dayNightIcon');
+        let isDay = true; // Default to Day mode
+
+        // Function to render the sun SVG
+        function renderSun() {
+            dayNightIcon.innerHTML = `
+                <circle cx="50" cy="50" r="20" class="icon-shape" />
+                <g class="sun-rays">
+                    ${[...Array(8)].map((_, i) => {
+                        const angle = (i * 45) * (Math.PI / 180);
+                        const x1 = 50 + Math.cos(angle) * 30;
+                        const y1 = 50 + Math.sin(angle) * 30;
+                        const x2 = 50 + Math.cos(angle) * 38;
+                        const y2 = 50 + Math.sin(angle) * 38;
+                        return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="sun-ray" />`;
+                    }).join('')}
+                </g>
+                <!-- Hidden moon parts -->
+                <g class="moon-group" style="opacity: 0;">
+                    <circle cx="50" cy="50" r="20" class="icon-shape" />
+                    <circle cx="58" cy="50" r="18" class="moon-mask" />
+                </g>
+            `;
+            dayNightIcon.classList.remove('night');
+            dayNightIcon.classList.add('day');
+            dayNightIcon.classList.remove('rotate'); // Reset rotation
+        }
+
+        // Function to render the moon SVG
+        function renderMoon() {
+            dayNightIcon.innerHTML = `
+                 <!-- Hidden sun parts -->
+                 <circle cx="50" cy="50" r="20" class="icon-shape" style="fill: none;"/>
+                 <g class="sun-rays" style="opacity: 0;">
+                     ${[...Array(8)].map((_, i) => {
+                         const angle = (i * 45) * (Math.PI / 180);
+                         const x1 = 50 + Math.cos(angle) * 30;
+                         const y1 = 50 + Math.sin(angle) * 30;
+                         const x2 = 50 + Math.cos(angle) * 38;
+                         const y2 = 50 + Math.sin(angle) * 38;
+                         return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="sun-ray" />`;
+                     }).join('')}
+                 </g>
+                 <g class="moon-group">
+                     <circle cx="50" cy="50" r="20" class="icon-shape" />
+                     <circle cx="58" cy="50" r="18" class="moon-mask" />
+                 </g>
+            `;
+            dayNightIcon.classList.remove('day');
+            dayNightIcon.classList.add('night');
+            dayNightIcon.classList.add('rotate'); // Apply rotation
+        }
+
+        // Function to toggle the theme
+        function toggleTheme() {
+            isDay = !isDay;
+            if (isDay) {
+                document.body.classList.remove('dark-mode');
+                renderSun();
+                dayNightToggle.setAttribute('aria-label', '切換到夜晚模式');
             } else {
-                const iosBlock = document.getElementById("download-block");
-                if (iosBlock) iosBlock.style.display = "none";
+                document.body.classList.add('dark-mode');
+                renderMoon();
+                dayNightToggle.setAttribute('aria-label', '切換到白天模式');
             }
-        });
-
-        // --- NEW: Google Apps Script Function ---
-        function sendToGoogleDocs(content) {
-            const url = 'https://script.google.com/macros/s/AKfycbzWbgs69CkM1nsQKCdtSp26b0LKmCqpzqlAnuetqzgqfd3KVkcZSjWB19vmNhcvlXeO/exec'; // Your Apps Script URL
-            const submitButton = document.getElementById('submit-explanation-button'); // Get button if exists
-
-            // 按鈕已經在 submitContribution 中被禁用了
-
-            fetch(url, {
-                method: 'POST',
-                mode: 'no-cors', // Important for sending to Apps Script without complex CORS setup, but means no response readable
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({ content: content })
-            })
-            .then(() => {
-                // Since mode is 'no-cors', we can't read the response. Assume success.
-                console.log("Data likely sent successfully (no-cors mode).");
-                // UI update (hiding input) will happen after fetch call regardless due to no-cors behavior
-            })
-            .catch(error => {
-                console.error('Error sending data:', error);
-                alert('送出詳解時發生錯誤，請稍後再試。'); // Provide error feedback
-                // --- 如果 fetch 出錯，也要重置按鈕 ---
-                if (submitButton) {
-                    submitButton.disabled = false; // Re-enable button on error
-                    submitButton.classList.remove('loading'); // Remove loading class
-                }
-                // 在錯誤情況下，我們可能不想隱藏輸入框，所以不調用 hideContributionInput
-                return; // 提前返回，不執行下面的 hideContributionInput
-            })
-            // .finally(() => {
-            //    // 在 no-cors 模式下，finally 可能不會按預期工作 (等待伺服器響應)
-            // });
-
-            // 因為 no-cors 的 fetch 會立即 resolve (除非網路層錯誤)，
-            // 所以我們在這裡延遲調用 hideContributionInput 以提供視覺回饋
-            // 如果上面 catch 有錯誤並 return，這裡就不會執行
-            setTimeout(hideContributionInput, 300); // 延遲 300ms 再隱藏，讓使用者看到 loading
+            // Update moon mask color variable when theme changes
+            const bodyStyles = window.getComputedStyle(document.body);
+            document.documentElement.style.setProperty('--toggle-moon-mask', bodyStyles.getPropertyValue('--bg-primary'));
         }
 
+        // Initialize Day/Night Toggle
+        function initDayNightToggle() {
+            // Check system preference first, but allow override
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            isDay = !prefersDark; // Set initial state based on preference
 
-        function parseMultiAns(data) {
-            if (!data) return [];
-            Object.values(data).forEach(item => {
-                if (item && typeof item.answer === 'string') {
-                    item.answer = item.answer.split(" / ").map(s => s.trim()).filter(s => s);
-                } else if (!item || typeof item.answer === 'undefined') {
-                    item.answer = [];
-                }
-            });
-            return data;
-        }
-
-        function enterKeyEvent(event) {
-            if (event.key === 'Enter') {
-                // 獲取詳解輸入框元素
-                const explanationInput = document.getElementById('explanation-input');
-
-                // 優先檢查：是否是詳解輸入框被按下 Enter 且該輸入框目前可見？
-                if (explanationInput && document.activeElement === explanationInput && explanationInput.offsetParent !== null) {
-                    // offsetParent !== null 是一個簡單判斷元素是否可見的方式
-                    event.preventDefault(); // 阻止 Enter 鍵的默認行為 (例如在 input 裡換行)
-                    submitContribution();   // 呼叫送出詳解的函數
-                }
-                // 否則，執行原有的邏輯
-                // 情況 1：還沒看答案，且主答案輸入框有內容
-                else if (!viewing && document.getElementById("answer").value.trim() !== "") {
-                    submitUserAnswer(); // 提交主答案
-                }
-                // 情況 2：正在看答案，準備按 Enter 到下一題
-                else if (viewing && document.querySelector('.card-answer').style.display === 'flex') { // 確保答案區塊是可見的
-                    nextProb(); // 進入下一題
-                }
+            if (isDay) {
+                renderSun();
+                document.body.classList.remove('dark-mode');
+                dayNightToggle.setAttribute('aria-label', '切換到夜晚模式');
+            } else {
+                renderMoon();
+                document.body.classList.add('dark-mode');
+                dayNightToggle.setAttribute('aria-label', '切換到白天模式');
             }
+             // Set initial mask color
+            const bodyStyles = window.getComputedStyle(document.body);
+            document.documentElement.style.setProperty('--toggle-moon-mask', bodyStyles.getPropertyValue('--bg-primary'));
+
+
+            dayNightToggle.addEventListener('click', toggleTheme);
+
+             // Listen for system theme changes (optional, but good UX)
+             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                // Only change if the user hasn't manually toggled
+                // (This simple implementation WILL change regardless, consider adding a flag if needed)
+                isDay = !event.matches;
+                 if (isDay) {
+                     document.body.classList.remove('dark-mode');
+                     renderSun();
+                     dayNightToggle.setAttribute('aria-label', '切換到夜晚模式');
+                 } else {
+                     document.body.classList.add('dark-mode');
+                     renderMoon();
+                     dayNightToggle.setAttribute('aria-label', '切換到白天模式');
+                 }
+                 // Update mask color on system change
+                 const bodyStyles = window.getComputedStyle(document.body);
+                 document.documentElement.style.setProperty('--toggle-moon-mask', bodyStyles.getPropertyValue('--bg-primary'));
+             });
         }
 
+        // --- Original init() function ---
         function init() {
+            // Initialize Day/Night Toggle first
+            initDayNightToggle();
+
+            // Original init logic
             $(document).ready(function () {
                 $.get("./answersheet.csv")
                     .done(function (CSVdata) {
@@ -904,6 +621,8 @@
                                 document.querySelector('.start-screen').style.display = 'none';
                                 document.querySelector('.flashcard-container').style.display = 'flex';
                                 document.removeEventListener("keypress", enterPressStart);
+                                // Hide toggle button when game starts (optional, could also just leave it)
+                                // dayNightToggle.style.display = 'none';
                                 state = 1;
                                 done = new Array(numOfProbs).fill(false);
                                 correct = 0; wrong = 0; total = 0;
@@ -919,8 +638,6 @@
 
                             btn.addEventListener("click", startHandler);
                             document.addEventListener("keypress", enterPressStart);
-
-                            // --- REMOVED Swear Modal Initialization ---
 
                         } catch (error) {
                             console.error("Error processing CSV data:", error);
@@ -939,9 +656,101 @@
                 adjustPlaceholder();
             });
             window.addEventListener('resize', adjustPlaceholder);
+
+            // --- Download Link Logic (Keep Existing) ---
+             document.addEventListener("DOMContentLoaded", function () { /* This might run too late if init() is called onload */
+                 const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                 const link = document.querySelector('a[href="profile.mobileconfig"]');
+                 const downloadBlock = document.getElementById("download-block"); // Get the span
+
+                 if (/android/i.test(userAgent)) {
+                     link.textContent = "安卓下載";
+                     link.setAttribute("href", "parasite_game_v1.apk");
+                     link.setAttribute("download", "Parasite.apk");
+                 } else if (/iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) { // Check for touch capability on Mac
+                     link.textContent = "蘋果下載";
+                     link.setAttribute("href", "profile.mobileconfig");
+                     link.setAttribute("download", "Parasite.mobileconfig");
+                 } else {
+                     // Hide the link block if not Android or iOS/iPadOS/Touch Mac
+                     if (downloadBlock) downloadBlock.style.display = "none";
+                 }
+             });
+             // Move the DOMContentLoaded logic here if init() is reliable
+             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+             const link = document.querySelector('a[href="profile.mobileconfig"]');
+             const downloadBlock = document.getElementById("download-block"); // Get the span
+
+             if (/android/i.test(userAgent)) {
+                 if(link) {
+                     link.textContent = "安卓下載";
+                     link.setAttribute("href", "parasite_game_v1.apk");
+                     link.setAttribute("download", "Parasite.apk");
+                 }
+             } else if (/iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+                 if(link) {
+                     link.textContent = "蘋果下載";
+                     link.setAttribute("href", "profile.mobileconfig");
+                     link.setAttribute("download", "Parasite.mobileconfig");
+                 }
+             } else {
+                 // Hide the link block if not Android or iOS/iPadOS/Touch Mac
+                 if (downloadBlock) downloadBlock.style.display = "none";
+             }
+
         }
 
-        function startGame() {
+
+        // --- Google Apps Script Function (Keep Existing) ---
+        function sendToGoogleDocs(content) {
+            const url = 'https://script.google.com/macros/s/AKfycbzWbgs69CkM1nsQKCdtSp26b0LKmCqpzqlAnuetqzgqfd3KVkcZSjWB19vmNhcvlXeO/exec';
+            const submitButton = document.getElementById('submit-explanation-button');
+
+            fetch(url, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', },
+                body: new URLSearchParams({ content: content })
+            })
+            .then(() => { console.log("Data likely sent successfully (no-cors mode)."); })
+            .catch(error => {
+                console.error('Error sending data:', error);
+                alert('送出詳解時發生錯誤，請稍後再試。');
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('loading');
+                }
+                return;
+            })
+            setTimeout(hideContributionInput, 300);
+        }
+
+        // --- Other Game Logic Functions (Keep Existing) ---
+        function parseMultiAns(data) { /* ... */
+            if (!data) return [];
+            Object.values(data).forEach(item => {
+                if (item && typeof item.answer === 'string') {
+                    item.answer = item.answer.split(" / ").map(s => s.trim()).filter(s => s);
+                } else if (!item || typeof item.answer === 'undefined') {
+                    item.answer = [];
+                }
+            });
+            return data;
+        }
+        function enterKeyEvent(event) { /* ... */
+             if (event.key === 'Enter') {
+                const explanationInput = document.getElementById('explanation-input');
+                if (explanationInput && document.activeElement === explanationInput && explanationInput.offsetParent !== null) {
+                    event.preventDefault();
+                    submitContribution();
+                } else if (!viewing && document.getElementById("answer").value.trim() !== "") {
+                    submitUserAnswer();
+                } else if (viewing && document.querySelector('.card-answer').style.display === 'flex') {
+                    nextProb();
+                }
+            }
+        }
+        function startGame() { /* ... */
             document.addEventListener("keydown", enterKeyEvent);
             document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
             document.getElementById("dontKnow").addEventListener("click", showAnswer);
@@ -957,66 +766,50 @@
                 if (event.target === regularModal) {
                     regularModal.style.display = "none";
                 }
-                 // REMOVED Background click close for swear modal
             });
 
             document.addEventListener("keydown", function(e) {
                 const answerInput = document.getElementById("answer");
                 const explanationInput = document.getElementById("explanation-input");
-                 // Allow '/' to focus main answer OR explanation input if it's visible
                  if (e.key === "/" && document.activeElement !== answerInput && document.activeElement !== explanationInput) {
                     e.preventDefault();
-                    // Prioritize explanation input if visible
-                    if (explanationInput && explanationInput.offsetParent !== null) { // Check if visible
+                    if (explanationInput && explanationInput.offsetParent !== null) {
                         explanationInput.focus();
                     } else {
                         answerInput.focus();
                     }
                 }
             });
-
             nextProb();
         }
-
-        function checkAns(input, ansArr) {
+        function checkAns(input, ansArr) { /* ... */
             if (!Array.isArray(ansArr)) return false;
             const normalizedInput = input.trim().toLowerCase();
             return ansArr.some(ans => ans.trim().toLowerCase() === normalizedInput);
         }
-
-        function updateCorrect() {
+        function updateCorrect() { /* ... */
             correct++; document.getElementById("correct").innerHTML = correct;
             if (data[x]) correctList.push(data[x]);
         }
-
-        function updateWrong() {
-            wrong++; document.getElementById("wrong").innerHTML = wrong;
+        function updateWrong() { /* ... */
+             wrong++; document.getElementById("wrong").innerHTML = wrong;
              if (data[x]) wrongList.push(data[x]);
         }
-
-        // --- **** MODIFIED FUNCTION **** ---
-        function submitUserAnswer() {
+        function submitUserAnswer() { /* ... */
             var userAnswerRaw = document.getElementById("answer").value;
             var lowerUserAnswer = userAnswerRaw.trim().toLowerCase();
 
-            // --- REDIRECT LOGIC ---
-            // Check if the lowercase input contains any swear words
             if (lowerUserAnswer && lowerCaseSwearWords.some(swearWord => lowerUserAnswer.includes(swearWord))) {
-                 // Open YouTube in a new tab
                 window.open('https://youtu.be/HmIMmFAV4BY', '_blank');
-                // Optional: You might want to clear the input field or give some feedback in the original window
                 document.getElementById("answer").value = "";
-                // alert("偵測到不雅字詞，已開啟新視窗。");
-                return; // Stop further execution of this function in the current window
+                return;
             }
-            // --- END REDIRECT LOGIC ---
 
-            // If no swear word, continue with the original game logic
             if (viewing) return;
             clearTimeout(tm);
 
             var userAnswer = userAnswerRaw;
-            if (userAnswer.trim() === "") return; // Don't submit empty answers
+            if (userAnswer.trim() === "") return;
 
             viewing = true;
             document.querySelector('.answer-input-container').style.visibility = 'hidden';
@@ -1029,27 +822,23 @@
 
             if (checkAns(userAnswer, data[x].answer)) {
                 showAnsDiv.innerHTML = `<strong style="color: #10B981;">對了欸！！🥹</strong> 答案是：${data[x].answer.join(' / ')}`;
-                hideExplanation(); // Hide explanation area if correct
+                hideExplanation();
                 updateCorrect();
             } else {
                 showAnsDiv.innerHTML = `<strong style="color: #EF4444;">錯了錯了😭</strong> 正確答案是：${data[x].answer.join(' / ')}`;
-                showExplanation(); // Show explanation if wrong
+                showExplanation();
                 updateWrong();
             }
 
             total++;
             checkCompletion();
         }
-        // --- **** END MODIFIED FUNCTION **** ---
-
-        // Simplified: Always hide explanation area initially
-        function hideExplanation() {
+        function hideExplanation() { /* ... */
             const expDiv = document.getElementById("showExplanation");
-            expDiv.innerHTML = ""; // Clear content
-            expDiv.style.display = "none"; // Hide container
+            expDiv.innerHTML = "";
+            expDiv.style.display = "none";
         }
-
-        function showAnswer() { // For "Don't Know"
+        function showAnswer() { /* ... */
             if (viewing) return;
             clearTimeout(tm);
 
@@ -1063,25 +852,22 @@
             cardAnswerDiv.style.display = "flex";
 
             showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
-            showExplanation(); // Always show explanation for "Don't Know"
+            showExplanation();
             updateWrong();
 
             total++;
             checkCompletion();
         }
-
-        // --- MODIFIED: Show Explanation OR Contribution UI ---
-        function showExplanation() {
-            var expDiv = document.getElementById("showExplanation");
-            expDiv.innerHTML = ''; // Clear previous content
+        function showExplanation() { /* ... */
+             var expDiv = document.getElementById("showExplanation");
+            expDiv.innerHTML = '';
             const explanationText = data[x]?.explanation?.trim();
-            const hasExplanation = explanationText && explanationText !== "\"\"" && explanationText !== "\"\""; // Fixed check
+            const hasExplanation = explanationText && explanationText !== "\"\"" && explanationText !== "\"\"";
 
             if (hasExplanation) {
                 const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
                 expDiv.innerHTML = `<strong>偷偷告訴你為什麼：</strong>${sanitizedExplanation}`;
             } else {
-                // No explanation: Show message and contribution link/area
                 expDiv.innerHTML = `
                     <span id="no-explanation-message">
                         <i>這題還沒有詳解⋯不過你可以</i><span class="contribute-link" onclick="showContributionInput()">貢獻一下！</span>
@@ -1092,51 +878,41 @@
                     </div>
                 `;
             }
-            expDiv.style.display = "block"; // Ensure the container is visible
+            expDiv.style.display = "block";
         }
-
-        // --- NEW: Function to show the contribution input ---
-        function showContributionInput() {
-            const contribArea = document.getElementById('contribution-area');
+        function showContributionInput() { /* ... */
+             const contribArea = document.getElementById('contribution-area');
             const noExplanationMsg = document.getElementById('no-explanation-message');
             if (contribArea) {
                 contribArea.style.display = 'flex';
-                // Optionally hide the initial message/link
                 if(noExplanationMsg) noExplanationMsg.style.display = 'none';
-                // Focus the textarea
                 const textarea = document.getElementById('explanation-input');
                 if(textarea) textarea.focus();
             }
         }
-
-        // --- NEW: Function to hide the contribution input ---
-        function hideContributionInput() {
-            const contribArea = document.getElementById('contribution-area');
+        function hideContributionInput() { /* ... */
+             const contribArea = document.getElementById('contribution-area');
             const noExplanationMsg = document.getElementById('no-explanation-message');
              const textarea = document.getElementById('explanation-input');
              const submitButton = document.getElementById('submit-explanation-button');
 
             if (contribArea) {
                 contribArea.style.display = 'none';
-                if (textarea) textarea.value = ''; // Clear textarea
+                if (textarea) textarea.value = '';
                  if (submitButton) {
-                    submitButton.disabled = false; // Re-enable button
-                    submitButton.classList.remove('loading'); // <<< 移除 loading class
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('loading');
                  }
             }
-             // Optionally show the initial message again (or a thank you message)
              if (noExplanationMsg) {
-                noExplanationMsg.style.display = 'inline'; // Or block depending on original style
-                noExplanationMsg.innerHTML = '<i>感謝你的貢獻！</i>'; // Change message after sending
+                noExplanationMsg.style.display = 'inline';
+                noExplanationMsg.innerHTML = '<i>感謝你的貢獻！</i>';
             }
         }
-
-        // --- NEW: Function to handle contribution submission ---
-        // --- NEW: Function to handle contribution submission ---
-        function submitContribution() {
-            const explanationInput = document.getElementById('explanation-input');
+        function submitContribution() { /* ... */
+             const explanationInput = document.getElementById('explanation-input');
             const explanation = explanationInput.value.trim();
-            const submitButton = document.getElementById('submit-explanation-button'); // <<< 取得按鈕元素
+            const submitButton = document.getElementById('submit-explanation-button');
 
             if (!explanation) {
                 alert("請輸入詳解內容！");
@@ -1149,27 +925,22 @@
                 return;
             }
 
-            // --- 開始 Loading 狀態 ---
             if (submitButton) {
-                submitButton.disabled = true; // 禁用按鈕
-                submitButton.classList.add('loading'); // 加入 loading class
+                submitButton.disabled = true;
+                submitButton.classList.add('loading');
             }
-            // --- Loading 狀態結束 ---
 
             const currentItem = data[x];
-            const num = currentItem.num || ''; // Use empty string if undefined
+            const num = currentItem.num || '';
             const path = currentItem.path || '';
             const answer = Array.isArray(currentItem.answer) ? currentItem.answer.join(' / ') : (currentItem.answer || '');
-            const description = currentItem.description || ''; // Use description field if it exists
-
-            // Format: num,path,answer,description,explanation
+            const description = currentItem.description || '';
             const content = `${num},${path},${answer},${description},${explanation}`;
 
-            console.log("Sending content:", content); // For debugging
-            sendToGoogleDocs(content); // 呼叫送出函數
+            console.log("Sending content:", content);
+            sendToGoogleDocs(content);
         }
-
-        function nextProb() {
+        function nextProb() { /* ... */
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
             document.querySelector('.bottom-buttons').style.visibility = 'visible';
@@ -1183,23 +954,18 @@
             document.getElementById("answer").focus();
             document.getElementById("showAnswer").innerHTML = "";
             document.getElementById("showExplanation").innerHTML = "";
-            document.getElementById("showExplanation").style.display = "none"; // Ensure explanation area is hidden initially
+            document.getElementById("showExplanation").style.display = "none";
         }
-
-        function checkCompletion() {
-             const allDone = done.every(status => status === true);
+        function checkCompletion() { /* ... */
+            const allDone = done.every(status => status === true);
              if (allDone) {
                  alert("恭喜你完成了！🎉重新開始吧嘿嘿！！");
                  done.fill(false);
                  total = 0;
-                 // Optionally clear correct/wrong lists?
-                 // correctList = [];
-                 // wrongList = [];
              }
         }
-
-        function pickNewImage() {
-            const availableIndices = [];
+        function pickNewImage() { /* ... */
+             const availableIndices = [];
             for (let i = 0; i < numOfProbs; i++) {
                 if (!done[i]) availableIndices.push(i);
             }
@@ -1207,7 +973,6 @@
             if (availableIndices.length === 0) {
                 console.warn("All questions shown, restarting cycle.");
                 checkCompletion();
-                // Recalculate after reset
                 for (let i = 0; i < numOfProbs; i++) if (!done[i]) availableIndices.push(i);
                 if (availableIndices.length === 0) return -1;
             }
@@ -1217,14 +982,13 @@
             done[selectedIndex] = true;
             return selectedIndex;
         }
-
-        function updateImage() {
-            document.querySelector('.loading-screen').style.display = 'flex';
+        function updateImage() { /* ... */
+             document.querySelector('.loading-screen').style.display = 'flex';
             var imageElement = document.getElementById("image");
             imageElement.classList.remove('loaded');
-            imageElement.src = ""; // Clear src
+            imageElement.src = "";
 
-            x = pickNewImage(); // Get index of the CURRENT question
+            x = pickNewImage();
              if (x === -1) {
                 console.error("Could not pick a new image index.");
                 document.querySelector('.loading-screen').style.display = 'none';
@@ -1243,14 +1007,11 @@
                  document.querySelector('.loading-screen').style.display = 'none';
             }
         }
-
         function countdown() { /* Timer logic placeholder */ }
         function resetTime() { clearTimeout(tm); }
-
         function showWrongList() { displayListInModal(wrongList, "你答錯的"); }
         function showCorrectList() { displayListInModal(correctList, "你答對的"); }
-
-        function displayListInModal(list, title) {
+        function displayListInModal(list, title) { /* ... */
             let modal = document.getElementById('modal');
             let modalBody = document.getElementById('modalBody');
             let content = `<h2>${title} (${list.length})</h2>`;
@@ -1268,7 +1029,7 @@
                     const answerText = Array.isArray(item.answer) ? item.answer.join(' / ') : 'N/A';
                     content += `<p><strong>答案：</strong>${answerText}</p>`;
                     const explanationText = item.explanation?.trim();
-                     if (explanationText && explanationText !== "\"\"" && explanationText !== "\"\"") { // Fixed check
+                     if (explanationText && explanationText !== "\"\"" && explanationText !== "\"\"") {
                         const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
                         content += `<p style="font-size: 0.9rem; color: #4B5563;"><em>解釋：</em>${sanitizedExplanation}</p>`;
                      }
@@ -1279,8 +1040,7 @@
             modalBody.innerHTML = content;
             modal.style.display = "flex";
         }
-
-        function adjustPlaceholder() {
+        function adjustPlaceholder() { /* ... */
             const inputElement = document.getElementById('answer');
             if (!inputElement) return;
             const desktopBreakpoint = 1024;
@@ -1290,6 +1050,7 @@
                 inputElement.placeholder = '把答案打在這';
             }
         }
+
 
     </script>
 </body>
