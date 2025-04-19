@@ -383,11 +383,63 @@
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
         .answer-input-container[style*="hidden"], .bottom-buttons[style*="hidden"], .your-answer-label[style*="hidden"] { opacity: 0; visibility: hidden; transition: visibility 0s linear 0.3s, opacity 0.3s ease; }
 
-        /* --- REMOVED Swear Word Warning Modal Styles & Shake Animation --- */
+        /* === Enhanced Player Name & Leaderboard Styles === */
+.player-input{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-bottom:24px;
+}
+.player-input input{
+    width: 100%;
+    padding:10px 16px;
+    font-size:1rem;
+    border:1px solid var(--border-secondary);
+    border-radius:8px;
+    background-color:var(--bg-secondary);
+    color:var(--text-primary);
+    transition:border-color .3s ease,box-shadow .3s ease;
+}
+.player-input input:focus{
+    border-color:var(--accent-blue);
+    box-shadow:0 0 0 3px var(--focus-ring);
+    outline:none;
+}
 
-        /* --- REMOVED @media (prefers-color-scheme: dark) --- */
-        /* The dark mode styles are now handled by the body.dark-mode class */
-
+.leaderboard{
+    width:100%;
+    max-width:400px;
+    margin:0 auto 36px;
+    background-color:var(--bg-secondary);
+    border:1px solid var(--border-primary);
+    border-radius:12px;
+    box-shadow:0 2px 6px var(--shadow-color);
+    padding:20px;
+}
+.leaderboard h3{
+    margin-bottom:12px;
+    font-size:1.2rem;
+    font-weight:600;
+    color:var(--heading-color);
+}
+.leaderboard ol{
+    padding-left:0;
+    margin:0;
+}
+.leaderboard li{
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    font-size:1rem;
+    color:var(--text-primary);
+    border-bottom:1px solid var(--border-primary);
+}
+.leaderboard li:last-child{border-bottom:none;}
     </style>
 </head>
 <body onload="init();">
@@ -402,6 +454,13 @@
         </button>
 
         <div class="start-title">Parasitology</div>
+          <div class="leaderboard" style="margin-bottom:32px;">
+            <h3 style="text-align:center;">排行榜 (Top 10)</h3>
+            <ol id="boardList" style="list-style:decimal inside; padding:0;"></ol>
+          </div>
+          <div class="player-input" style="text-align:center;">
+            <input type="text" id="playerName" placeholder="輸入玩家名稱">
+          </div>
         <button id="startGame" class="start-button">開始吧</button>
         <div class="footer">
           <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往舊版</a> ｜
@@ -463,8 +522,34 @@
 
     <!-- REMOVED Swear Word Warning Modal HTML -->
 
-    <script>
-        // --- Game Variables (Keep Existing) ---
+    <script type="module">
+        const firebaseConfig = {
+        apiKey: "AIzaSyAjvO8nSRkKXUp7gopj-X7QsOGRBHTxj1s",
+        authDomain: "jedieason-trivia.firebaseapp.com",
+        databaseURL: "https://jedieason-trivia-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "jedieason-trivia",
+        storageBucket: "jedieason-trivia.firebasestorage.app",
+        messagingSenderId: "379460583179",
+        appId: "1:379460583179:web:c9d36892128bb0ac066c0e",
+        measurementId: "G-5NK671LL2Z"
+        };
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAnalytics }  from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
+        import {
+        getDatabase,
+        ref,
+        set,
+        get,
+        query,
+        orderByChild,
+        limitToLast
+        } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+        // import { getAuth, signInAnonymously } from "firebase/auth";
+
+        const app       = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db        = getDatabase(app);
+        window.currentPlayer = "匿名";   // 預設玩家名稱
         var TIME = 31;
         var numOfProbs;
         var tm;
@@ -476,6 +561,7 @@
         var total = 0;
         var viewing = false;
         var done;
+        var score = 0;
         var correctList = [];
         var wrongList = [];
         const lowerCaseSwearWords = [
@@ -516,6 +602,7 @@
             dayNightIcon.classList.add('day');
             dayNightIcon.classList.remove('rotate'); // Reset rotation
         }
+        window.init = init;
 
         // Function to render the moon SVG
         function renderMoon() {
@@ -600,11 +687,94 @@
                  document.documentElement.style.setProperty('--toggle-moon-mask', bodyStyles.getPropertyValue('--bg-primary'));
              });
         }
+                // —— 1. 寫入最終分數 ——
+        function writeScore(finalScore) {
+        const name = window.currentPlayer || "匿名";
+        return set(
+            ref(db, `leaderboard/${encodeURIComponent(name)}`),
+            {
+            name,
+            score:     finalScore,
+            timestamp: Date.now()
+            }
+        );
+        }
 
+        // —— 2. 讀前 10 名並顯示 ——
+        async function fetchLeaderboard() {
+        const listEl = document.getElementById("boardList");
+        listEl.innerHTML = '<li>載入中…</li>';
+
+        const q = query(
+            ref(db, 'leaderboard'),
+            orderByChild('score'),
+            limitToLast(10)
+        );
+
+        try {
+            const snap = await get(q);
+            const data = snap.val() || {};
+            const arr  = Object.values(data).sort((a,b)=>b.score-a.score);
+
+            listEl.innerHTML = '';
+            arr.forEach(item=>{
+            const li = document.createElement('li');
+            li.textContent = `${item.name}：${item.score}`;
+            listEl.appendChild(li);
+            });
+        } catch (err) {
+            console.error("讀排行榜失敗：", err);
+            listEl.innerHTML = '<li>讀取失敗</li>';
+        }
+        }
+
+        // —— 3. 答題中只更新畫面 ——
+        function updateCorrect() {
+        correct++;
+        score += 2;
+        document.getElementById("correct").innerText = correct;
+        }
+        function updateWrong() {
+        wrong++;
+        score -= 2;
+        document.getElementById("wrong").innerText = wrong;
+        }
+        function updateUnknown(){
+            wrong++;          // 仍算在錯誤次數
+            score -= 1;
+            document.getElementById("wrong").innerText = wrong;
+        }
+
+        // —— 4. 全部答完再寫入 DB 並重置 ——
+        function checkCompletion() {
+        if (!done.every(x=>x)) return;
+
+        const finalScore = score;
+        writeScore(finalScore)
+            .then(()=>{
+            fetchLeaderboard();
+            alert(`恭喜你完成！最終分數：${finalScore}，排行榜已更新 🎉`);
+            done.fill(false);
+            correct = 0; wrong = 0; total = 0; score = 0; score = 0;
+            document.getElementById("correct").innerText = 0;
+            document.getElementById("wrong").innerText = 0;
+            })
+            .catch(err=>{
+            console.error("寫入分數失敗：", err);
+            alert("寫入排行榜失敗，請稍後再試。");
+            });
+        }
         // --- Original init() function ---
         function init() {
             // Initialize Day/Night Toggle first
             initDayNightToggle();
+            // 讀取先前儲存的玩家名稱（若有）
+            const savedName = localStorage.getItem("parasite_player_name");
+            if (savedName) {
+                const nameField = document.getElementById("playerName");
+                if (nameField) nameField.value = savedName;
+            }
+            fetchLeaderboard();
 
             // Original init logic
             $(document).ready(function () {
@@ -618,14 +788,21 @@
 
                             var btn = document.getElementById("startGame");
                             var startHandler = function () {
-                                document.querySelector('.start-screen').style.display = 'none';
+                            const nameInput = document.getElementById("playerName").value.trim();
+                            if (!nameInput) {
+                                alert("請先輸入玩家名稱！");
+                                document.getElementById("playerName").focus();
+                                return;                       // 停止，不能開始遊戲
+                            }
+                            window.currentPlayer = nameInput; // 必須有名稱才能開始
+                            localStorage.setItem("parasite_player_name", nameInput);   // 記住玩家名稱
                                 document.querySelector('.flashcard-container').style.display = 'flex';
                                 document.removeEventListener("keypress", enterPressStart);
                                 // Hide toggle button when game starts (optional, could also just leave it)
                                 // dayNightToggle.style.display = 'none';
                                 state = 1;
                                 done = new Array(numOfProbs).fill(false);
-                                correct = 0; wrong = 0; total = 0;
+                                correct = 0; wrong = 0; total = 0; score = 0; score = 0;
                                 document.getElementById("correct").innerHTML = correct;
                                 document.getElementById("wrong").innerHTML = wrong;
                                 correctList = []; wrongList = [];
@@ -787,14 +964,6 @@
             const normalizedInput = input.trim().toLowerCase();
             return ansArr.some(ans => ans.trim().toLowerCase() === normalizedInput);
         }
-        function updateCorrect() { /* ... */
-            correct++; document.getElementById("correct").innerHTML = correct;
-            if (data[x]) correctList.push(data[x]);
-        }
-        function updateWrong() { /* ... */
-             wrong++; document.getElementById("wrong").innerHTML = wrong;
-             if (data[x]) wrongList.push(data[x]);
-        }
         function submitUserAnswer() { /* ... */
             var userAnswerRaw = document.getElementById("answer").value;
             var lowerUserAnswer = userAnswerRaw.trim().toLowerCase();
@@ -853,7 +1022,7 @@
 
             showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
             showExplanation();
-            updateWrong();
+            updateUnknown();
 
             total++;
             checkCompletion();
@@ -956,14 +1125,6 @@
             document.getElementById("showExplanation").innerHTML = "";
             document.getElementById("showExplanation").style.display = "none";
         }
-        function checkCompletion() { /* ... */
-            const allDone = done.every(status => status === true);
-             if (allDone) {
-                 alert("恭喜你完成了！🎉重新開始吧嘿嘿！！");
-                 done.fill(false);
-                 total = 0;
-             }
-        }
         function pickNewImage() { /* ... */
              const availableIndices = [];
             for (let i = 0; i < numOfProbs; i++) {
@@ -973,8 +1134,12 @@
             if (availableIndices.length === 0) {
                 console.warn("All questions shown, restarting cycle.");
                 checkCompletion();
-                for (let i = 0; i < numOfProbs; i++) if (!done[i]) availableIndices.push(i);
-                if (availableIndices.length === 0) return -1;
+                // Reset all questions as unfinished immediately
+                done.fill(false);
+                // Repopulate with every index
+                for (let i = 0; i < numOfProbs; i++) {
+                    availableIndices.push(i);
+                }
             }
 
             const randomIndex = Math.floor(Math.random() * availableIndices.length);
