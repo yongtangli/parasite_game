@@ -453,12 +453,17 @@
 }
 .leaderboard li:last-child{border-bottom:none;}
 
-.leaderboard:hover,
-.leaderboard.expanded {
+ .leaderboard.expanded {
+     max-height: 500px;
+ }
+ .leaderboard.expanded::after {
+     display: none;
+ }
+/* Expand leaderboard on hover */
+.leaderboard:hover {
     max-height: 500px;
 }
-.leaderboard:hover::after,
-.leaderboard.expanded::after {
+.leaderboard:hover::after {
     display: none;
 }
   /* Tooltip for contribution prompt */
@@ -621,11 +626,24 @@
         orderByChild,
         limitToLast
         } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
-        // import { getAuth, signInAnonymously } from "firebase/auth";
+        import {
+        getAuth,
+        signInAnonymously,
+        onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
         const app       = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const db        = getDatabase(app);
+        const auth = getAuth(app);
+        signInAnonymously(auth).catch(err => console.error("匿名登入失敗：", err));
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                window.currentUserUid = user.uid;
+            } else {
+                window.currentUserUid = null;
+            }
+        });
         window.currentPlayer = "匿名";   // 預設玩家名稱
         var TIME = 31;
         var numOfProbs;
@@ -766,8 +784,9 @@
         }
                 // —— 1. 寫入最終分數 ——
         async function writeScore(finalScore) {
-            const name = window.currentPlayer || "匿名";
-            const scoreRef = ref(db, `leaderboard/${encodeURIComponent(name)}`);
+        const uid = window.currentUserUid;
+        if (!uid) throw new Error("使用者尚未登入");
+        const scoreRef = ref(db, `leaderboard/${uid}`);
             try {
                 // 先讀取現有分數
                 const snap = await get(scoreRef);
@@ -776,7 +795,7 @@
                 const newScore = prevScore + finalScore;
                 // 更新累加後的分數與時間戳
                 await set(scoreRef, {
-                    name,
+                    name: window.currentPlayer,
                     score: newScore,
                     timestamp: Date.now()
                 });
@@ -809,9 +828,9 @@
                 li.textContent = `${item.name}：${item.score}`;
                 listEl.appendChild(li);
             });
-            const currentPlayer = window.currentPlayer || "匿名";
-            // 確認使用者分數，若不存在則新增使用者
-            const playerRef = ref(db, `leaderboard/${encodeURIComponent(currentPlayer)}`);
+            const uid = window.currentUserUid;
+            if (!uid) return;
+            const playerRef = ref(db, `leaderboard/${uid}`);
             const playerSnap = await get(playerRef);
             let playerScore = 0;
             if (playerSnap.exists()) {
@@ -833,25 +852,28 @@
         // —— 3. 答題中只更新畫面 ——
         function updateCorrect() {
         correct++;
-        score += 2;
         document.getElementById("correct").innerText = correct;
+        score += 2;
+        if (data && data[x]) correctList.push(data[x]);
         updateScoreDisplay();
         writeScore(2).catch(err => console.error("寫入分數失敗：", err));
         }
         function updateWrong() {
         wrong++;
-        score -= 2;
         document.getElementById("wrong").innerText = wrong;
+        score -= 2;
+        if (data && data[x]) wrongList.push(data[x]);
         updateScoreDisplay();
         writeScore(-2).catch(err => console.error("寫入分數失敗：", err));
         }
         function updateUnknown(){
-            wrong++;          // 仍算在錯誤次數
-            score -= 1;
-            document.getElementById("wrong").innerText = wrong;
-            updateScoreDisplay();
-            writeScore(-1).catch(err => console.error("寫入分數失敗：", err));
-        }
+    wrong++;
+    document.getElementById("wrong").innerText = wrong;
+    score -= 1;
+    updateScoreDisplay();
+    if (data && data[x]) wrongList.push(data[x]);
+    writeScore(-1).catch(err => console.error("寫入分數失敗：", err));
+}
 
         // —— 4. 全部答完再寫入 DB 並重置 ——
         function checkCompletion() {
@@ -862,14 +884,6 @@
             // 完成後隱藏「下一題」按鈕
             const nextBtn = document.getElementById('next');
             if (nextBtn) nextBtn.style.display = 'none';
-            // 重設遊戲計數
-            done.fill(false);
-            correct = 0;
-            wrong = 0;
-            total = 0;
-            score = 0;
-            document.getElementById("correct").innerText = 0;
-            document.getElementById("wrong").innerText = 0;
         }
         // --- Original init() function ---
         function init() {
@@ -1044,11 +1058,11 @@
         }
         function startGame() { /* ... */
             document.addEventListener("keydown", enterKeyEvent);
-            document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
-            document.getElementById("dontKnow").addEventListener("click", showAnswer);
-            document.getElementById("next").addEventListener("click", nextProb);
-            document.getElementById('wrongArea').addEventListener('click', showWrongList);
-            document.getElementById('correctArea').addEventListener('click', showCorrectList);
+    document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
+    document.getElementById("dontKnow").addEventListener("click", showAnswer);
+    document.getElementById("correctArea").addEventListener("click", showCorrectList);
+    document.getElementById("wrongArea").addEventListener("click", showWrongList);
+    document.getElementById("next").addEventListener("click", nextProb);
             document.getElementById('closeModal').addEventListener('click', function() {
                 document.getElementById('modal').style.display = "none";
             });
@@ -1202,6 +1216,10 @@
         function updateScoreDisplay() {
   const scoreDisplay = document.getElementById("score-display");
   if (scoreDisplay) scoreDisplay.textContent = score;
+  const correctEl = document.getElementById("correct");
+  if (correctEl) correctEl.textContent = correct;
+  const wrongEl = document.getElementById("wrong");
+  if (wrongEl) wrongEl.textContent = wrong;
 }
         function submitContribution() { /* ... */
              const explanationInput = document.getElementById('explanation-input');
@@ -1243,6 +1261,8 @@
         }
         window.submitContribution = submitContribution;
         function nextProb() { /* ... */
+            // 檢查是否已答完所有題目，如果是，則不換題
+            if (done.every(d => d)) return;
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
             document.querySelector('.bottom-buttons').style.visibility = 'visible';
@@ -1351,8 +1371,19 @@
 // 顯示自訂 Alert Modal
 function showAlertModal(message) {
   const modal = document.getElementById('alertModal');
-  document.getElementById('alertModalBody').textContent = message;
+  const body = document.getElementById('alertModalBody');
+  // 顯示訊息並設定樣式
+  body.textContent = message;
   modal.style.display = 'flex';
+  modal.style.opacity = '1';
+  modal.style.transition = 'opacity 0.5s ease';
+  // 3秒後淡出並隱藏
+  setTimeout(() => {
+    modal.style.opacity = '0';
+    setTimeout(() => {
+      modal.style.display = 'none';
+    }, 500);
+  }, 3000);
 }
 window.showAlertModal = showAlertModal;
 
