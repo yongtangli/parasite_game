@@ -357,7 +357,7 @@
             position: absolute; top: 13px; right: 20px; font-size: 2rem; font-weight: 300; color: var(--text-secondary);
             cursor: pointer; line-height: 1; transition: color 0.3s ease, transform 0.3s ease;
         }
-        .close:hover { color: var(--accent-blue-hover); transform: rotate(90deg); }
+        .close:hover { color: var(--accent-blue-hover); transform: rotate(90deg);}
         .modal-content h2 {
             font-size: 1.5rem; margin-bottom: 20px; color: var(--heading-color); font-weight: 600;
             border-bottom: 1px solid var(--border-primary); padding-bottom: 10px;
@@ -415,12 +415,22 @@
     border:1px solid var(--border-primary);
     border-radius:12px;
     box-shadow:0 2px 6px var(--shadow-color);
-    padding:20px;
+    padding:20px 20px 0;
     max-height: 250px;
     overflow: hidden;
     transition: max-height 0.5s ease;
     cursor: pointer;
     position: relative;
+}
+.leaderboard::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    pointer-events: none;
+    background: linear-gradient(transparent, var(--bg-secondary));
 }
 .leaderboard h3{
     margin-bottom:12px;
@@ -443,22 +453,12 @@
 }
 .leaderboard li:last-child{border-bottom:none;}
 
-.leaderboard:hover {
-    max-height: 460px;
+.leaderboard:hover,
+.leaderboard.expanded {
+    max-height: 500px;
 }
-
-.leaderboard::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    pointer-events: none;
-    background: linear-gradient(transparent, var(--bg-secondary));
-}
-
-.leaderboard:hover::after {
+.leaderboard:hover::after,
+.leaderboard.expanded::after {
     display: none;
 }
   /* Tooltip for contribution prompt */
@@ -780,6 +780,7 @@
                     score: newScore,
                     timestamp: Date.now()
                 });
+                return newScore;
             } catch (err) {
                 console.error("寫入分數失敗：", err);
                 throw err;
@@ -881,6 +882,13 @@
                 if (nameField) nameField.value = savedName;
             }
             fetchLeaderboard();
+            // Toggle leaderboard expansion on click
+            const leaderboardEl = document.querySelector('.leaderboard');
+            if (leaderboardEl) {
+                leaderboardEl.addEventListener('click', function() {
+                    this.classList.toggle('expanded');
+                });
+            }
 
             // Original init logic
             $(document).ready(function () {
@@ -1225,9 +1233,13 @@
 
             console.log("Sending content:", content);
             sendToGoogleDocs(content);
-            score += 10;
-            updateScoreDisplay();
-            writeScore(10).catch(err => console.error("寫入分數失敗：", err));
+            writeScore(10)
+              .then(newScore => {
+                score = newScore;
+                updateScoreDisplay();
+                showAlertModal(`賺了10分！目前分數：${newScore}`);
+              })
+              .catch(err => console.error("寫入分數失敗：", err));
         }
         window.submitContribution = submitContribution;
         function nextProb() { /* ... */
