@@ -51,7 +51,6 @@
             --shadow-color: rgba(0, 0, 0, 0.07);
             --focus-ring: rgba(109, 138, 150, 0.15);
             --modal-bg: #FDFBF8;
-            --modal-overlay: rgba(249, 247, 243, 0.75); /* 淺色遮罩 */
             --card-answer-bg: rgba(249, 247, 243, 0.85); /* 淺色答案背景 */
             --toggle-icon-color: #2C3E50; /* Toggle 圖示顏色 */
             --toggle-moon-mask: #F9F7F3; /* 月亮遮罩顏色 (需與背景相同) */
@@ -79,7 +78,6 @@
             --shadow-color: rgba(0, 0, 0, 0.3);
             --focus-ring: rgba(122, 160, 178, 0.3);
             --modal-bg: #2a2a2a;
-            --modal-overlay: rgba(18, 18, 18, 0.75); /* 深色遮罩 */
             --card-answer-bg: rgba(42, 42, 42, 0.9); /* 深色答案背景 */
             --toggle-icon-color: #e0e0e0; /* 深色模式下的圖示顏色 */
             --toggle-moon-mask: #1e1e1e; /* 深色模式月亮遮罩 (需與背景相同) */
@@ -95,7 +93,7 @@
             padding-bottom: 5px;
             transition: color 0.4s ease;
         }
-        .start-title { font-size: 2.8rem; margin-bottom: 40px; }
+        .start-title { font-size: 2.8rem; margin-bottom: 30px; }
         .flashcard-title { font-size: 1.8rem; margin-bottom: 15px; }
 
         /* --- 啟動畫面 --- */
@@ -296,7 +294,7 @@
         #showAnswer strong[style*="#EF4444"] { color: var(--accent-red) !important; }
         #showAnswer strong[style*="#F59E0B"] { color: var(--accent-orange) !important; }
 
-        #showExplanation { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-top: 5px; max-height: 100px; overflow-y: auto; transition: color 0.4s ease;}
+        #showExplanation { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-top: 5px; max-height: 100px; overflow-y: auto; overflow: visible; transition: color 0.4s ease;}
         #showExplanation strong { font-weight: 600; color: var(--text-primary); transition: color 0.4s ease;}
         #showExplanation .contribute-link { color: var(--accent-blue); cursor: pointer; text-decoration: underline; font-weight: 500; margin-left: 5px; transition: color 0.3s ease; }
         #showExplanation .contribute-link:hover { color: var(--accent-blue-hover); }
@@ -342,7 +340,6 @@
         /* 彈出視窗 (Modal) */
         .modal {
             display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
-            background-color: var(--modal-overlay);
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
             justify-content: center; align-items: center; opacity: 0; animation: fadeInModal 0.4s ease forwards;
             transition: background-color 0.4s ease;
@@ -357,7 +354,7 @@
         }
          @keyframes scaleUpModal { from { transform: scale(0.95); opacity: 0;} to { transform: scale(1); opacity: 1;} }
         .close {
-            position: absolute; top: 15px; right: 20px; font-size: 2rem; font-weight: 300; color: var(--text-secondary);
+            position: absolute; top: 13px; right: 20px; font-size: 2rem; font-weight: 300; color: var(--text-secondary);
             cursor: pointer; line-height: 1; transition: color 0.3s ease, transform 0.3s ease;
         }
         .close:hover { color: var(--accent-blue-hover); transform: rotate(90deg); }
@@ -413,12 +410,17 @@
 .leaderboard{
     width:100%;
     max-width:400px;
-    margin:0 auto 36px;
+    margin:0 0 20px;
     background-color:var(--bg-secondary);
     border:1px solid var(--border-primary);
     border-radius:12px;
     box-shadow:0 2px 6px var(--shadow-color);
     padding:20px;
+    max-height: 250px;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    cursor: pointer;
+    position: relative;
 }
 .leaderboard h3{
     margin-bottom:12px;
@@ -440,6 +442,75 @@
     border-bottom:1px solid var(--border-primary);
 }
 .leaderboard li:last-child{border-bottom:none;}
+
+.leaderboard:hover {
+    max-height: 460px;
+}
+
+.leaderboard::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    pointer-events: none;
+    background: linear-gradient(transparent, var(--bg-secondary));
+}
+
+.leaderboard:hover::after {
+    display: none;
+}
+  /* Tooltip for contribution prompt */
+  .tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-22%);
+    background-color: #000;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 3000;
+  }
+  .tooltip-arrow {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-22%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #000;
+  }
+  #no-explanation-message .tooltip {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#no-explanation-message:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+/* 遮罩層 */
+.alert-modal {
+  display: none;          /* 預設隱藏 */
+  background-color: var(--modal-bg);
+  color: var(--text-primary);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  translate: -50%;
+}
     </style>
 </head>
 <body onload="init();">
@@ -454,7 +525,7 @@
         </button>
 
         <div class="start-title">Parasitology</div>
-          <div class="leaderboard" style="margin-bottom:32px;">
+          <div class="leaderboard">
             <h3 style="text-align:center;">排行榜 (Top 10)</h3>
             <ol id="boardList" style="list-style:decimal inside; padding:0;"></ol>
           </div>
@@ -479,6 +550,10 @@
             <div class="progress-item" id="wrongArea">
                 <span class="progress-number-orange" id="wrong">0</span>
                 <span>錯誤</span>
+            </div>
+            <div class="progress-item" style="border:none; cursor:default;">
+                <span>目前分數：</span>
+                <span id="score-display">0</span>
             </div>
             <div class="progress-item" id="correctArea">
                 <span>正確</span>
@@ -519,9 +594,11 @@
             <div id="modalBody"></div>
         </div>
     </div>
-
-    <!-- REMOVED Swear Word Warning Modal HTML -->
-
+<!-- Generic Alert Modal -->
+<div id="alertModal" class="alert-modal" style="display: none;">
+      <span class="close" onclick="closeAlertModal()">×</span>
+      <div id="alertModalBody"></div>
+  </div>
     <script type="module">
         const firebaseConfig = {
         apiKey: "AIzaSyAjvO8nSRkKXUp7gopj-X7QsOGRBHTxj1s",
@@ -688,16 +765,25 @@
              });
         }
                 // —— 1. 寫入最終分數 ——
-        function writeScore(finalScore) {
-        const name = window.currentPlayer || "匿名";
-        return set(
-            ref(db, `leaderboard/${encodeURIComponent(name)}`),
-            {
-            name,
-            score:     finalScore,
-            timestamp: Date.now()
+        async function writeScore(finalScore) {
+            const name = window.currentPlayer || "匿名";
+            const scoreRef = ref(db, `leaderboard/${encodeURIComponent(name)}`);
+            try {
+                // 先讀取現有分數
+                const snap = await get(scoreRef);
+                const prev = snap.val();
+                const prevScore = prev && typeof prev.score === 'number' ? prev.score : 0;
+                const newScore = prevScore + finalScore;
+                // 更新累加後的分數與時間戳
+                await set(scoreRef, {
+                    name,
+                    score: newScore,
+                    timestamp: Date.now()
+                });
+            } catch (err) {
+                console.error("寫入分數失敗：", err);
+                throw err;
             }
-        );
         }
 
         // —— 2. 讀前 10 名並顯示 ——
@@ -718,10 +804,25 @@
 
             listEl.innerHTML = '';
             arr.forEach(item=>{
-            const li = document.createElement('li');
-            li.textContent = `${item.name}：${item.score}`;
-            listEl.appendChild(li);
+                const li = document.createElement('li');
+                li.textContent = `${item.name}：${item.score}`;
+                listEl.appendChild(li);
             });
+            const currentPlayer = window.currentPlayer || "匿名";
+            // 確認使用者分數，若不存在則新增使用者
+            const playerRef = ref(db, `leaderboard/${encodeURIComponent(currentPlayer)}`);
+            const playerSnap = await get(playerRef);
+            let playerScore = 0;
+            if (playerSnap.exists()) {
+                const playerData = playerSnap.val();
+                playerScore = typeof playerData.score === "number" ? playerData.score : 0;
+            } else {
+                await set(playerRef, { name: currentPlayer, score: 0, timestamp: Date.now() });
+                playerScore = 0;
+            }
+            const scoreDisplay = document.getElementById("score-display");
+            if (scoreDisplay) scoreDisplay.textContent = playerScore;
+            score = playerScore;
         } catch (err) {
             console.error("讀排行榜失敗：", err);
             listEl.innerHTML = '<li>讀取失敗</li>';
@@ -733,36 +834,41 @@
         correct++;
         score += 2;
         document.getElementById("correct").innerText = correct;
+        updateScoreDisplay();
+        writeScore(2).catch(err => console.error("寫入分數失敗：", err));
         }
         function updateWrong() {
         wrong++;
         score -= 2;
         document.getElementById("wrong").innerText = wrong;
+        updateScoreDisplay();
+        writeScore(-2).catch(err => console.error("寫入分數失敗：", err));
         }
         function updateUnknown(){
             wrong++;          // 仍算在錯誤次數
             score -= 1;
             document.getElementById("wrong").innerText = wrong;
+            updateScoreDisplay();
+            writeScore(-1).catch(err => console.error("寫入分數失敗：", err));
         }
 
         // —— 4. 全部答完再寫入 DB 並重置 ——
         function checkCompletion() {
-        if (!done.every(x=>x)) return;
-
-        const finalScore = score;
-        writeScore(finalScore)
-            .then(()=>{
-            fetchLeaderboard();
-            alert(`恭喜你完成！最終分數：${finalScore}，排行榜已更新 🎉`);
+            if (!done.every(x => x)) return;
+            const finalScore = score;
+            // 只顯示完成訊息，不再重複更新資料庫
+            showAlertModal(`恭喜你完成！最終分數：${finalScore} 🎉`);
+            // 完成後隱藏「下一題」按鈕
+            const nextBtn = document.getElementById('next');
+            if (nextBtn) nextBtn.style.display = 'none';
+            // 重設遊戲計數
             done.fill(false);
-            correct = 0; wrong = 0; total = 0; score = 0; score = 0;
+            correct = 0;
+            wrong = 0;
+            total = 0;
+            score = 0;
             document.getElementById("correct").innerText = 0;
             document.getElementById("wrong").innerText = 0;
-            })
-            .catch(err=>{
-            console.error("寫入分數失敗：", err);
-            alert("寫入排行榜失敗，請稍後再試。");
-            });
         }
         // --- Original init() function ---
         function init() {
@@ -790,13 +896,14 @@
                             var startHandler = function () {
                             const nameInput = document.getElementById("playerName").value.trim();
                             if (!nameInput) {
-                                alert("請先輸入玩家名稱！");
+                                showAlertModal("請先輸入玩家名稱！");
                                 document.getElementById("playerName").focus();
                                 return;                       // 停止，不能開始遊戲
                             }
                             window.currentPlayer = nameInput; // 必須有名稱才能開始
                             localStorage.setItem("parasite_player_name", nameInput);   // 記住玩家名稱
-                                document.querySelector('.flashcard-container').style.display = 'flex';
+                            document.querySelector('.flashcard-container').style.display = 'flex';
+                            fetchLeaderboard();
                                 document.removeEventListener("keypress", enterPressStart);
                                 // Hide toggle button when game starts (optional, could also just leave it)
                                 // dayNightToggle.style.display = 'none';
@@ -818,14 +925,14 @@
 
                         } catch (error) {
                             console.error("Error processing CSV data:", error);
-                            alert("Failed to load or process game data.");
+                            showAlertModal("Failed to load or process game data.");
                             document.getElementById("startGame").disabled = true;
                             document.getElementById("startGame").textContent = "讀取錯誤";
                         }
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
                         console.error("Failed to load answersheet.csv:", textStatus, errorThrown);
-                        alert("無法讀取 answersheet.csv");
+                        showAlertModal("無法讀取 answersheet.csv");
                          document.getElementById("startGame").disabled = true;
                          document.getElementById("startGame").textContent = "讀取錯誤";
                     });
@@ -892,7 +999,7 @@
             .then(() => { console.log("Data likely sent successfully (no-cors mode)."); })
             .catch(error => {
                 console.error('Error sending data:', error);
-                alert('送出詳解時發生錯誤，請稍後再試。');
+                showAlertModal('送出詳解時發生錯誤，請稍後再試。');
                 if (submitButton) {
                     submitButton.disabled = false;
                     submitButton.classList.remove('loading');
@@ -1038,18 +1145,24 @@
                 expDiv.innerHTML = `<strong>偷偷告訴你為什麼：</strong>${sanitizedExplanation}`;
             } else {
                 expDiv.innerHTML = `
-                    <span id="no-explanation-message">
-                        <i>這題還沒有詳解⋯不過你可以</i><span class="contribute-link" onclick="showContributionInput()">貢獻一下！</span>
-                    </span>
-                    <div class="contribution-area" id="contribution-area" style="display: none;">
-                        <input id="explanation-input" placeholder="請輸入你的詳解⋯"></input>
-                        <button id="submit-explanation-button" onclick="submitContribution()">送出</button>
-                    </div>
-                `;
+        <div id="no-explanation-message" style="position: relative; display: inline-block;">
+            <i>這題還沒有詳解⋯不過你可以</i>
+            <span class="contribute-link" onclick="showContributionInput()">貢獻一下！</span>
+            <div class="tooltip">
+                提交詳解可獲得 10分，但亂填會被清除所有分數
+                <div class="tooltip-arrow"></div>
+            </div>
+            </div>
+      </div>
+      <div class="contribution-area" id="contribution-area" style="display: none;">
+        <input id="explanation-input" placeholder="請輸入你的詳解⋯"></input>
+        <button id="submit-explanation-button" onclick="submitContribution()">送出</button>
+      </div>
+  `;
             }
             expDiv.style.display = "block";
         }
-        function showContributionInput() { /* ... */
+        window.showContributionInput = function showContributionInput() { /* ... */
              const contribArea = document.getElementById('contribution-area');
             const noExplanationMsg = document.getElementById('no-explanation-message');
             if (contribArea) {
@@ -1078,19 +1191,23 @@
                 noExplanationMsg.innerHTML = '<i>感謝你的貢獻！</i>';
             }
         }
+        function updateScoreDisplay() {
+  const scoreDisplay = document.getElementById("score-display");
+  if (scoreDisplay) scoreDisplay.textContent = score;
+}
         function submitContribution() { /* ... */
              const explanationInput = document.getElementById('explanation-input');
             const explanation = explanationInput.value.trim();
             const submitButton = document.getElementById('submit-explanation-button');
 
             if (!explanation) {
-                alert("請輸入詳解內容！");
+                showAlertModal("請輸入詳解內容！");
                 explanationInput.focus();
                 return;
             }
 
             if (!data || data[x] === undefined) {
-                alert("無法獲取當前問題資料，無法送出。");
+                showAlertModal("無法獲取當前問題資料，無法送出。");
                 return;
             }
 
@@ -1108,7 +1225,11 @@
 
             console.log("Sending content:", content);
             sendToGoogleDocs(content);
+            score += 10;
+            updateScoreDisplay();
+            writeScore(10).catch(err => console.error("寫入分數失敗：", err));
         }
+        window.submitContribution = submitContribution;
         function nextProb() { /* ... */
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
@@ -1215,6 +1336,27 @@
                 inputElement.placeholder = '把答案打在這';
             }
         }
+// 顯示自訂 Alert Modal
+function showAlertModal(message) {
+  const modal = document.getElementById('alertModal');
+  document.getElementById('alertModalBody').textContent = message;
+  modal.style.display = 'flex';
+}
+window.showAlertModal = showAlertModal;
+
+// 關閉 Alert Modal
+function closeAlertModal() {
+  document.getElementById('alertModal').style.display = 'none';
+}
+window.closeAlertModal = closeAlertModal;
+
+// 點擊遮罩外側也能關閉
+window.addEventListener('click', function(event) {
+  const modal = document.getElementById('alertModal');
+  if (event.target === modal) {
+    closeAlertModal();
+  }
+});
 
 
     </script>
