@@ -8,7 +8,7 @@
     <link rel="icon" href="icon.png" type="image/png">
     <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js"></script>
-    <title>Parasite Quiz</title>
+    <title>寄蟲跑台</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         @font-face {
@@ -106,6 +106,10 @@
             transform: skewX(-20deg);
             animation: shine 2.5s infinite;
             filter: blur(4px);
+        }
+        body.dark-mode .start-title::before {
+            background: linear-gradient(to right, transparent, rgba(30,30,30,0.4), transparent);
+
         }
         .flashcard-title {
             font-size: 1.8rem;
@@ -937,7 +941,6 @@
             <button id="submitAnswer" class="answer-button">確定</button>
         </div>
     </div>
-
     <div id="modal" class="modal">
         <div class="modal-content">
             <span id="closeModal" class="close">×</span>
