@@ -1180,8 +1180,7 @@
                     const playerData = playerSnap.val();
                     playerScore = typeof playerData.score === "number" ? playerData.score : 0;
                 } else {
-                    await set(playerRef, { name: currentPlayer, score: 0, timestamp: Date.now() });
-                    playerScore = 0;
+                playerScore = 0;
                 }
                 const scoreDisplay = document.getElementById("score-display");
                 if (scoreDisplay) scoreDisplay.textContent = playerScore;
@@ -1249,7 +1248,7 @@
                             data = parseMultiAns(data);
 
                             var btn = document.getElementById("startGame");
-                            var startHandler = function () {
+                            var startHandler = async function () {
                                 const nameInput = document.getElementById("playerName").value.trim();
                                 if (!nameInput) {
                                     showAlertModal("請先輸入玩家名稱！");
@@ -1258,6 +1257,20 @@
                                 }
                                 window.currentPlayer = nameInput;
                                 localStorage.setItem("parasite_player_name", nameInput);
+                                // Initialize leaderboard entry for this user
+                                const uid = window.currentUserUid;
+                                if (uid) {
+                                    const playerRef = ref(db, `leaderboard/${uid}`);
+                                    try {
+                                        await set(playerRef, {
+                                            name: window.currentPlayer,
+                                            score: 0,
+                                            timestamp: Date.now()
+                                        });
+                                    } catch (err) {
+                                        console.error("初始化分數失敗：", err);
+                                    }
+                                }
                                 document.querySelector('.flashcard-container').style.display = 'flex';
                                 fetchLeaderboard();
                                 document.removeEventListener("keypress", enterPressStart);
