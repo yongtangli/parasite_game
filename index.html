@@ -92,6 +92,20 @@
         .start-title {
             font-size: 2.8rem;
             margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .start-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -30%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg);
+            animation: shine 2.5s infinite;
+            filter: blur(4px);
         }
         .flashcard-title {
             font-size: 1.8rem;
@@ -114,6 +128,16 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 10px var(--accent-blue); }
+            50%  { box-shadow: 0 0 20px var(--accent-blue-hover); }
+            100% { box-shadow: 0 0 10px var(--accent-blue); }
+        }
+
+        @keyframes shine {
+            0%   { left: -50%; }
+            100% { left: 150%; }
+        }
 
         .start-button {
             padding: 14px 35px;
@@ -126,6 +150,7 @@
             cursor: pointer;
             transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
             box-shadow: 0 2px 5px var(--shadow-color);
+            animation: pulse 2s ease-in-out infinite;
         }
         .start-button:hover {
             background-color: var(--accent-blue-hover);
@@ -762,13 +787,22 @@
             margin: 0;
         }
         .leaderboard li {
-            list-style: none;
             display: flex;
-            justify-content: space-between;
+            align-items: center;
             padding: 8px 0;
-            font-size: 1rem;
-            color: var(--text-primary);
             border-bottom: 1px solid var(--border-primary);
+        }
+        .leaderboard-rank {
+            width: 30px;
+            text-align: left;
+        }
+        .leaderboard-name {
+            flex: 1;
+            text-align: center;
+        }
+        .leaderboard-score {
+            width: 50px;
+            text-align: right;
         }
         .leaderboard li:last-child {
             border-bottom: none;
@@ -1114,9 +1148,24 @@
                 const arr  = Object.values(data).sort((a,b)=>b.score-a.score);
 
                 listEl.innerHTML = '';
-                arr.forEach(item=>{
+                arr.forEach((item, index) => {
                     const li = document.createElement('li');
-                    li.textContent = `${item.name}：${item.score}`;
+
+                    const rankSpan = document.createElement('span');
+                    rankSpan.className = 'leaderboard-rank';
+                    rankSpan.textContent = index + 1;
+
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'leaderboard-name';
+                    nameSpan.textContent = item.name;
+
+                    const scoreSpan = document.createElement('span');
+                    scoreSpan.className = 'leaderboard-score';
+                    scoreSpan.textContent = item.score;
+
+                    li.appendChild(rankSpan);
+                    li.appendChild(nameSpan);
+                    li.appendChild(scoreSpan);
                     listEl.appendChild(li);
                 });
                 const uid = window.currentUserUid;
