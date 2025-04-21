@@ -19,7 +19,6 @@
             font-display: swap;
         }
 
-        /* --- 基本和通用樣式 --- */
         * {
             margin: 0;
             padding: 0;
@@ -34,43 +33,41 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            /* 預設為淺色模式 */
-            --bg-primary: #F9F7F3; /* 淺米白 */
+            --bg-primary: #F9F7F3;
             --bg-secondary: #FFFFFF;
-            --text-primary: #404040; /* 深灰文字 */
+            --text-primary: #404040;
             --text-secondary: #666;
             --text-muted: #999;
             --heading-color: #383838;
             --border-primary: #EAEAEA;
             --border-secondary: #D8D8D8;
-            --accent-blue: #6D8A96; /* 主色調 - 藍灰 */
+            --accent-blue: #6D8A96;
             --accent-blue-hover: #5A7580;
-            --accent-green: #79A88F; /* 綠 */
-            --accent-orange: #D98C60; /* 橘 */
-            --accent-red: #C76D6D; /* 紅 */
+            --accent-green: #79A88F;
+            --accent-orange: #D98C60;
+            --accent-red: #C76D6D;
             --shadow-color: rgba(0, 0, 0, 0.07);
             --focus-ring: rgba(109, 138, 150, 0.15);
             --modal-bg: #FDFBF8;
-            --card-answer-bg: rgba(249, 247, 243, 0.85); /* 淺色答案背景 */
-            --toggle-icon-color: #2C3E50; /* Toggle 圖示顏色 */
-            --toggle-moon-mask: #F9F7F3; /* 月亮遮罩顏色 (需與背景相同) */
+            --card-answer-bg: rgba(249, 247, 243, 0.85);
+            --toggle-icon-color: #2C3E50;
+            --toggle-moon-mask: #F9F7F3;
 
             background-color: var(--bg-primary);
             color: var(--text-primary);
-            transition: background-color 0.4s ease, color 0.4s ease; /* 主題切換過渡 */
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* 深色模式變數 */
         body.dark-mode {
-            --bg-primary: #1e1e1e; /* 深灰背景 */
+            --bg-primary: #1e1e1e;
             --bg-secondary: #2a2a2a;
-            --text-primary: #e0e0e0; /* 淺灰文字 */
+            --text-primary: #e0e0e0;
             --text-secondary: #a0a0a0;
             --text-muted: #757575;
             --heading-color: #e0e0e0;
             --border-primary: #383838;
             --border-secondary: #505050;
-            --accent-blue: #7aa0b2; /* 深色模式主色調 */
+            --accent-blue: #7aa0b2;
             --accent-blue-hover: #95b9cd;
             --accent-green: #87c7a8;
             --accent-orange: #eaa67a;
@@ -78,12 +75,11 @@
             --shadow-color: rgba(0, 0, 0, 0.3);
             --focus-ring: rgba(122, 160, 178, 0.3);
             --modal-bg: #2a2a2a;
-            --card-answer-bg: rgba(42, 42, 42, 0.9); /* 深色答案背景 */
-            --toggle-icon-color: #e0e0e0; /* 深色模式下的圖示顏色 */
-            --toggle-moon-mask: #1e1e1e; /* 深色模式月亮遮罩 (需與背景相同) */
+            --card-answer-bg: rgba(42, 42, 42, 0.9);
+            --toggle-icon-color: #e0e0e0;
+            --toggle-moon-mask: #1e1e1e;
         }
 
-        /* 標題 */
         .flashcard-title, .start-title {
             font-family: "Germgoth", serif;
             color: var(--heading-color);
@@ -93,10 +89,15 @@
             padding-bottom: 5px;
             transition: color 0.4s ease;
         }
-        .start-title { font-size: 2.8rem; margin-bottom: 30px; }
-        .flashcard-title { font-size: 1.8rem; margin-bottom: 15px; }
+        .start-title {
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+        }
+        .flashcard-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
 
-        /* --- 啟動畫面 --- */
         .start-screen {
             width: 100%;
             height: 100%;
@@ -107,16 +108,19 @@
             padding: 20px;
             opacity: 0;
             animation: fadeIn 0.8s ease-out forwards;
-            position: relative; /* 為了定位 Toggle 按鈕 */
+            position: relative;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         .start-button {
             padding: 14px 35px;
             font-size: 1.1rem;
             font-weight: 500;
             background-color: var(--accent-blue);
-            color: var(--bg-secondary); /* Use background color for contrast */
+            color: var(--bg-secondary);
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -128,9 +132,11 @@
             box-shadow: 0 4px 8px var(--shadow-color);
             transform: translateY(-2px);
         }
-        .start-button:active { transform: translateY(0); box-shadow: 0 1px 3px var(--shadow-color); }
+        .start-button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
 
-        /* 頁腳 */
         .footer {
             position: absolute;
             bottom: 15px;
@@ -145,34 +151,39 @@
             text-decoration: none;
             transition: color 0.3s ease;
         }
-        .footer a:hover { color: var(--accent-blue-hover); text-decoration: none; }
+        .footer a:hover {
+            color: var(--accent-blue-hover);
+            text-decoration: none;
+        }
 
-        /* --- Day/Night Toggle Button Styles (New) --- */
         .day-night-toggle {
-            position: absolute; /* 相對於 .start-screen 定位 */
+            position: absolute;
             top: 20px;
             right: 20px;
-            padding: 8px; /* 微調 padding */
+            padding: 8px;
             background-color: transparent;
             border: none;
             cursor: pointer;
-            border-radius: 50%; /* 圓形按鈕 */
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 10; /* 確保在最上層 */
+            z-index: 10;
             transition: transform 0.3s ease;
         }
-        .day-night-toggle:focus { outline: none; }
-        .day-night-toggle:hover { transform: scale(1.1); }
+        .day-night-toggle:focus {
+            outline: none;
+        }
+        .day-night-toggle:hover {
+            transform: scale(1.1);
+        }
 
         .toggle-icon {
-            width: 32px; /* 調整圖示大小 */
+            width: 32px;
             height: 32px;
-            overflow: visible; /* 確保旋轉時完整顯示 */
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* 平滑旋轉 */
+            overflow: visible;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* 太陽/月亮圖示顏色 */
         .toggle-icon .icon-shape {
             fill: var(--toggle-icon-color);
             transition: fill 0.4s ease;
@@ -184,27 +195,33 @@
             transition: stroke 0.4s ease, opacity 0.5s ease;
         }
         .toggle-icon .moon-mask {
-            fill: var(--toggle-moon-mask); /* 使用變數，以便主題切換 */
-            transition: fill 0.4s ease; /* Mask 顏色也需過渡 */
+            fill: var(--toggle-moon-mask);
+            transition: fill 0.4s ease;
         }
 
-        /* 旋轉動畫 */
         .toggle-icon.rotate {
             transform: rotate(180deg);
         }
-        /* 顯示/隱藏元素 (用於太陽光芒和月亮遮罩) */
-        .toggle-icon .sun-rays { opacity: 1; transition: opacity 0.5s 0.1s ease; } /* 淡入 */
-        .toggle-icon .moon-group { opacity: 1; transition: opacity 0.5s 0.1s ease; }
+        .toggle-icon .sun-rays {
+            opacity: 1;
+            transition: opacity 0.5s 0.1s ease;
+        }
+        .toggle-icon .moon-group {
+            opacity: 1;
+            transition: opacity 0.5s 0.1s ease;
+        }
 
-        .toggle-icon.night .sun-rays { opacity: 0; }
-        .toggle-icon.day .moon-group { opacity: 0; }
+        .toggle-icon.night .sun-rays {
+            opacity: 0;
+        }
+        .toggle-icon.day .moon-group {
+            opacity: 0;
+        }
 
-
-        /* --- 遊戲畫面 --- */
         .flashcard-container {
             width: 100%;
             height: 100%;
-            display: none; /* Initially hidden */
+            display: none;
             flex-direction: column;
             background-color: var(--bg-primary);
             padding: 25px;
@@ -213,319 +230,617 @@
             margin: 0 auto;
             opacity: 0;
             animation: fadeIn 0.6s 0.2s ease-out forwards;
-            transition: background-color 0.4s ease; /* 主題切換 */
+            transition: background-color 0.4s ease;
         }
-        /* 進度條區域 */
-        .progress { display: flex; justify-content: space-between; margin-bottom: 18px; gap: 15px; }
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            gap: 15px;
+        }
         .progress-item {
-            display: flex; align-items: center; padding: 8px 15px; border-radius: 20px; font-size: 0.95rem;
-            font-weight: 500; background-color: transparent; color: var(--text-secondary); cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            background-color: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
             transition: color 0.3s ease, transform 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
             border: 1px solid var(--border-primary);
         }
-        .progress-item:hover { background-color: var(--bg-secondary); border-color: var(--border-secondary); transform: scale(1.03); }
-        .progress-number-orange { margin-right: 8px; color: var(--accent-orange); font-weight: 600; font-size: 1rem; }
-        .progress-number-green { margin-left: 8px; color: var(--accent-green); font-weight: 600; font-size: 1rem; }
+        .progress-item:hover {
+            background-color: var(--bg-secondary);
+            border-color: var(--border-secondary);
+            transform: scale(1.03);
+        }
+        .progress-number-orange {
+            margin-right: 8px;
+            color: var(--accent-orange);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .progress-number-green {
+            margin-left: 8px;
+            color: var(--accent-green);
+            font-weight: 600;
+            font-size: 1rem;
+        }
 
-        /* 圖片區域 */
         .card-content {
-            position: relative; flex-grow: 1; display: flex; justify-content: center; align-items: center;
-            overflow: hidden; margin-bottom: 20px; border-radius: 10px; background-color: var(--bg-secondary);
-            box-shadow: 0 4px 15px var(--shadow-color); border: 1px solid var(--border-primary);
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            background-color: var(--bg-secondary);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            border: 1px solid var(--border-primary);
             transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
         }
         .loading-screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(var(--bg-secondary-rgb, 255, 255, 255), 0.9); /* Use RGB for opacity */
-            display: flex; justify-content: center; align-items: center; z-index: 2; border-radius: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(var(--bg-secondary-rgb, 255, 255, 255), 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            border-radius: 10px;
             transition: background-color 0.4s ease, opacity 0.3s ease-out;
         }
-        body.dark-mode .loading-screen { --bg-secondary-rgb: 42, 42, 42; } /* Define RGB for dark mode */
+        body.dark-mode .loading-screen {
+            --bg-secondary-rgb: 42, 42, 42;
+        }
         .spinner {
-            border: 4px solid var(--border-primary); border-top: 4px solid var(--accent-blue); border-radius: 50%;
-            width: 40px; height: 40px; animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border: 4px solid var(--border-primary);
+            border-top: 4px solid var(--accent-blue);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
             transition: border-color 0.4s ease;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .card-content img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; transition: opacity 0.5s ease-in-out; opacity: 0; border-radius: 10px; }
-        .card-content img.loaded { opacity: 1; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .card-content img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+            border-radius: 10px;
+        }
+        .card-content img.loaded {
+            opacity: 1;
+        }
 
-        /* 答案輸入區域 */
         .your-answer-label {
-            font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase;
-            letter-spacing: 0.5px; padding-left: 5px; transition: visibility 0s linear 0.3s, opacity 0.3s ease, color 0.4s ease;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding-left: 5px;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease, color 0.4s ease;
         }
-        .answer-input-container { margin-bottom: 20px; transition: visibility 0s linear 0.3s, opacity 0.3s ease; }
+        .answer-input-container {
+            margin-bottom: 20px;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease;
+        }
         .answer-input {
-            width: 100%; padding: 14px 18px; font-size: 1.05rem; border: 1px solid var(--border-secondary); border-radius: 8px;
-            background-color: var(--bg-secondary); color: var(--text-primary); outline: none;
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1rem;
+            border: 1px solid var(--border-secondary);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            outline: none;
             transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease, color 0.4s ease;
-            appearance: none; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset;
+            appearance: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset;
         }
-        .answer-input::placeholder { color: var(--text-muted); font-weight: 400; transition: color 0.4s ease; }
-        .answer-input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--focus-ring), 0 1px 3px rgba(0, 0, 0, 0.05) inset; }
+        .answer-input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+            transition: color 0.4s ease;
+        }
+        .answer-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--focus-ring), 0 1px 3px rgba(0, 0, 0, 0.05) inset;
+        }
 
-        /* 底部按鈕 */
-        .bottom-buttons { display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: visibility 0s linear 0.3s, opacity 0.3s ease; }
+        .bottom-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease;
+        }
         .dont-know-button, .answer-button {
-            padding: 12px 24px; font-size: 1rem; font-weight: 500; border: none; border-radius: 8px; cursor: pointer;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
             transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
         }
-        .dont-know-button { background-color: transparent; color: var(--accent-blue); border: 1px solid transparent; }
-        .dont-know-button:hover { color: var(--accent-blue-hover); background-color: rgba(var(--accent-blue-rgb, 109, 138, 150), 0.08); transform: scale(1.02); }
-        body.dark-mode .dont-know-button:hover { --accent-blue-rgb: 122, 160, 178; } /* Define RGB for dark */
-        .answer-button { background-color: var(--accent-blue); color: var(--bg-secondary); box-shadow: 0 2px 5px var(--shadow-color); }
-        .answer-button:hover { background-color: var(--accent-blue-hover); box-shadow: 0 4px 8px var(--shadow-color); transform: translateY(-2px); }
-        .dont-know-button:active, .answer-button:active { transform: scale(0.98); box-shadow: 0 1px 3px var(--shadow-color); }
-
-        /* 答案顯示區域 */
-        .card-answer {
-            display: none; position: absolute; bottom: 25px; left: 25px; right: 25px;
-            background-color: var(--card-answer-bg);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            padding: 20px; border-radius: 10px; border: none; font-size: 1.05rem; z-index: 3;
-            flex-direction: column; gap: 12px; box-shadow: 0 5px 20px var(--shadow-color);
-            opacity: 0; transform: translateY(10px); animation: fadeSlideIn 0.4s ease-out forwards;
-            color: var(--text-primary); text-align: center; transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+        .dont-know-button {
+            background-color: transparent;
+            color: var(--accent-blue);
+            border: 1px solid transparent;
         }
-        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        #showAnswer strong { font-weight: 600; margin-right: 5px; }
-        #showAnswer strong[style*="#10B981"] { color: var(--accent-green) !important; }
-        #showAnswer strong[style*="#EF4444"] { color: var(--accent-red) !important; }
-        #showAnswer strong[style*="#F59E0B"] { color: var(--accent-orange) !important; }
+        .dont-know-button:hover {
+            color: var(--accent-blue-hover);
+            background-color: rgba(var(--accent-blue-rgb, 109, 138, 150), 0.08);
+            transform: scale(1.02);
+        }
+        body.dark-mode .dont-know-button:hover {
+            --accent-blue-rgb: 122, 160, 178;
+        }
+        .answer-button {
+            background-color: var(--accent-blue);
+            color: var(--bg-secondary);
+            box-shadow: 0 2px 5px var(--shadow-color);
+        }
+        .answer-button:hover {
+            background-color: var(--accent-blue-hover);
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+        .dont-know-button:active, .answer-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
 
-        #showExplanation { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; margin-top: 5px; max-height: 100px; overflow-y: auto; overflow: visible; transition: color 0.4s ease;}
-        #showExplanation strong { font-weight: 600; color: var(--text-primary); transition: color 0.4s ease;}
-        #showExplanation .contribute-link { color: var(--accent-blue); cursor: pointer; text-decoration: underline; font-weight: 500; margin-left: 5px; transition: color 0.3s ease; }
-        #showExplanation .contribute-link:hover { color: var(--accent-blue-hover); }
+        .card-answer {
+            display: none;
+            position: absolute;
+            bottom: 25px;
+            left: 25px;
+            right: 25px;
+            background-color: var(--card-answer-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 20px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            z-index: 3;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeSlideIn 0.4s ease-out forwards;
+            color: var(--text-primary);
+            text-align: center;
+            transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+        }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #showAnswer strong {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        #showAnswer strong[style*="#10B981"] {
+            color: var(--accent-green) !important;
+        }
+        #showAnswer strong[style*="#EF4444"] {
+            color: var(--accent-red) !important;
+        }
+        #showAnswer strong[style*="#F59E0B"] {
+            color: var(--accent-orange) !important;
+        }
 
-        /* 貢獻詳解區域 */
-        .contribution-area { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-primary); display: flex; transition: border-color 0.4s ease;}
+        #showExplanation {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-top: 5px;
+            max-height: 100px;
+            overflow-y: auto;
+            overflow: visible;
+            transition: color 0.4s ease;
+        }
+        #showExplanation strong {
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+        #showExplanation .contribute-link {
+            color: var(--accent-blue);
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: 500;
+            margin-left: 5px;
+            transition: color 0.3s ease;
+        }
+        #showExplanation .contribute-link:hover {
+            color: var(--accent-blue-hover);
+        }
+
+        .contribution-area {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            transition: border-color 0.4s ease;
+        }
         .contribution-area input {
-            flex: 1; padding: 8px 12px; font-size: 0.95rem; border: 1px solid var(--border-secondary); border-radius: 6px;
-            background-color: var(--bg-secondary); color: var(--text-primary); outline: none; resize: vertical; margin-right: 8px;
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 1rem;
+            border: 1px solid var(--border-secondary);
+            border-radius: 6px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            outline: none;
+            resize: vertical;
+            margin-right: 8px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset;
             transition: background-color 0.4s ease, color 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        .contribution-area input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--focus-ring), 0 1px 3px rgba(0, 0, 0, 0.05) inset; }
-        .contribution-area button {
-            padding: 8px 18px; font-size: 0.9rem; font-weight: 500; background-color: var(--accent-blue);
-            color: var(--bg-secondary); border: none; border-radius: 6px; cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; float: right;
+        .contribution-area input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--focus-ring), 0 1px 3px rgba(0, 0, 0, 0.05) inset;
         }
-        .contribution-area button:hover { background-color: var(--accent-blue-hover); }
-        .contribution-area button:active { transform: scale(0.97); }
-        .contribution-area button.loading { position: relative; color: transparent !important; pointer-events: none; }
+        .contribution-area button {
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-weight: 500;
+            background-color: var(--accent-blue);
+            color: var(--bg-secondary);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            float: right;
+        }
+        .contribution-area button:hover {
+            background-color: var(--accent-blue-hover);
+        }
+        .contribution-area button:active {
+            transform: scale(0.97);
+        }
+        .contribution-area button.loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
         .contribution-area button.loading::after {
-            content: ''; display: block; position: absolute; top: 50%; left: 50%; width: 16px; height: 16px;
-            margin-top: -8px; margin-left: -8px; border: 2px solid rgba(var(--bg-secondary-rgb, 255, 255, 255), 0.4);
-            border-top-color: var(--bg-secondary); border-radius: 50%; animation: spin 0.8s linear infinite;
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin-top: -8px;
+            margin-left: -8px;
+            border: 2px solid rgba(var(--bg-secondary-rgb, 255, 255, 255), 0.4);
+            border-top-color: var(--bg-secondary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
             transition: border-color 0.4s ease;
         }
         body.dark-mode .contribution-area button.loading::after {
-            --bg-secondary-rgb: 42, 42, 42; /* Dark mode RGB for spinner track */
-            border-top-color: var(--bg-secondary); /* Match dark button text (which is now light) */
+            --bg-secondary-rgb: 42, 42, 42;
+            border-top-color: var(--bg-secondary);
         }
 
-        /* 下一題按鈕 */
         .next-button {
-            display: block; padding: 10px 22px; font-size: 1rem; font-weight: 500; background-color: transparent;
-            color: var(--accent-blue); border: 1px solid var(--accent-blue); border-radius: 8px; cursor: pointer;
-            transition: all 0.3s ease; align-self: center; margin-top: 15px;
+            display: block;
+            padding: 10px 22px;
+            font-size: 1rem;
+            font-weight: 500;
+            background-color: transparent;
+            color: var(--accent-blue);
+            border: 1px solid var(--accent-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: center;
+            margin-top: 15px;
         }
-        .next-button:hover { background-color: var(--accent-blue); color: var(--bg-secondary); border-color: var(--accent-blue); transform: translateY(-1px); box-shadow: 0 2px 6px rgba(var(--accent-blue-rgb, 109, 138, 150), 0.2); }
-        body.dark-mode .next-button:hover { --accent-blue-rgb: 122, 160, 178; }
-        .next-button:active { transform: scale(0.97); box-shadow: none; }
+        .next-button:hover {
+            background-color: var(--accent-blue);
+            color: var(--bg-secondary);
+            border-color: var(--accent-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(var(--accent-blue-rgb, 109, 138, 150), 0.2);
+        }
+        body.dark-mode .next-button:hover {
+            --accent-blue-rgb: 122, 160, 178;
+        }
+        .next-button:active {
+            transform: scale(0.97);
+            box-shadow: none;
+        }
 
-        /* 彈出視窗 (Modal) */
         .modal {
-            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            justify-content: center; align-items: center; opacity: 0; animation: fadeInModal 0.4s ease forwards;
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInModal 0.4s ease forwards;
             transition: background-color 0.4s ease;
         }
-        @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
         .modal-content {
-            width: 90%; max-width: 650px; max-height: 85%; overflow-y: auto; background-color: var(--modal-bg);
-            padding: 30px; border-radius: 12px; box-shadow: 0 8px 30px var(--shadow-color);
-            position: relative; transform: scale(0.95); animation: scaleUpModal 0.4s ease forwards;
+            width: 90%;
+            max-width: 650px;
+            max-height: 85%;
+            overflow-y: auto;
+            background-color: var(--modal-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px var(--shadow-color);
+            position: relative;
+            transform: scale(0.95);
+            animation: scaleUpModal 0.4s ease forwards;
             transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-            border: 1px solid var(--border-primary); /* Add border for consistency */
+            border: 1px solid var(--border-primary);
         }
-         @keyframes scaleUpModal { from { transform: scale(0.95); opacity: 0;} to { transform: scale(1); opacity: 1;} }
+         @keyframes scaleUpModal {
+            from { transform: scale(0.95); opacity: 0;}
+            to { transform: scale(1); opacity: 1;}
+         }
         .close {
-            position: absolute; top: 13px; right: 20px; font-size: 2rem; font-weight: 300; color: var(--text-secondary);
-            cursor: pointer; line-height: 1; transition: color 0.3s ease, transform 0.3s ease;
+            position: absolute;
+            top: 13px;
+            right: 20px;
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
-        .close:hover { color: var(--accent-blue-hover); transform: rotate(90deg);}
+        .close:hover {
+            color: var(--accent-blue-hover);
+            transform: rotate(90deg);
+        }
         .modal-content h2 {
-            font-size: 1.5rem; margin-bottom: 20px; color: var(--heading-color); font-weight: 600;
-            border-bottom: 1px solid var(--border-primary); padding-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--heading-color);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-primary);
+            padding-bottom: 10px;
             transition: color 0.4s ease, border-color 0.4s ease;
         }
-        .modal-content p { font-size: 1rem; line-height: 1.7; margin-bottom: 15px; color: var(--text-primary); transition: color 0.4s ease;}
-        .modal-content ol { padding-left: 25px; margin-bottom: 16px; }
-        .modal-content li { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-primary); list-style-type: decimal; transition: border-color 0.4s ease;}
-        .modal-content li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .modal-content li p { margin-bottom: 8px; }
-        .modal-content li p strong { color: var(--text-primary); }
-        .modal-content li em { color: var(--text-secondary); }
+        .modal-content p {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+        .modal-content ol {
+            padding-left: 25px;
+            margin-bottom: 16px;
+        }
+        .modal-content li {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-primary);
+            list-style-type: decimal;
+            transition: border-color 0.4s ease;
+        }
+        .modal-content li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .modal-content li p {
+            margin-bottom: 8px;
+        }
+        .modal-content li p strong {
+            color: var(--text-primary);
+        }
+        .modal-content li em {
+            color: var(--text-secondary);
+        }
         .modal-content img {
-            max-width: 150px; height: auto; margin-bottom: 12px; border-radius: 6px; border: 1px solid var(--border-primary);
-            display: block; box-shadow: 0 2px 5px var(--shadow-color); background-color: var(--bg-secondary); /* Add bg for dark mode */
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-primary);
+            display: block;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            background-color: var(--bg-secondary);
             transition: border-color 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
         }
 
-        /* --- Utility & Accessibility --- */
-        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
-        .answer-input-container[style*="hidden"], .bottom-buttons[style*="hidden"], .your-answer-label[style*="hidden"] { opacity: 0; visibility: hidden; transition: visibility 0s linear 0.3s, opacity 0.3s ease; }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        .answer-input-container[style*="hidden"],
+        .bottom-buttons[style*="hidden"],
+        .your-answer-label[style*="hidden"] {
+            opacity: 0;
+            visibility: hidden;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease;
+        }
 
-        /* === Enhanced Player Name & Leaderboard Styles === */
-.player-input{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:10px;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    margin-bottom:24px;
-}
-.player-input input{
-    width: 100%;
-    padding:10px 16px;
-    font-size:1rem;
-    border:1px solid var(--border-secondary);
-    border-radius:8px;
-    background-color:var(--bg-secondary);
-    color:var(--text-primary);
-    transition:border-color .3s ease,box-shadow .3s ease;
-}
-.player-input input:focus{
-    border-color:var(--accent-blue);
-    box-shadow:0 0 0 3px var(--focus-ring);
-    outline:none;
-}
+        .player-input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            margin-bottom: 24px;
+        }
+        .player-input input {
+            width: 100%;
+            padding: 10px 16px;
+            font-size: 1rem;
+            border: 1px solid var(--border-secondary);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: border-color .3s ease, box-shadow .3s ease;
+        }
+        .player-input input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--focus-ring);
+            outline: none;
+        }
 
-.leaderboard{
-    width:100%;
-    max-width:400px;
-    margin:0 0 20px;
-    background-color:var(--bg-secondary);
-    border:1px solid var(--border-primary);
-    border-radius:12px;
-    box-shadow:0 2px 6px var(--shadow-color);
-    padding:20px 20px 0;
-    max-height: 250px;
-    overflow: hidden;
-    transition: max-height 0.5s ease;
-    cursor: pointer;
-    position: relative;
-}
-.leaderboard::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    pointer-events: none;
-    background: linear-gradient(transparent, var(--bg-secondary));
-}
-.leaderboard h3{
-    margin-bottom:12px;
-    font-size:1.2rem;
-    font-weight:600;
-    color:var(--heading-color);
-}
-.leaderboard ol{
-    padding-left:0;
-    margin:0;
-}
-.leaderboard li{
-    list-style:none;
-    display:flex;
-    justify-content:space-between;
-    padding:8px 0;
-    font-size:1rem;
-    color:var(--text-primary);
-    border-bottom:1px solid var(--border-primary);
-}
-.leaderboard li:last-child{border-bottom:none;}
+        .leaderboard {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 0 20px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            box-shadow: 0 2px 6px var(--shadow-color);
+            padding: 20px 20px 0;
+            max-height: 250px;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .leaderboard::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            pointer-events: none;
+            background: linear-gradient(transparent, var(--bg-secondary));
+        }
+        .leaderboard h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--heading-color);
+        }
+        .leaderboard ol {
+            padding-left: 0;
+            margin: 0;
+        }
+        .leaderboard li {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 1rem;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-primary);
+        }
+        .leaderboard li:last-child {
+            border-bottom: none;
+        }
 
- .leaderboard.expanded {
-     max-height: 500px;
- }
- .leaderboard.expanded::after {
-     display: none;
- }
-/* Expand leaderboard on hover */
-.leaderboard:hover {
-    max-height: 500px;
-}
-.leaderboard:hover::after {
-    display: none;
-}
-  /* Tooltip for contribution prompt */
-  .tooltip {
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-22%);
-    background-color: #000;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 999px;
-    font-size: 14px;
-    white-space: nowrap;
-    z-index: 3000;
-  }
-  .tooltip-arrow {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-22%);
-    width: 0;
-    height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid #000;
-  }
-  #no-explanation-message .tooltip {
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
+         .leaderboard.expanded {
+             max-height: 500px;
+         }
+         .leaderboard.expanded::after {
+             display: none;
+         }
+        .leaderboard:hover {
+            max-height: 500px;
+        }
+        .leaderboard:hover::after {
+            display: none;
+        }
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-22%);
+            background-color: #000;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 3000;
+        }
+        .tooltip-arrow {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-22%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #000;
+        }
+        #no-explanation-message .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
 
-#no-explanation-message:hover .tooltip {
-  visibility: visible;
-  opacity: 1;
-}
-/* 遮罩層 */
-.alert-modal {
-  display: none;          /* 預設隱藏 */
-  background-color: var(--modal-bg);
-  color: var(--text-primary);
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 90%;
-  width: 400px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  translate: -50%;
-}
+        #no-explanation-message:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .alert-modal {
+            display: none;
+            background-color: var(--modal-bg);
+            color: var(--text-primary);
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            translate: -50%;
+        }
     </style>
 </head>
 <body onload="init();">
 
-    <!-- Start Screen -->
     <div class="start-screen">
-        <!-- Day/Night Toggle Button (New) -->
         <button id="dayNightToggle" class="day-night-toggle" aria-label="切換到夜晚模式">
             <svg id="dayNightIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="toggle-icon day">
-                 <!-- SVG content will be generated by JS -->
             </svg>
         </button>
 
@@ -548,9 +863,7 @@
         </div>
     </div>
 
-    <!-- Game Screen -->
     <div class="flashcard-container">
-        <!-- ... (Game screen content remains the same) ... -->
          <div class="progress">
             <div class="progress-item" id="wrongArea">
                 <span class="progress-number-orange" id="wrong">0</span>
@@ -573,10 +886,9 @@
             <img id="image" onload="this.classList.add('loaded'); document.querySelector('.loading-screen').style.display='none';" src="" alt="Parasite Image">
         </div>
 
-        <div class="card-answer"> <!-- This div appears when showing answer -->
+        <div class="card-answer">
             <div id="showAnswer"></div>
             <div id="showExplanation">
-                <!-- Explanation (or contribution UI) appears here -->
             </div>
             <button id="next" class="next-button">下一個</button>
         </div>
@@ -592,44 +904,42 @@
         </div>
     </div>
 
-    <!-- Modal (for wrong/correct lists) -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span id="closeModal" class="close">×</span>
             <div id="modalBody"></div>
         </div>
     </div>
-<!-- Generic Alert Modal -->
-<div id="alertModal" class="alert-modal" style="display: none;">
-      <span class="close" onclick="closeAlertModal()">×</span>
-      <div id="alertModalBody"></div>
-  </div>
+    <div id="alertModal" class="alert-modal" style="display: none;">
+        <span class="close" onclick="closeAlertModal()">×</span>
+        <div id="alertModalBody"></div>
+    </div>
     <script type="module">
         const firebaseConfig = {
-        apiKey: "AIzaSyAjvO8nSRkKXUp7gopj-X7QsOGRBHTxj1s",
-        authDomain: "jedieason-trivia.firebaseapp.com",
-        databaseURL: "https://jedieason-trivia-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "jedieason-trivia",
-        storageBucket: "jedieason-trivia.firebasestorage.app",
-        messagingSenderId: "379460583179",
-        appId: "1:379460583179:web:c9d36892128bb0ac066c0e",
-        measurementId: "G-5NK671LL2Z"
+            apiKey: "AIzaSyAjvO8nSRkKXUp7gopj-X7QsOGRBHTxj1s",
+            authDomain: "jedieason-trivia.firebaseapp.com",
+            databaseURL: "https://jedieason-trivia-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "jedieason-trivia",
+            storageBucket: "jedieason-trivia.firebasestorage.app",
+            messagingSenderId: "379460583179",
+            appId: "1:379460583179:web:c9d36892128bb0ac066c0e",
+            measurementId: "G-5NK671LL2Z"
         };
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
         import { getAnalytics }  from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
         import {
-        getDatabase,
-        ref,
-        set,
-        get,
-        query,
-        orderByChild,
-        limitToLast
+            getDatabase,
+            ref,
+            set,
+            get,
+            query,
+            orderByChild,
+            limitToLast
         } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
         import {
-        getAuth,
-        signInAnonymously,
-        onAuthStateChanged
+            getAuth,
+            signInAnonymously,
+            onAuthStateChanged
         } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
         const app       = initializeApp(firebaseConfig);
@@ -644,7 +954,7 @@
                 window.currentUserUid = null;
             }
         });
-        window.currentPlayer = "匿名";   // 預設玩家名稱
+        window.currentPlayer = "匿名";
         var TIME = 31;
         var numOfProbs;
         var tm;
@@ -668,12 +978,10 @@
             "dick", "pussy", "wank", "slut", "whore"
         ].map(word => word.toLowerCase());
 
-        // --- NEW: Day/Night Toggle Logic ---
         const dayNightToggle = document.getElementById('dayNightToggle');
         const dayNightIcon = document.getElementById('dayNightIcon');
-        let isDay = true; // Default to Day mode
+        let isDay = true;
 
-        // Function to render the sun SVG
         function renderSun() {
             dayNightIcon.innerHTML = `
                 <circle cx="50" cy="50" r="20" class="icon-shape" />
@@ -687,7 +995,6 @@
                         return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="sun-ray" />`;
                     }).join('')}
                 </g>
-                <!-- Hidden moon parts -->
                 <g class="moon-group" style="opacity: 0;">
                     <circle cx="50" cy="50" r="20" class="icon-shape" />
                     <circle cx="58" cy="50" r="18" class="moon-mask" />
@@ -695,14 +1002,12 @@
             `;
             dayNightIcon.classList.remove('night');
             dayNightIcon.classList.add('day');
-            dayNightIcon.classList.remove('rotate'); // Reset rotation
+            dayNightIcon.classList.remove('rotate');
         }
         window.init = init;
 
-        // Function to render the moon SVG
         function renderMoon() {
             dayNightIcon.innerHTML = `
-                 <!-- Hidden sun parts -->
                  <circle cx="50" cy="50" r="20" class="icon-shape" style="fill: none;"/>
                  <g class="sun-rays" style="opacity: 0;">
                      ${[...Array(8)].map((_, i) => {
@@ -721,10 +1026,9 @@
             `;
             dayNightIcon.classList.remove('day');
             dayNightIcon.classList.add('night');
-            dayNightIcon.classList.add('rotate'); // Apply rotation
+            dayNightIcon.classList.add('rotate');
         }
 
-        // Function to toggle the theme
         function toggleTheme() {
             isDay = !isDay;
             if (isDay) {
@@ -736,16 +1040,13 @@
                 renderMoon();
                 dayNightToggle.setAttribute('aria-label', '切換到白天模式');
             }
-            // Update moon mask color variable when theme changes
             const bodyStyles = window.getComputedStyle(document.body);
             document.documentElement.style.setProperty('--toggle-moon-mask', bodyStyles.getPropertyValue('--bg-primary'));
         }
 
-        // Initialize Day/Night Toggle
         function initDayNightToggle() {
-            // Check system preference first, but allow override
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            isDay = !prefersDark; // Set initial state based on preference
+            isDay = !prefersDark;
 
             if (isDay) {
                 renderSun();
@@ -756,17 +1057,12 @@
                 document.body.classList.add('dark-mode');
                 dayNightToggle.setAttribute('aria-label', '切換到白天模式');
             }
-             // Set initial mask color
             const bodyStyles = window.getComputedStyle(document.body);
             document.documentElement.style.setProperty('--toggle-moon-mask', bodyStyles.getPropertyValue('--bg-primary'));
 
-
             dayNightToggle.addEventListener('click', toggleTheme);
 
-             // Listen for system theme changes (optional, but good UX)
              window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-                // Only change if the user hasn't manually toggled
-                // (This simple implementation WILL change regardless, consider adding a flag if needed)
                 isDay = !event.matches;
                  if (isDay) {
                      document.body.classList.remove('dark-mode');
@@ -777,23 +1073,19 @@
                      renderMoon();
                      dayNightToggle.setAttribute('aria-label', '切換到白天模式');
                  }
-                 // Update mask color on system change
                  const bodyStyles = window.getComputedStyle(document.body);
                  document.documentElement.style.setProperty('--toggle-moon-mask', bodyStyles.getPropertyValue('--bg-primary'));
              });
         }
-                // —— 1. 寫入最終分數 ——
         async function writeScore(finalScore) {
-        const uid = window.currentUserUid;
-        if (!uid) throw new Error("使用者尚未登入");
-        const scoreRef = ref(db, `leaderboard/${uid}`);
+            const uid = window.currentUserUid;
+            if (!uid) throw new Error("使用者尚未登入");
+            const scoreRef = ref(db, `leaderboard/${uid}`);
             try {
-                // 先讀取現有分數
                 const snap = await get(scoreRef);
                 const prev = snap.val();
                 const prevScore = prev && typeof prev.score === 'number' ? prev.score : 0;
                 const newScore = prevScore + finalScore;
-                // 更新累加後的分數與時間戳
                 await set(scoreRef, {
                     name: window.currentPlayer,
                     score: newScore,
@@ -806,97 +1098,88 @@
             }
         }
 
-        // —— 2. 讀前 10 名並顯示 ——
         async function fetchLeaderboard() {
-        const listEl = document.getElementById("boardList");
-        listEl.innerHTML = '<li>載入中…</li>';
+            const listEl = document.getElementById("boardList");
+            listEl.innerHTML = '<li>載入中…</li>';
 
-        const q = query(
-            ref(db, 'leaderboard'),
-            orderByChild('score'),
-            limitToLast(10)
-        );
+            const q = query(
+                ref(db, 'leaderboard'),
+                orderByChild('score'),
+                limitToLast(10)
+            );
 
-        try {
-            const snap = await get(q);
-            const data = snap.val() || {};
-            const arr  = Object.values(data).sort((a,b)=>b.score-a.score);
+            try {
+                const snap = await get(q);
+                const data = snap.val() || {};
+                const arr  = Object.values(data).sort((a,b)=>b.score-a.score);
 
-            listEl.innerHTML = '';
-            arr.forEach(item=>{
-                const li = document.createElement('li');
-                li.textContent = `${item.name}：${item.score}`;
-                listEl.appendChild(li);
-            });
-            const uid = window.currentUserUid;
-            if (!uid) return;
-            const playerRef = ref(db, `leaderboard/${uid}`);
-            const playerSnap = await get(playerRef);
-            let playerScore = 0;
-            if (playerSnap.exists()) {
-                const playerData = playerSnap.val();
-                playerScore = typeof playerData.score === "number" ? playerData.score : 0;
-            } else {
-                await set(playerRef, { name: currentPlayer, score: 0, timestamp: Date.now() });
-                playerScore = 0;
+                listEl.innerHTML = '';
+                arr.forEach(item=>{
+                    const li = document.createElement('li');
+                    li.textContent = `${item.name}：${item.score}`;
+                    listEl.appendChild(li);
+                });
+                const uid = window.currentUserUid;
+                if (!uid) return;
+                const playerRef = ref(db, `leaderboard/${uid}`);
+                const playerSnap = await get(playerRef);
+                let playerScore = 0;
+                if (playerSnap.exists()) {
+                    const playerData = playerSnap.val();
+                    playerScore = typeof playerData.score === "number" ? playerData.score : 0;
+                } else {
+                    await set(playerRef, { name: currentPlayer, score: 0, timestamp: Date.now() });
+                    playerScore = 0;
+                }
+                const scoreDisplay = document.getElementById("score-display");
+                if (scoreDisplay) scoreDisplay.textContent = playerScore;
+                score = playerScore;
+            } catch (err) {
+                console.error("讀排行榜失敗：", err);
+                listEl.innerHTML = '<li>讀取失敗</li>';
             }
-            const scoreDisplay = document.getElementById("score-display");
-            if (scoreDisplay) scoreDisplay.textContent = playerScore;
-            score = playerScore;
-        } catch (err) {
-            console.error("讀排行榜失敗：", err);
-            listEl.innerHTML = '<li>讀取失敗</li>';
-        }
         }
 
-        // —— 3. 答題中只更新畫面 ——
         function updateCorrect() {
-        correct++;
-        document.getElementById("correct").innerText = correct;
-        score += 2;
-        if (data && data[x]) correctList.push(data[x]);
-        updateScoreDisplay();
-        writeScore(2).catch(err => console.error("寫入分數失敗：", err));
+            correct++;
+            document.getElementById("correct").innerText = correct;
+            score += 2;
+            if (data && data[x]) correctList.push(data[x]);
+            updateScoreDisplay();
+            writeScore(2).catch(err => console.error("寫入分數失敗：", err));
         }
         function updateWrong() {
-        wrong++;
-        document.getElementById("wrong").innerText = wrong;
-        score -= 2;
-        if (data && data[x]) wrongList.push(data[x]);
-        updateScoreDisplay();
-        writeScore(-2).catch(err => console.error("寫入分數失敗：", err));
+            wrong++;
+            document.getElementById("wrong").innerText = wrong;
+            score -= 2;
+            if (data && data[x]) wrongList.push(data[x]);
+            updateScoreDisplay();
+            writeScore(-2).catch(err => console.error("寫入分數失敗：", err));
         }
         function updateUnknown(){
-    wrong++;
-    document.getElementById("wrong").innerText = wrong;
-    score -= 1;
-    updateScoreDisplay();
-    if (data && data[x]) wrongList.push(data[x]);
-    writeScore(-1).catch(err => console.error("寫入分數失敗：", err));
-}
+            wrong++;
+            document.getElementById("wrong").innerText = wrong;
+            score -= 1;
+            updateScoreDisplay();
+            if (data && data[x]) wrongList.push(data[x]);
+            writeScore(-1).catch(err => console.error("寫入分數失敗：", err));
+        }
 
-        // —— 4. 全部答完再寫入 DB 並重置 ——
         function checkCompletion() {
             if (!done.every(x => x)) return;
             const finalScore = score;
-            // 只顯示完成訊息，不再重複更新資料庫
             showAlertModal(`恭喜你完成！最終分數：${finalScore} 🎉`);
-            // 完成後隱藏「下一題」按鈕
             const nextBtn = document.getElementById('next');
             if (nextBtn) nextBtn.style.display = 'none';
         }
-        // --- Original init() function ---
         function init() {
-            // Initialize Day/Night Toggle first
             initDayNightToggle();
-            // 讀取先前儲存的玩家名稱（若有）
             const savedName = localStorage.getItem("parasite_player_name");
             if (savedName) {
                 const nameField = document.getElementById("playerName");
                 if (nameField) nameField.value = savedName;
             }
             fetchLeaderboard();
-            // Toggle leaderboard expansion on click
             const leaderboardEl = document.querySelector('.leaderboard');
             if (leaderboardEl) {
                 leaderboardEl.addEventListener('click', function() {
@@ -904,7 +1187,6 @@
                 });
             }
 
-            // Original init logic
             $(document).ready(function () {
                 $.get("./answersheet.csv")
                     .done(function (CSVdata) {
@@ -916,19 +1198,17 @@
 
                             var btn = document.getElementById("startGame");
                             var startHandler = function () {
-                            const nameInput = document.getElementById("playerName").value.trim();
-                            if (!nameInput) {
-                                showAlertModal("請先輸入玩家名稱！");
-                                document.getElementById("playerName").focus();
-                                return;                       // 停止，不能開始遊戲
-                            }
-                            window.currentPlayer = nameInput; // 必須有名稱才能開始
-                            localStorage.setItem("parasite_player_name", nameInput);   // 記住玩家名稱
-                            document.querySelector('.flashcard-container').style.display = 'flex';
-                            fetchLeaderboard();
+                                const nameInput = document.getElementById("playerName").value.trim();
+                                if (!nameInput) {
+                                    showAlertModal("請先輸入玩家名稱！");
+                                    document.getElementById("playerName").focus();
+                                    return;
+                                }
+                                window.currentPlayer = nameInput;
+                                localStorage.setItem("parasite_player_name", nameInput);
+                                document.querySelector('.flashcard-container').style.display = 'flex';
+                                fetchLeaderboard();
                                 document.removeEventListener("keypress", enterPressStart);
-                                // Hide toggle button when game starts (optional, could also just leave it)
-                                // dayNightToggle.style.display = 'none';
                                 state = 1;
                                 done = new Array(numOfProbs).fill(false);
                                 correct = 0; wrong = 0; total = 0; score = 0; score = 0;
@@ -963,29 +1243,26 @@
             });
             window.addEventListener('resize', adjustPlaceholder);
 
-            // --- Download Link Logic (Keep Existing) ---
-             document.addEventListener("DOMContentLoaded", function () { /* This might run too late if init() is called onload */
+             document.addEventListener("DOMContentLoaded", function () {
                  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
                  const link = document.querySelector('a[href="profile.mobileconfig"]');
-                 const downloadBlock = document.getElementById("download-block"); // Get the span
+                 const downloadBlock = document.getElementById("download-block");
 
                  if (/android/i.test(userAgent)) {
                      link.textContent = "安卓下載";
                      link.setAttribute("href", "parasite_game_v1.apk");
                      link.setAttribute("download", "Parasite.apk");
-                 } else if (/iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) { // Check for touch capability on Mac
+                 } else if (/iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
                      link.textContent = "蘋果下載";
                      link.setAttribute("href", "profile.mobileconfig");
                      link.setAttribute("download", "Parasite.mobileconfig");
                  } else {
-                     // Hide the link block if not Android or iOS/iPadOS/Touch Mac
                      if (downloadBlock) downloadBlock.style.display = "none";
                  }
              });
-             // Move the DOMContentLoaded logic here if init() is reliable
              const userAgent = navigator.userAgent || navigator.vendor || window.opera;
              const link = document.querySelector('a[href="profile.mobileconfig"]');
-             const downloadBlock = document.getElementById("download-block"); // Get the span
+             const downloadBlock = document.getElementById("download-block");
 
              if (/android/i.test(userAgent)) {
                  if(link) {
@@ -1000,14 +1277,10 @@
                      link.setAttribute("download", "Parasite.mobileconfig");
                  }
              } else {
-                 // Hide the link block if not Android or iOS/iPadOS/Touch Mac
                  if (downloadBlock) downloadBlock.style.display = "none";
              }
-
         }
 
-
-        // --- Google Apps Script Function (Keep Existing) ---
         function sendToGoogleDocs(content) {
             const url = 'https://script.google.com/macros/s/AKfycbzWbgs69CkM1nsQKCdtSp26b0LKmCqpzqlAnuetqzgqfd3KVkcZSjWB19vmNhcvlXeO/exec';
             const submitButton = document.getElementById('submit-explanation-button');
@@ -1031,8 +1304,7 @@
             setTimeout(hideContributionInput, 300);
         }
 
-        // --- Other Game Logic Functions (Keep Existing) ---
-        function parseMultiAns(data) { /* ... */
+        function parseMultiAns(data) {
             if (!data) return [];
             Object.values(data).forEach(item => {
                 if (item && typeof item.answer === 'string') {
@@ -1043,7 +1315,7 @@
             });
             return data;
         }
-        function enterKeyEvent(event) { /* ... */
+        function enterKeyEvent(event) {
              if (event.key === 'Enter') {
                 const explanationInput = document.getElementById('explanation-input');
                 if (explanationInput && document.activeElement === explanationInput && explanationInput.offsetParent !== null) {
@@ -1056,13 +1328,13 @@
                 }
             }
         }
-        function startGame() { /* ... */
+        function startGame() {
             document.addEventListener("keydown", enterKeyEvent);
-    document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
-    document.getElementById("dontKnow").addEventListener("click", showAnswer);
-    document.getElementById("correctArea").addEventListener("click", showCorrectList);
-    document.getElementById("wrongArea").addEventListener("click", showWrongList);
-    document.getElementById("next").addEventListener("click", nextProb);
+            document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
+            document.getElementById("dontKnow").addEventListener("click", showAnswer);
+            document.getElementById("correctArea").addEventListener("click", showCorrectList);
+            document.getElementById("wrongArea").addEventListener("click", showWrongList);
+            document.getElementById("next").addEventListener("click", nextProb);
             document.getElementById('closeModal').addEventListener('click', function() {
                 document.getElementById('modal').style.display = "none";
             });
@@ -1088,12 +1360,12 @@
             });
             nextProb();
         }
-        function checkAns(input, ansArr) { /* ... */
+        function checkAns(input, ansArr) {
             if (!Array.isArray(ansArr)) return false;
             const normalizedInput = input.trim().toLowerCase();
             return ansArr.some(ans => ans.trim().toLowerCase() === normalizedInput);
         }
-        function submitUserAnswer() { /* ... */
+        function submitUserAnswer() {
             var userAnswerRaw = document.getElementById("answer").value;
             var lowerUserAnswer = userAnswerRaw.trim().toLowerCase();
 
@@ -1131,12 +1403,12 @@
             total++;
             checkCompletion();
         }
-        function hideExplanation() { /* ... */
+        function hideExplanation() {
             const expDiv = document.getElementById("showExplanation");
             expDiv.innerHTML = "";
             expDiv.style.display = "none";
         }
-        function showAnswer() { /* ... */
+        function showAnswer() {
             if (viewing) return;
             clearTimeout(tm);
 
@@ -1156,7 +1428,7 @@
             total++;
             checkCompletion();
         }
-        function showExplanation() { /* ... */
+        function showExplanation() {
              var expDiv = document.getElementById("showExplanation");
             expDiv.innerHTML = '';
             const explanationText = data[x]?.explanation?.trim();
@@ -1167,24 +1439,23 @@
                 expDiv.innerHTML = `<strong>偷偷告訴你為什麼：</strong>${sanitizedExplanation}`;
             } else {
                 expDiv.innerHTML = `
-        <div id="no-explanation-message" style="position: relative; display: inline-block;">
-            <i>這題還沒有詳解⋯不過你可以</i>
-            <span class="contribute-link" onclick="showContributionInput()">貢獻一下！</span>
-            <div class="tooltip">
-                提交詳解可獲得 10分，但亂填會被清除所有分數
-                <div class="tooltip-arrow"></div>
-            </div>
-            </div>
-      </div>
-      <div class="contribution-area" id="contribution-area" style="display: none;">
-        <input id="explanation-input" placeholder="請輸入你的詳解⋯"></input>
-        <button id="submit-explanation-button" onclick="submitContribution()">送出</button>
-      </div>
-  `;
+                    <div id="no-explanation-message" style="position: relative; display: inline-block;">
+                        <i>這題還沒有詳解⋯不過你可以</i>
+                        <span class="contribute-link" onclick="showContributionInput()">貢獻一下！</span>
+                        <div class="tooltip">
+                            提交詳解可獲得 10分，但亂填會被清除所有分數
+                            <div class="tooltip-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="contribution-area" id="contribution-area" style="display: none;">
+                        <input id="explanation-input" placeholder="請輸入你的詳解⋯"></input>
+                        <button id="submit-explanation-button" onclick="submitContribution()">送出</button>
+                    </div>
+                `;
             }
             expDiv.style.display = "block";
         }
-        window.showContributionInput = function showContributionInput() { /* ... */
+        window.showContributionInput = function showContributionInput() {
              const contribArea = document.getElementById('contribution-area');
             const noExplanationMsg = document.getElementById('no-explanation-message');
             if (contribArea) {
@@ -1194,7 +1465,7 @@
                 if(textarea) textarea.focus();
             }
         }
-        function hideContributionInput() { /* ... */
+        function hideContributionInput() {
              const contribArea = document.getElementById('contribution-area');
             const noExplanationMsg = document.getElementById('no-explanation-message');
              const textarea = document.getElementById('explanation-input');
@@ -1214,14 +1485,14 @@
             }
         }
         function updateScoreDisplay() {
-  const scoreDisplay = document.getElementById("score-display");
-  if (scoreDisplay) scoreDisplay.textContent = score;
-  const correctEl = document.getElementById("correct");
-  if (correctEl) correctEl.textContent = correct;
-  const wrongEl = document.getElementById("wrong");
-  if (wrongEl) wrongEl.textContent = wrong;
-}
-        function submitContribution() { /* ... */
+            const scoreDisplay = document.getElementById("score-display");
+            if (scoreDisplay) scoreDisplay.textContent = score;
+            const correctEl = document.getElementById("correct");
+            if (correctEl) correctEl.textContent = correct;
+            const wrongEl = document.getElementById("wrong");
+            if (wrongEl) wrongEl.textContent = wrong;
+        }
+        function submitContribution() {
              const explanationInput = document.getElementById('explanation-input');
             const explanation = explanationInput.value.trim();
             const submitButton = document.getElementById('submit-explanation-button');
@@ -1260,8 +1531,7 @@
               .catch(err => console.error("寫入分數失敗：", err));
         }
         window.submitContribution = submitContribution;
-        function nextProb() { /* ... */
-            // 檢查是否已答完所有題目，如果是，則不換題
+        function nextProb() {
             if (done.every(d => d)) return;
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
@@ -1278,7 +1548,7 @@
             document.getElementById("showExplanation").innerHTML = "";
             document.getElementById("showExplanation").style.display = "none";
         }
-        function pickNewImage() { /* ... */
+        function pickNewImage() {
              const availableIndices = [];
             for (let i = 0; i < numOfProbs; i++) {
                 if (!done[i]) availableIndices.push(i);
@@ -1287,9 +1557,7 @@
             if (availableIndices.length === 0) {
                 console.warn("All questions shown, restarting cycle.");
                 checkCompletion();
-                // Reset all questions as unfinished immediately
                 done.fill(false);
-                // Repopulate with every index
                 for (let i = 0; i < numOfProbs; i++) {
                     availableIndices.push(i);
                 }
@@ -1300,7 +1568,7 @@
             done[selectedIndex] = true;
             return selectedIndex;
         }
-        function updateImage() { /* ... */
+        function updateImage() {
              document.querySelector('.loading-screen').style.display = 'flex';
             var imageElement = document.getElementById("image");
             imageElement.classList.remove('loaded');
@@ -1325,11 +1593,11 @@
                  document.querySelector('.loading-screen').style.display = 'none';
             }
         }
-        function countdown() { /* Timer logic placeholder */ }
+        function countdown() { }
         function resetTime() { clearTimeout(tm); }
         function showWrongList() { displayListInModal(wrongList, "你答錯的"); }
         function showCorrectList() { displayListInModal(correctList, "你答對的"); }
-        function displayListInModal(list, title) { /* ... */
+        function displayListInModal(list, title) {
             let modal = document.getElementById('modal');
             let modalBody = document.getElementById('modalBody');
             let content = `<h2>${title} (${list.length})</h2>`;
@@ -1358,7 +1626,7 @@
             modalBody.innerHTML = content;
             modal.style.display = "flex";
         }
-        function adjustPlaceholder() { /* ... */
+        function adjustPlaceholder() {
             const inputElement = document.getElementById('answer');
             if (!inputElement) return;
             const desktopBreakpoint = 1024;
@@ -1368,40 +1636,33 @@
                 inputElement.placeholder = '把答案打在這';
             }
         }
-// 顯示自訂 Alert Modal
-function showAlertModal(message) {
-  const modal = document.getElementById('alertModal');
-  const body = document.getElementById('alertModalBody');
-  // 顯示訊息並設定樣式
-  body.textContent = message;
-  modal.style.display = 'flex';
-  modal.style.opacity = '1';
-  modal.style.transition = 'opacity 0.5s ease';
-  // 3秒後淡出並隱藏
-  setTimeout(() => {
-    modal.style.opacity = '0';
-    setTimeout(() => {
-      modal.style.display = 'none';
-    }, 500);
-  }, 3000);
-}
-window.showAlertModal = showAlertModal;
+        function showAlertModal(message) {
+            const modal = document.getElementById('alertModal');
+            const body = document.getElementById('alertModalBody');
+            body.textContent = message;
+            modal.style.display = 'flex';
+            modal.style.opacity = '1';
+            modal.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }
+        window.showAlertModal = showAlertModal;
 
-// 關閉 Alert Modal
-function closeAlertModal() {
-  document.getElementById('alertModal').style.display = 'none';
-}
-window.closeAlertModal = closeAlertModal;
+        function closeAlertModal() {
+            document.getElementById('alertModal').style.display = 'none';
+        }
+        window.closeAlertModal = closeAlertModal;
 
-// 點擊遮罩外側也能關閉
-window.addEventListener('click', function(event) {
-  const modal = document.getElementById('alertModal');
-  if (event.target === modal) {
-    closeAlertModal();
-  }
-});
-
-
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('alertModal');
+            if (event.target === modal) {
+                closeAlertModal();
+            }
+        });
     </script>
 </body>
 </html>
