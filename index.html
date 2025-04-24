@@ -7,7 +7,6 @@
     <meta name="keywords" content="parasites">
     <link rel="icon" href="icon.png" type="image/png">
     <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.21/jquery.csv.js"></script>
     <title>寄蟲跑台</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -1244,12 +1243,12 @@
             }
 
             $(document).ready(function () {
-                $.get("./answersheet.csv")
-                    .done(function (CSVdata) {
+                $.getJSON("./answersheet.json")
+                    .done(function (jsonData) {
                         try {
-                            data = $.csv.toObjects(CSVdata);
+                            data = jsonData;
                             numOfProbs = data.length;
-                            if (numOfProbs === 0) throw new Error("No data loaded from CSV.");
+                            if (numOfProbs === 0) throw new Error("No data loaded from JSON.");
                             data = parseMultiAns(data);
 
                             var btn = document.getElementById("startGame");
@@ -1282,17 +1281,17 @@
                             document.addEventListener("keypress", enterPressStart);
 
                         } catch (error) {
-                            console.error("Error processing CSV data:", error);
+                            console.error("Error processing JSON data:", error);
                             showAlertModal("Failed to load or process game data.");
                             document.getElementById("startGame").disabled = true;
                             document.getElementById("startGame").textContent = "讀取錯誤";
                         }
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
-                        console.error("Failed to load answersheet.csv:", textStatus, errorThrown);
-                        showAlertModal("無法讀取 answersheet.csv");
-                         document.getElementById("startGame").disabled = true;
-                         document.getElementById("startGame").textContent = "讀取錯誤";
+                        console.error("Failed to load answersheet.json:", textStatus, errorThrown);
+                        showAlertModal("無法讀取 answersheet.json");
+                        document.getElementById("startGame").disabled = true;
+                        document.getElementById("startGame").textContent = "讀取錯誤";
                     });
 
                 adjustPlaceholder();
