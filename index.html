@@ -929,7 +929,7 @@
             <div class="loading-screen">
                 <div class="spinner"></div>
             </div>
-            <img id="image" onload="this.classList.add('loaded'); document.querySelector('.loading-screen').style.display='none';" src="" alt="Parasite Image">
+            <img id="image" onload="this.classList.add('loaded'); document.querySelector('.loading-screen').style.display='none'; preloadNextImage();" src="" alt="Parasite Image">
         </div>
 
         <div class="card-answer">
@@ -1467,7 +1467,7 @@
 
             if (checkAns(userAnswer, data[x].answer)) {
                 showAnsDiv.innerHTML = `<strong style="color: #10B981;">對了欸！！🥹</strong> 答案是：${data[x].answer.join(' / ')}`;
-                hideExplanation();
+                showExplanation();
                 updateCorrect();
             } else {
                 showAnsDiv.innerHTML = `<strong style="color: #EF4444;">錯了錯了😭</strong> 正確答案是：${data[x].answer.join(' / ')}`;
@@ -1773,6 +1773,16 @@
                 closeAlertModal();
             }
         });
+
+        // Preload the next image to improve UX
+        function preloadNextImage() {
+            const nextIndex = (x + 1) % numOfProbs;
+            const nextPath = data[nextIndex]?.path;
+            if (nextPath) {
+                const img = new Image();
+                img.src = nextPath;
+            }
+        }
     </script>
 </body>
 </html>
