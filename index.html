@@ -812,6 +812,10 @@
         .leaderboard li:last-child {
             border-bottom: none;
         }
+        .leaderboard li.current-user {
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
 
          .leaderboard.expanded {
              max-height: 500px;
@@ -1143,51 +1147,67 @@
             const listEl = document.getElementById("boardList");
             listEl.innerHTML = '<li>載入中…</li>';
 
-            const q = query(
-                ref(db, 'leaderboard'),
-                orderByChild('score'),
-                limitToLast(10)
-            );
-
             try {
-                const snap = await get(q);
-                const data = snap.val() || {};
-                const arr  = Object.values(data).sort((a,b)=>b.score-a.score);
+                const snap = await get(ref(db, 'leaderboard'));
+                const dataObj = snap.val() || {};
+                const entries = Object.entries(dataObj).map(([uid, item]) => ({ uid, ...item }));
+                const sorted = entries.sort((a, b) => b.score - a.score);
 
                 listEl.innerHTML = '';
-                arr.forEach((item, index) => {
-                    const li = document.createElement('li');
-
-                    const rankSpan = document.createElement('span');
-                    rankSpan.className = 'leaderboard-rank';
-                    rankSpan.textContent = index + 1;
-
-                    const nameSpan = document.createElement('span');
-                    nameSpan.className = 'leaderboard-name';
-                    nameSpan.textContent = item.name;
-
-                    const scoreSpan = document.createElement('span');
-                    scoreSpan.className = 'leaderboard-score';
-                    scoreSpan.textContent = item.score;
-
-                    li.appendChild(rankSpan);
-                    li.appendChild(nameSpan);
-                    li.appendChild(scoreSpan);
-                    listEl.appendChild(li);
+                let inTop = false;
+                // Add tie tracking variables
+                let prevScore = null;
+                let prevRank = 0;
+                sorted.forEach((item, index) => {
+                    if (index < 10) {
+                        const li = document.createElement('li');
+                        if (item.uid === window.currentUserUid) li.classList.add('current-user');
+                        const rankSpan = document.createElement('span');
+                        rankSpan.className = 'leaderboard-rank';
+                        // 取得名次（同分併列）
+                        let rank;
+                        if (item.score === prevScore) {
+                            rank = prevRank;
+                        } else {
+                            rank = index + 1;
+                            prevScore = item.score;
+                            prevRank = rank;
+                        }
+                        rankSpan.textContent = rank;
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'leaderboard-name';
+                        nameSpan.textContent = item.name;
+                        const scoreSpan = document.createElement('span');
+                        scoreSpan.className = 'leaderboard-score';
+                        scoreSpan.textContent = item.score;
+                        li.append(rankSpan, nameSpan, scoreSpan);
+                        listEl.appendChild(li);
+                        if (item.uid === window.currentUserUid) inTop = true;
+                    }
                 });
-                const uid = window.currentUserUid;
-                if (!uid) return;
-                const playerRef = ref(db, `leaderboard/${uid}`);
-                const playerSnap = await get(playerRef);
-                let playerScore = 0;
-                if (playerSnap.exists()) {
-                    const playerData = playerSnap.val();
-                    playerScore = typeof playerData.score === "number" ? playerData.score : 0;
-                } else {
-                playerScore = 0;
+                if (!inTop) {
+                    const userIndex = sorted.findIndex(item => item.uid === window.currentUserUid);
+                    if (userIndex !== -1) {
+                        const item = sorted[userIndex];
+                        const li = document.createElement('li');
+                        li.classList.add('current-user');
+                        const rankSpan = document.createElement('span');
+                        rankSpan.className = 'leaderboard-rank';
+                        const rank = sorted.filter(it => it.score > item.score).length + 1;
+                        rankSpan.textContent = rank;
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'leaderboard-name';
+                        nameSpan.textContent = item.name;
+                        const scoreSpan = document.createElement('span');
+                        scoreSpan.className = 'leaderboard-score';
+                        scoreSpan.textContent = item.score;
+                        li.append(rankSpan, nameSpan, scoreSpan);
+                        listEl.appendChild(li);
+                    }
                 }
-                const scoreDisplay = document.getElementById("score-display");
-                if (scoreDisplay) scoreDisplay.textContent = playerScore;
+                const playerData = sorted.find(item => item.uid === window.currentUserUid);
+                const playerScore = playerData ? playerData.score : 0;
+                document.getElementById("score-display").textContent = playerScore;
                 score = playerScore;
             } catch (err) {
                 console.error("讀排行榜失敗：", err);
