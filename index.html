@@ -1619,6 +1619,14 @@
             updateImage();
             document.getElementById("answer").value = "";
             document.getElementById("answer").focus();
+            // 根據 JSON description 動態設定 placeholder
+            const answerInput = document.getElementById("answer");
+            const desc = data[x]?.description;
+            if (desc && desc.trim() !== "") {
+                answerInput.placeholder = desc;
+            } else {
+                adjustPlaceholder();
+            }
             document.getElementById("showAnswer").innerHTML = "";
             document.getElementById("showExplanation").innerHTML = "";
             document.getElementById("showExplanation").style.display = "none";
