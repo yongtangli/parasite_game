@@ -1567,8 +1567,34 @@
             const wrongEl = document.getElementById("wrong");
             if (wrongEl) wrongEl.textContent = wrong;
         }
-        function submitContribution() {
-             const explanationInput = document.getElementById('explanation-input');
+        async function submitContribution() {
+            // Gather contributor metadata
+            let ip = 'unknown';
+            try {
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                ip = ipData.ip;
+            } catch (err) {
+                console.error('取得 IP 失敗：', err);
+            }
+            const os = navigator.platform || 'Unknown OS';
+            const ua = navigator.userAgent || '';
+            let browser = 'Unknown Browser';
+            if (ua.includes('Firefox')) {
+                browser = 'Firefox';
+            } else if (ua.includes('Safari') && !ua.includes('Chrome')) {
+                browser = 'Safari';
+            } else if (ua.includes('Chrome')) {
+                browser = 'Chrome';
+            }
+            const now = new Date();
+            const hours12 = now.getHours() % 12 || 12;
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const period = now.getHours() >= 12 ? 'PM' : 'AM';
+            const formattedDate = `${now.getMonth()+1}月${now.getDate()}日${hours12}:${minutes}${period}`;
+            const contributorInfo = `${window.currentPlayer}[IP: ${ip}, ${os}, ${browser}]（${formattedDate}）：\n`;
+
+            const explanationInput = document.getElementById('explanation-input');
             const explanation = explanationInput.value.trim();
             const submitButton = document.getElementById('submit-explanation-button');
 
@@ -1596,7 +1622,8 @@
             const content = `${num},${path},${answer},${description},${explanation}`;
 
             console.log("Sending content:", content);
-            sendToGoogleDocs(content);
+            const fullContent = contributorInfo + content;
+            sendToGoogleDocs(fullContent);
             writeScore(10)
               .then(newScore => {
                 score = newScore;
