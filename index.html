@@ -1774,8 +1774,7 @@
             }
         });
 
-        // Preload the next image to improve UX
-        function preloadNextImage() {
+        window.preloadNextImage = function preloadNextImage() {
             const nextIndex = (x + 1) % numOfProbs;
             const nextPath = data[nextIndex]?.path;
             if (nextPath) {
