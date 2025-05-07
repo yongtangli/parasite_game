@@ -141,6 +141,12 @@
             0%   { left: -50%; }
             100% { left: 150%; }
         }
+        .start-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
 
         .start-button {
             padding: 14px 35px;
@@ -898,7 +904,10 @@
           <div class="player-input" style="text-align:center;">
             <input type="text" id="playerName" placeholder="輸入玩家名稱">
           </div>
-        <button id="startGame" class="start-button">開始吧</button>
+        <div class="start-buttons">
+          <button id="startAllGame" class="start-button">全部題目</button>
+          <button id="startEggGame" class="start-button">只看蟲卵</button>
+        </div>
         <div class="footer">
           <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往舊版</a> ｜
           <a href="https://chromewebstore.google.com/detail/%E5%8F%B0%E5%A4%A7%E9%86%AB%E5%A1%AB%E5%95%8F%E5%8D%B7/ciioeecbkbnmnedkgmkfaicngidogdkj?authuser=0&hl=en" target="_blank">問卷外掛</a> ｜
@@ -1262,60 +1271,64 @@
                 });
             }
 
-            $(document).ready(function () {
-                $.getJSON("./answersheet.json")
-                    .done(function (jsonData) {
-                        try {
-                            data = jsonData;
-                            numOfProbs = data.length;
-                            if (numOfProbs === 0) throw new Error("No data loaded from JSON.");
-                            data = parseMultiAns(data);
+            // 新的開始遊戲邏輯：多個按鈕與不同資料集
+            function createStartHandler(jsonPath) {
+                return async function () {
+                    const nameInput = document.getElementById("playerName").value.trim();
+                    if (!nameInput) {
+                        showAlertModal("請先輸入玩家名稱！");
+                        document.getElementById("playerName").focus();
+                        return;
+                    }
+                    window.currentPlayer = nameInput;
+                    localStorage.setItem("parasite_player_name", nameInput);
+                    document.querySelector('.flashcard-container').style.display = 'flex';
+                    fetchLeaderboard();
+                    document.removeEventListener("keypress", enterPressStart);
+                    state = 1;
+                    correct = 0; wrong = 0; total = 0; score = 0;
+                    document.getElementById("correct").innerHTML = correct;
+                    document.getElementById("wrong").innerHTML = wrong;
+                    correctList = []; wrongList = [];
 
-                            var btn = document.getElementById("startGame");
-                            var startHandler = async function () {
-                                const nameInput = document.getElementById("playerName").value.trim();
-                                if (!nameInput) {
-                                    showAlertModal("請先輸入玩家名稱！");
-                                    document.getElementById("playerName").focus();
-                                    return;
-                                }
-                                window.currentPlayer = nameInput;
-                                localStorage.setItem("parasite_player_name", nameInput);
-                                document.querySelector('.flashcard-container').style.display = 'flex';
-                                fetchLeaderboard();
-                                document.removeEventListener("keypress", enterPressStart);
-                                state = 1;
+                    $.getJSON(jsonPath)
+                        .done(function (jsonData) {
+                            try {
+                                data = jsonData;
+                                numOfProbs = data.length;
+                                if (numOfProbs === 0) throw new Error("No data loaded from JSON.");
+                                data = parseMultiAns(data);
                                 done = new Array(numOfProbs).fill(false);
-                                correct = 0; wrong = 0; total = 0; score = 0; score = 0;
-                                document.getElementById("correct").innerHTML = correct;
-                                document.getElementById("wrong").innerHTML = wrong;
-                                correctList = []; wrongList = [];
                                 startGame();
-                            };
+                            } catch (error) {
+                                console.error("Error processing JSON data:", error);
+                                showAlertModal("Failed to load or process game data.");
+                            }
+                        })
+                        .fail(function (jqXHR, textStatus, errorThrown) {
+                            console.error("Failed to load JSON:", textStatus, errorThrown);
+                            showAlertModal("無法讀取遊戲資料");
+                        });
+                };
+            }
 
-                            var enterPressStart = function (event) {
-                                if (event.key === 'Enter') startHandler();
-                            };
+            document.getElementById("startAllGame").addEventListener("click", createStartHandler("./all.json"));
+            document.getElementById("startEggGame").addEventListener("click", createStartHandler("./egg.json"));
 
-                            btn.addEventListener("click", startHandler);
-                            document.addEventListener("keypress", enterPressStart);
+            const enterPressStart = function (event) {
+                if (event.key === 'Enter') {
+                    const nameInput = document.getElementById("playerName").value.trim();
+                    if (!nameInput) {
+                        showAlertModal("請先輸入玩家名稱！");
+                        document.getElementById("playerName").focus();
+                        return;
+                    }
+                    document.getElementById("startAllGame").click();
+                }
+            };
+            document.addEventListener("keypress", enterPressStart);
 
-                        } catch (error) {
-                            console.error("Error processing JSON data:", error);
-                            showAlertModal("Failed to load or process game data.");
-                            document.getElementById("startGame").disabled = true;
-                            document.getElementById("startGame").textContent = "讀取錯誤";
-                        }
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        console.error("Failed to load answersheet.json:", textStatus, errorThrown);
-                        showAlertModal("無法讀取 answersheet.json");
-                        document.getElementById("startGame").disabled = true;
-                        document.getElementById("startGame").textContent = "讀取錯誤";
-                    });
-
-                adjustPlaceholder();
-            });
+            adjustPlaceholder();
             window.addEventListener('resize', adjustPlaceholder);
 
              document.addEventListener("DOMContentLoaded", function () {

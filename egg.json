@@ -1,0 +1,590 @@
+[
+    {
+      "num": "1",
+      "path": "images/IMG_5719.jpg",
+      "answer": [
+        "Echinostoma malayanum",
+        "Echinostoma revolutum"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "2",
+      "path": "images/IMG_5721.jpg",
+      "answer": [
+        "Schistosoma mansoni"
+      ],
+      "explanation": "有側刺",
+      "description": ""
+    },
+    {
+      "num": "3",
+      "path": "images/IMG_5727.jpg",
+      "answer": [
+        "Schistosoma japonicum"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "4",
+      "path": "images/IMG_5728.jpg",
+      "answer": [
+        "Toxocara canis",
+        "Toxocara cati"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "5",
+      "path": "images/IMG_5729.jpg",
+      "answer": [
+        "Fasciola hepatica"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "6",
+      "path": "images/IMG_5730.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "中小型蟲卵、卵殼薄、卵兩端較圓鈍",
+      "description": ""
+    },
+    {
+      "num": "7",
+      "path": "images/IMG_5733.jpg",
+      "answer": [
+        "Enterobius vermicularis"
+      ],
+      "explanation": "D型卵。",
+      "description": ""
+    },
+    {
+      "num": "8",
+      "path": "images/IMG_5735.jpg",
+      "answer": [
+        "Capillaria philippinensis"
+      ],
+      "explanation": "有兩個透明卵塞、卵殼有紋路、有腰身。",
+      "description": ""
+    },
+    {
+      "num": "9",
+      "path": "images/IMG_5745.jpg",
+      "answer": [
+        "Schistosoma haematobium"
+      ],
+      "explanation": "大型蟲卵、無卵蓋、有小小的尾刺",
+      "description": ""
+    },
+    {
+      "num": "10",
+      "path": "images/IMG_5749.jpg",
+      "answer": [
+        "Echinostoma malayanum",
+        "Echinostoma revolutum"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "11",
+      "path": "images/IMG_5750.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "12",
+      "path": "images/IMG_5753.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "13",
+      "path": "images/IMG_5754.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "14",
+      "path": "images/IMG_5759.jpg",
+      "answer": [
+        "Fasciolopsis buski"
+      ],
+      "explanation": "像是石蓮的葉子，比牛羊肝吸蟲厚",
+      "description": ""
+    },
+    {
+      "num": "15",
+      "path": "images/IMG_5762.jpg",
+      "answer": [
+        "Hymenolepis diminuta"
+      ],
+      "explanation": "卵殼有紋路、有玻璃樣物質、內含物為六鉤幼蟲、胎蟲被殼的兩端有突起但沒有極絲。",
+      "description": "殼有橫紋"
+    },
+    {
+      "num": "16",
+      "path": "images/IMG_5763.jpg",
+      "answer": [
+        "Dipylidium caninum"
+      ],
+      "explanation": "包著多個蟲卵的卵囊",
+      "description": ""
+    },
+    {
+      "num": "17",
+      "path": "images/IMG_5765.jpg",
+      "answer": [
+        "Trichuris trichiura"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "18",
+      "path": "images/IMG_5767.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "卵殼不均勻增厚，卵蓋對側有增厚",
+      "description": ""
+    },
+    {
+      "num": "19",
+      "path": "images/IMG_5773.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "20",
+      "path": "images/IMG_5774.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata"
+      ],
+      "explanation": "胎蟲胚殼厚、似輪胎、內含六鉤幼蟲",
+      "description": ""
+    },
+    {
+      "num": "21",
+      "path": "images/IMG_5777.jpg",
+      "answer": [
+        "Trichuris trichiura"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "22",
+      "path": "images/IMG_5783.jpg",
+      "answer": [
+        "Hymenolepis nana"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "23",
+      "path": "images/IMG_5785.jpg",
+      "answer": [
+        "Clonorchis sinensis"
+      ],
+      "explanation": "有肩膀(花瓶)",
+      "description": ""
+    },
+    {
+      "num": "24",
+      "path": "images/IMG_5789.jpg",
+      "answer": [
+        "Isospora belli",
+        "Cystoisospora belli"
+      ],
+      "explanation": "此為Mature oocyst，內有兩個Sporocyst",
+      "description": ""
+    },
+    {
+      "num": "25",
+      "path": "images/IMG_5790.jpg",
+      "answer": [
+        "Heterophyes heterophyes",
+        "Metagonimus yokogawai"
+      ],
+      "explanation": "小型卵（與指針大小比較），有卵蓋，但卵蓋與卵身交界處不明顯",
+      "description": ""
+    },
+    {
+      "num": "26",
+      "path": "images/IMG_5792.jpg",
+      "answer": [
+        "Capillaria hepatica"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "27",
+      "path": "images/IMG_5793.jpg",
+      "answer": [
+        "Trichostrongylus orientalis"
+      ],
+      "explanation": "殼薄類似鉤蟲卵，但東方毛線蟲卵一端較尖",
+      "description": ""
+    },
+    {
+      "num": "28",
+      "path": "images/Diphyllobothrium latum-2.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "中型蟲卵、卵殼兩端較圓鈍、卵蓋對面有時候會有小結節。",
+      "description": ""
+    },
+    {
+      "num": "29",
+      "path": "images/Paragonimus westermani-2.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "30",
+      "path": "images/Hookworm-2.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "中小型蟲卵、卵殼薄、卵的兩端圓鈍。",
+      "description": ""
+    },
+    {
+      "num": "31",
+      "path": "images/Echinostoma malayanum-1.jpg",
+      "answer": [
+        "Echinostoma malayanum",
+        "Echinostoma revolutum"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "32",
+      "path": "images/Fasciolopsis buski-1.jpg",
+      "answer": [
+        "Fasciola hepatica",
+        "Fasciolopsis buski"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "33",
+      "path": "./images/IM-0029.jpg",
+      "answer": [
+        "Cystoisospora belli mature oocyst",
+        "Cystoisospora belli oocyst",
+        "Cystoisospora belli",
+        "Isospora belli mature oocyst",
+        "Isospora belli oocyst",
+        "Isospora belli"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "34",
+      "path": "images/C_belli_spore_wtmt1.jpg",
+      "answer": [
+        "Cystoisospora belli immature oocyst",
+        "Cystoisospora belli oocyst",
+        "Cystoisospora belli",
+        "Isospora belli immature oocyst",
+        "Isospora belli oocyst",
+        "Isospora belli"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "35",
+      "path": "images/ascaris-egg.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "長橢圓形，卵殼比受精蛔蟲卵薄、卵細胞與卵殼之間沒有空隙",
+      "description": ""
+    },
+    {
+      "num": "36",
+      "path": "images/fasciola-egg.jpg",
+      "answer": [
+        "Fasciola hepatica",
+        "Fasciolopsis buski"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "37",
+      "path": "images/heter-egg.jpg",
+      "answer": [
+        "Metagonimus yokogawai",
+        "Heterophyes heterophyes"
+      ],
+      "explanation": "小型蟲卵、有卵蓋、卵殼沒有紋路、沒有肩膀",
+      "description": ""
+    },
+    {
+      "num": "38",
+      "path": "images/heter-egg2.jpg",
+      "answer": [
+        "Metagonimus yokogawai",
+        "Heterophyes heterophyes"
+      ],
+      "explanation": "小型蟲卵、有卵蓋、卵殼沒有紋路、沒有肩膀",
+      "description": ""
+    },
+    {
+      "num": "39",
+      "path": "images/taenia-egg.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "40",
+      "path": "images/taenia-egg2.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata"
+      ],
+      "explanation": "胎蟲胚殼厚、似輪胎、內含六鉤幼蟲",
+      "description": ""
+    },
+    {
+      "num": "41",
+      "path": "images/pw-egg.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "42",
+      "path": "images/ev-egg.jpg",
+      "answer": [
+        "Enterobius vermicularis"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "43",
+      "path": "images/ch-egg.jpg",
+      "answer": [
+        "Capillaria hepatica"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "44",
+      "path": "images/spirometra-egg.jpg",
+      "answer": [
+        "Spirometra mansoni"
+      ],
+      "explanation": "卵殼兩端較尖，卵殼不對稱",
+      "description": ""
+    },
+    {
+      "num": "45",
+      "path": "images/t-ori-egg.jpg",
+      "answer": [
+        "Trichostrongylus orientalis"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "46",
+      "path": "images/al-egg-fer.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "47",
+      "path": "images/al-egg-fer-2.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "48",
+      "path": "images/sj-egg.jpg",
+      "answer": [
+        "Schistosoma japonicum"
+      ],
+      "explanation": "大型蟲卵，無卵蓋，圓形或橢圓形",
+      "description": ""
+    },
+    {
+      "num": "49",
+      "path": "images/cp-egg.jpg",
+      "answer": [
+        "Capillaria philippinensis"
+      ],
+      "explanation": "有卵塞，花生狀，卵殼有橫紋",
+      "description": ""
+    },
+    {
+      "num": "50",
+      "path": "images/ev-egg-2.jpg",
+      "answer": [
+        "Enterobius vermicularis"
+      ],
+      "explanation": "中小型蟲卵、卵殼不對稱（一邊平、一邊彎曲）",
+      "description": ""
+    },
+    {
+      "num": "51",
+      "path": "images/trichruis-egg.jpg",
+      "answer": [
+        "Trichuris trichiura"
+      ],
+      "explanation": "中型蟲卵、啤酒桶形、兩個透明栓塞、卵殼較厚、卵殼沒有紋路、被膽汁染色則呈黃褐色",
+      "description": ""
+    },
+    {
+      "num": "52",
+      "path": "images/hookworm-egg.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "53",
+      "path": "images/hookworm-egg-2.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "54",
+      "path": "images/hookworm-egg-3.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "中小型蟲卵、卵殼薄、卵兩端較圓鈍",
+      "description": ""
+    },
+    {
+      "num": "55",
+      "path": "images/echio-egg.jpg",
+      "answer": [
+        "Echinostoma malayanum",
+        "Echinostoma revolutum"
+      ],
+      "explanation": "大型蟲卵、有卵蓋、卵蓋對面的卵殼會有實心增厚",
+      "description": ""
+    },
+    {
+      "num": "56",
+      "path": "images/sm-egg.jpg",
+      "answer": [
+        "Schistosoma mansoni"
+      ],
+      "explanation": "大型蟲卵、無卵蓋、有側刺",
+      "description": ""
+    },
+    {
+      "num": "57",
+      "path": "images/d-latum-egg.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "中型蟲卵、卵殼兩端較圓鈍、卵蓋對面有時候會有小結節。",
+      "description": ""
+    },
+    {
+      "num": "58",
+      "path": "images/d-latum-egg-2.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "中型蟲卵、卵殼兩端較圓鈍、卵蓋對面有時候會有小結節。",
+      "description": ""
+    },
+    {
+      "num": "59",
+      "path": "images/h-nana-egg.jpg",
+      "answer": [
+        "Hymenolepis nana"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "60",
+      "path": "images/al-egg-fer-3.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "61",
+      "path": "images/al-egg-fer-4.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "",
+      "description": ""
+    },
+    {
+      "num": "62",
+      "path": "images/h-diminuta-egg.jpg",
+      "answer": [
+        "Hymenolepis diminuta"
+      ],
+      "explanation": "",
+      "description": ""
+    }
+  ]
