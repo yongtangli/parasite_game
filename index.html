@@ -10,6 +10,84 @@
     <title>寄蟲跑台</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* Document viewer overlay */
+        .doc-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* dim backdrop */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .doc-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 30px;
+            overflow-y: auto;
+            box-shadow: none;
+            border: none;
+            border-radius: 0;
+            z-index: 2001;
+        }
+        body.dark-mode .doc-page {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border-color: var(--border-secondary);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .doc-entry {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 15px 30px;
+            margin: 20px auto;
+            padding: 15px;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.036);
+            border-radius: 8px;
+            align-items: start;
+        }
+        .doc-entry img {
+            width: 200px;
+            height: auto;
+            border-radius: 6px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .doc-entry img:hover {
+            transform: scale(1.1);
+        }
+        /* Ensure answer and explanation appear in the right column under the image */
+        .doc-entry p,
+        .doc-entry pre {
+            grid-column: 2;
+        }
+        .doc-entry pre {
+            background: rgba(0, 0, 0, 0.038);
+            padding: 10px;
+            border-radius: 10px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        /* Text wrapper for answer + explanation */
+        .doc-text {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            grid-column: 2;
+            max-width: 100%;
+        }
         @font-face {
             font-family: 'Germgoth';
             src: url('fonts/Germgoth.woff') format('woff');
@@ -904,10 +982,17 @@
           <div class="player-input" style="text-align:center;">
             <input type="text" id="playerName" placeholder="輸入玩家名稱">
           </div>
-        <div class="start-buttons">
-          <button id="startAllGame" class="start-button">全部題目</button>
-          <button id="startEggGame" class="start-button">只看蟲卵</button>
-        </div>
+    <div class="start-buttons">
+      <button id="startAllGame" class="start-button">全部</button>
+      <button id="startEggGame" class="start-button">蟲卵</button>
+      <button id="openDoc" class="start-button">題庫</button>
+    </div>
+    <div class="progress-actions" style="text-align:center; margin-top:10px; display:none;">
+      <button id="resumeButton" class="start-button" style="background-color: var(--accent-green); display:none;">接續上次</button>
+      <div style="margin-top:8px;">
+        <span id="restartProgress" style="color:#999;text-decoration:underline;cursor:pointer;">重新開始</span>
+      </div>
+    </div>
         <div class="footer">
           <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往舊版</a> ｜
           <a href="https://chromewebstore.google.com/detail/%E5%8F%B0%E5%A4%A7%E9%86%AB%E5%A1%AB%E5%95%8F%E5%8D%B7/ciioeecbkbnmnedkgmkfaicngidogdkj?authuser=0&hl=en" target="_blank">問卷外掛</a> ｜
@@ -968,6 +1053,14 @@
         <span class="close" onclick="closeAlertModal()">×</span>
         <div id="alertModalBody"></div>
     </div>
+    <!-- Document viewer -->
+    <div id="docContainer" class="doc-container" style="display:none;">
+      <div class="doc-page">
+        <span id="closeDoc" class="close">&times;</span>
+        <div id="docContent"></div>
+      </div>
+    </div>
+
     <script type="module">
         const firebaseConfig = {
             apiKey: "AIzaSyAjvO8nSRkKXUp7gopj-X7QsOGRBHTxj1s",
@@ -984,11 +1077,11 @@
         import {
             getDatabase,
             ref,
-            set,
-            get,
             query,
             orderByChild,
-            limitToLast
+            limitToLast,
+            get,
+            set
         } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
         import {
             getAuth,
@@ -1008,6 +1101,14 @@
                 window.currentUserUid = null;
             }
         });
+        // Load progress from localStorage
+        const savedProg = localStorage.getItem('gameProgress');
+        if (savedProg) {
+          const prog = JSON.parse(savedProg);
+          document.getElementById('resumeButton').style.display = 'inline-block';
+          document.querySelector('.progress-actions').style.display = 'block';
+          document.querySelector('.start-buttons').style.display = 'none';
+        }
         window.currentPlayer = "匿名";
         var TIME = 31;
         var numOfProbs;
@@ -1331,42 +1432,132 @@
             adjustPlaceholder();
             window.addEventListener('resize', adjustPlaceholder);
 
-             document.addEventListener("DOMContentLoaded", function () {
-                 const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-                 const link = document.querySelector('a[href="profile.mobileconfig"]');
-                 const downloadBlock = document.getElementById("download-block");
+            // Document viewer open/close handlers
+            document.getElementById("openDoc").addEventListener("click", function() {
+                const container = document.getElementById("docContainer");
+                const content = document.getElementById("docContent");
+                content.innerHTML = '';
+                fetch('./all.json')
+                  .then(res => res.json())
+                  .then(dataArr => {
+                    dataArr.forEach(item => {
+                      const entry = document.createElement('div');
+                      entry.className = 'doc-entry';
+                      // Image
+                      if (item.path) {
+                        const img = document.createElement('img');
+                        img.src = item.path;
+                        img.alt = item.answer[0] || '';
+                        entry.appendChild(img);
+                      }
+                      // Text container for answer + explanation
+                      const textWrapper = document.createElement('div');
+                      textWrapper.className = 'doc-text';
+                      // Answer
+                      const ans = document.createElement('p');
+                      ans.innerHTML = `<strong>${item.answer.join(' / ')}</strong>`;
+                      textWrapper.appendChild(ans);
+                      // Explanation
+                      if (item.explanation) {
+                        const pre = document.createElement('pre');
+                        pre.textContent = item.explanation;
+                        textWrapper.appendChild(pre);
+                      }
+                      entry.appendChild(textWrapper);
+                      content.appendChild(entry);
+                    });
+                    container.style.display = 'block';
+                  })
+                  .catch(err => {
+                    content.innerHTML = '<p>讀取資料失敗</p>';
+                    container.style.display = 'block';
+                  });
+            });
+            // Close button
+            document.getElementById("closeDoc").addEventListener("click", function() {
+                document.getElementById("docContainer").style.display = 'none';
+            });
 
-                 if (/android/i.test(userAgent)) {
-                     link.textContent = "安卓下載";
-                     link.setAttribute("href", "parasite_game_v1.apk");
-                     link.setAttribute("download", "Parasite.apk");
-                 } else if (/iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
-                     link.textContent = "蘋果下載";
-                     link.setAttribute("href", "profile.mobileconfig");
-                     link.setAttribute("download", "Parasite.mobileconfig");
-                 } else {
-                     if (downloadBlock) downloadBlock.style.display = "none";
-                 }
-             });
-             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-             const link = document.querySelector('a[href="profile.mobileconfig"]');
-             const downloadBlock = document.getElementById("download-block");
+            document.addEventListener("DOMContentLoaded", function () {
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                const link = document.querySelector('a[href="profile.mobileconfig"]');
+                const downloadBlock = document.getElementById("download-block");
 
-             if (/android/i.test(userAgent)) {
-                 if(link) {
-                     link.textContent = "安卓下載";
-                     link.setAttribute("href", "parasite_game_v1.apk");
-                     link.setAttribute("download", "Parasite.apk");
-                 }
-             } else if (/iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
-                 if(link) {
-                     link.textContent = "蘋果下載";
-                     link.setAttribute("href", "profile.mobileconfig");
-                     link.setAttribute("download", "Parasite.mobileconfig");
-                 }
-             } else {
-                 if (downloadBlock) downloadBlock.style.display = "none";
-             }
+                if (/android/i.test(userAgent)) {
+                    link.textContent = "安卓下載";
+                    link.setAttribute("href", "parasite_game_v1.apk");
+                    link.setAttribute("download", "Parasite.apk");
+                } else if (/iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+                    link.textContent = "蘋果下載";
+                    link.setAttribute("href", "profile.mobileconfig");
+                    link.setAttribute("download", "Parasite.mobileconfig");
+                } else {
+                    if (downloadBlock) downloadBlock.style.display = "none";
+                }
+            });
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const link = document.querySelector('a[href="profile.mobileconfig"]');
+            const downloadBlock = document.getElementById("download-block");
+
+            if (/android/i.test(userAgent)) {
+                if(link) {
+                    link.textContent = "安卓下載";
+                    link.setAttribute("href", "parasite_game_v1.apk");
+                    link.setAttribute("download", "Parasite.apk");
+                }
+            } else if (/iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+                if(link) {
+                    link.textContent = "蘋果下載";
+                    link.setAttribute("href", "profile.mobileconfig");
+                    link.setAttribute("download", "Parasite.mobileconfig");
+                }
+            } else {
+                if (downloadBlock) downloadBlock.style.display = "none";
+            }
+
+            // Progress resume/restart listeners
+            const resumeBtn = document.getElementById('resumeButton');
+            const restartProgress = document.getElementById('restartProgress');
+            if (resumeBtn) {
+              resumeBtn.addEventListener('click', () => {
+                document.querySelector('.progress-actions').style.display = 'block';
+                document.querySelector('.start-buttons').style.display = 'none';
+                const prog = JSON.parse(localStorage.getItem('gameProgress'));
+                if (prog) {
+                  data = prog.data;
+                  x = prog.x;
+                  done = prog.done;
+                  correct = prog.correct;
+                  wrong = prog.wrong;
+                  score = prog.score;
+                  updateScoreDisplay();
+                  document.querySelector('.start-screen').style.display = 'none';
+                  document.querySelector('.flashcard-container').style.display = 'flex';
+                  // Initialize event listeners without triggering nextProb
+                  document.addEventListener("keydown", enterKeyEvent);
+                  document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
+                  document.getElementById("dontKnow").addEventListener("click", showAnswer);
+                  document.getElementById("correctArea").addEventListener("click", showCorrectList);
+                  document.getElementById("wrongArea").addEventListener("click", showWrongList);
+                  document.getElementById("next").addEventListener("click", nextProb);
+                  document.getElementById('closeModal').addEventListener('click', function() {
+                      document.getElementById('modal').style.display = "none";
+                  });
+                  window.preloadNextImage(); // preload next if desired
+                  // Show the restored question
+                  updateImage();
+                }
+              });
+            }
+            if (restartProgress) {
+              restartProgress.addEventListener('click', () => {
+                localStorage.removeItem('gameProgress');
+                showAlertModal('進度已清除');
+                document.getElementById('resumeButton').style.display = 'none';
+                document.querySelector('.progress-actions').style.display = 'none';
+                document.querySelector('.start-buttons').style.display = 'flex';
+              });
+            }
         }
 
         function sendToGoogleDocs(content) {
@@ -1670,6 +1861,7 @@
             document.getElementById("showAnswer").innerHTML = "";
             document.getElementById("showExplanation").innerHTML = "";
             document.getElementById("showExplanation").style.display = "none";
+            localStorage.setItem('gameProgress', JSON.stringify({ data, x, done, correct, wrong, score }));
         }
         function pickNewImage() {
              const availableIndices = [];
