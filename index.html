@@ -721,6 +721,33 @@
             transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
             border: 1px solid var(--border-primary);
         }
+        /* Hide scrollbar for image preview modal */
+        #imageModal .modal-content {
+            overflow: visible !important;
+            scrollbar-width: none; /* Firefox */
+        }
+        #imageModal .modal-content::-webkit-scrollbar {
+            display: none; /* Chrome, Safari */
+        }
+        /* 移除按鈕本體背景，只保留箭頭 */
+        .nav-button {
+            all: unset;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            pointer-events: auto;
+            color: var(--text-primary);
+            font-size: 2rem;
+            line-height: 1;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            opacity: 0.6;
+            transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+        }
+        .nav-left { left: -80px; }
+        .nav-right { right: -80px; }
          @keyframes scaleUpModal {
             from { transform: scale(0.95); opacity: 0;}
             to { transform: scale(1); opacity: 1;}
@@ -964,6 +991,53 @@
             left: 50%;
             translate: -50%;
         }
+        /* 移除按鈕本體背景，只保留箭頭 */
+        .nav-button {
+            background-color: transparent;
+            width: auto;
+            height: auto;
+            color: var(--text-primary);
+            font-size: 2rem;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            pointer-events: auto;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 3010;
+            border: none;
+            outline: none;
+            opacity: 0.6;
+            appearance: none;
+            padding: 0;
+        }
+
+        .nav-left { left: -80px; }
+        .nav-right { right: -80px; }
+
+        .nav-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            opacity: 0;
+            transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+            pointer-events: none;
+        }
+        .nav-button:hover {
+            color: var(--accent-blue);
+        }
+        .nav-button:hover::before {
+            width: 80px;
+            height: 80px;
+            opacity: 0.4;
+            filter: blur(10px);
+        }
     </style>
 </head>
 <body onload="init();">
@@ -1058,6 +1132,20 @@
       <div class="doc-page">
         <span id="closeDoc" class="close">&times;</span>
         <div id="docContent"></div>
+      </div>
+    </div>
+
+    <!-- Image lightbox modal -->
+    <div id="imageModal" class="modal" style="z-index:3000;">
+      <div class="modal-content">
+        <span id="closeImageModal" class="close" style="top: 4px; right: 10px;">&times;</span>
+        <button id="prevImageButton" class="nav-button nav-left" aria-label="上一題">‹</button>
+        <button id="nextImageButton" class="nav-button nav-right" aria-label="下一題">›</button>
+        <img id="modalImage" src="" alt="Image preview" style="max-width: 100%; height: auto; border-radius:6px;">
+        <div id="modalInfo" style="text-align:center;">
+          <p id="modalAnswer" style="font-weight:600;"></p>
+          <p id="modalExplanation" style="color:var(--text-secondary); margin-bottom: 0;"></p>
+        </div>
       </div>
     </div>
 
@@ -1440,6 +1528,7 @@
                 fetch('./all.json')
                   .then(res => res.json())
                   .then(dataArr => {
+                    window.docData = dataArr;
                     dataArr.forEach(item => {
                       const entry = document.createElement('div');
                       entry.className = 'doc-entry';
@@ -1449,6 +1538,16 @@
                         img.src = item.path;
                         img.alt = item.answer[0] || '';
                         entry.appendChild(img);
+                        img.style.cursor = 'pointer';
+                        img.addEventListener('click', () => {
+                          document.getElementById('modalImage').src = item.path;
+                          document.getElementById('modalAnswer').textContent = item.answer.join(' / ');
+                          const expl = item.explanation ? item.explanation : '';
+                          document.getElementById('modalExplanation').textContent = expl;
+                          document.getElementById('imageModal').style.display = 'flex';
+                          document.getElementById('imageModal').style.opacity = '1';
+                          window.modalIndex = dataArr.indexOf(item);
+                        });
                       }
                       // Text container for answer + explanation
                       const textWrapper = document.createElement('div');
@@ -1472,6 +1571,31 @@
                     content.innerHTML = '<p>讀取資料失敗</p>';
                     container.style.display = 'block';
                   });
+            });
+            // Close image modal
+            document.getElementById('closeImageModal').addEventListener('click', () => {
+              document.getElementById('imageModal').style.display = 'none';
+            });
+            // Image modal navigation buttons
+            const prevBtn = document.getElementById('prevImageButton');
+            const nextBtn = document.getElementById('nextImageButton');
+            prevBtn.addEventListener('click', () => {
+                if (window.docData) {
+                    window.modalIndex = (window.modalIndex - 1 + window.docData.length) % window.docData.length;
+                    const it = window.docData[window.modalIndex];
+                    document.getElementById('modalImage').src = it.path;
+                    document.getElementById('modalAnswer').textContent = it.answer.join(' / ');
+                    document.getElementById('modalExplanation').textContent = it.explanation || '';
+                }
+            });
+            nextBtn.addEventListener('click', () => {
+                if (window.docData) {
+                    window.modalIndex = (window.modalIndex + 1) % window.docData.length;
+                    const it = window.docData[window.modalIndex];
+                    document.getElementById('modalImage').src = it.path;
+                    document.getElementById('modalAnswer').textContent = it.answer.join(' / ');
+                    document.getElementById('modalExplanation').textContent = it.explanation || '';
+                }
             });
             // Close button
             document.getElementById("closeDoc").addEventListener("click", function() {
