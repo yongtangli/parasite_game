@@ -6,7 +6,7 @@
         "Echinostoma malayanum",
         "Echinostoma revolutum"
       ],
-      "explanation": "",
+      "explanation": "卵蓋對側有實心增厚",
       "description": ""
     },
     {
@@ -34,7 +34,7 @@
         "Giardia lamblia",
         "Giardia lamblia cyst"
       ],
-      "explanation": "",
+      "explanation": "有四個細胞核，有sucking disc碎片，有軸絲axonemes",
       "description": ""
     },
     {
@@ -52,7 +52,7 @@
       "answer": [
         "Spirometra mansoni"
       ],
-      "explanation": "",
+      "explanation": "有卵蓋，不對稱",
       "description": ""
     },
     {
@@ -61,7 +61,7 @@
       "answer": [
         "Entamoeba coli"
       ],
-      "explanation": "",
+      "explanation": "trophozoite靶心在旁邊，無RBC(Entamoeba histolytica的trophozoite",
       "description": ""
     },
     {
@@ -70,7 +70,7 @@
       "answer": [
         "Taenia saginata"
       ],
-      "explanation": "",
+      "explanation": "分之",
       "description": ""
     },
     {
@@ -79,7 +79,7 @@
       "answer": [
         "Schistosoma japonicum"
       ],
-      "explanation": "",
+      "explanation": "圓形或橢圓形大型蟲卵，無卵蓋，卵殼周圍髒髒的，內含miracidium毛幼",
       "description": ""
     },
     {
@@ -98,7 +98,7 @@
       "answer": [
         "Fasciola hepatica"
       ],
-      "explanation": "",
+      "explanation": "頭錐",
       "description": ""
     },
     {
@@ -146,7 +146,7 @@
       "answer": [
         "Trypanosoma cruzi"
       ],
-      "explanation": "",
+      "explanation": "大",
       "description": ""
     },
     {
@@ -164,7 +164,7 @@
       "answer": [
         "Entamoeba coli"
       ],
-      "explanation": "",
+      "explanation": "mature cyst 8個核(histolytica 4核)",
       "description": "有大於四個核"
     },
     {
@@ -239,7 +239,7 @@
       "answer": [
         "Trichinella spiralis"
       ],
-      "explanation": "",
+      "explanation": "encysted larva",
       "description": ""
     },
     {
@@ -277,7 +277,7 @@
         "Trichomonas vaginalis",
         "Trichomonas vaginalis trophozoite"
       ],
-      "explanation": "",
+      "explanation": "明顯屬於鞭毛蟲亞門，1核，可知應為陰道滴蟲",
       "description": ""
     },
     {
@@ -287,7 +287,7 @@
         "Echinostoma malayanum",
         "Echinostoma revolutum"
       ],
-      "explanation": "",
+      "explanation": "淡水貝類為棘口吸蟲的IH",
       "description": ""
     },
     {
@@ -296,7 +296,7 @@
       "answer": [
         "Diphyllobothrium latum"
       ],
-      "explanation": "",
+      "explanation": "有卵蓋，必然是吸蟲或者擬葉目絛蟲類。這個大小不會是吸蟲卵(吸蟲卵要嘛很大要嘛很小)，卵蓋是寬扁的，可知是廣結裂頭絛蟲",
       "description": ""
     },
     {
@@ -305,7 +305,7 @@
       "answer": [
         "Dirofilaria immitis"
       ],
-      "explanation": "",
+      "explanation": "以蚊子為中間宿主，且人不為FH的只有犬心絲蟲",
       "description": "寫出人不是FH的線蟲"
     },
     {
@@ -324,7 +324,7 @@
       "answer": [
         "Ascaris lumbricoides"
       ],
-      "explanation": "",
+      "explanation": "卵週大波浪",
       "description": ""
     },
     {
@@ -333,7 +333,7 @@
       "answer": [
         "Paragonimus westermani"
       ],
-      "explanation": "",
+      "explanation": "花生米，深色波浪花紋",
       "description": ""
     },
     {
@@ -392,7 +392,7 @@
         "Brugia malayi",
         "Brugia malayi microfilaria"
       ],
-      "explanation": "",
+      "explanation": "深色",
       "description": ""
     },
     {
@@ -428,7 +428,7 @@
       "answer": [
         "Taenia saginata"
       ],
-      "explanation": "",
+      "explanation": "四個吸盤，沒有額嘴，沒有鉤。為無鉤絛蟲(牛肉絛蟲)",
       "description": ""
     },
     {
@@ -437,7 +437,7 @@
       "answer": [
         "Trichuris trichiura"
       ],
-      "explanation": "",
+      "explanation": "啤酒桶(手榴彈)形，中型卵，兩個透明卵塞，卵殼光滑且較厚",
       "description": ""
     },
     {
@@ -492,7 +492,7 @@
       "answer": [
         "Blastocystis hominis"
       ],
-      "explanation": "",
+      "explanation": "細胞邊緣有數個小核",
       "description": ""
     },
     {
@@ -548,7 +548,7 @@
       "answer": [
         "Trichuris trichiura"
       ],
-      "explanation": "",
+      "explanation": "一端胖一端瘦，為鞭蟲特徵",
       "description": ""
     },
     {
@@ -602,7 +602,7 @@
       "answer": [
         "Hymenolepis nana"
       ],
-      "explanation": "",
+      "explanation": "極思",
       "description": ""
     },
     {
@@ -611,7 +611,7 @@
       "answer": [
         "Plasmodium falciparum"
       ],
-      "explanation": "",
+      "explanation": "血中香蕉",
       "description": ""
     },
     {
@@ -705,7 +705,7 @@
       "answer": [
         "Armillifer agkistrodontis"
       ],
-      "explanation": "",
+      "explanation": "佛珠狀型態，為爬蟲類舌蟲。我們只有百步蛇舌蟲的樣本",
       "description": ""
     },
     {
@@ -723,7 +723,7 @@
       "answer": [
         "Plasmodium ovale"
       ],
-      "explanation": "",
+      "explanation": "卵型Ｒ",
       "description": ""
     },
     {
@@ -732,7 +732,7 @@
       "answer": [
         "Giardia lamblia"
       ],
-      "explanation": "",
+      "explanation": "雙核，梨形",
       "description": ""
     },
     {
@@ -748,7 +748,7 @@
         "Trypanosoma gambiense trypomastigote",
         "Trypanosoma rhodesiense trypomastigote"
       ],
-      "explanation": "",
+      "explanation": "Trypanosoma gambiense/rhodesiense的錐鞭毛體trypomastigote的kinetoplast有一小點(Trypanosoma cruzi為一大點)，有波動膜",
       "description": ""
     },
     {
@@ -766,7 +766,7 @@
       "answer": [
         "Paragonimus westermani"
       ],
-      "explanation": "",
+      "explanation": "卵蓋對側不對稱金黃色增厚",
       "description": ""
     },
     {
@@ -786,7 +786,7 @@
         "Echinostoma malayanum",
         "Echinostoma revolutum"
       ],
-      "explanation": "",
+      "explanation": "卵蓋對面卵殼略增厚",
       "description": ""
     },
     {
@@ -796,7 +796,7 @@
         "Fasciola hepatica",
         "Fasciolopsis buski"
       ],
-      "explanation": "",
+      "explanation": "大型蟲卵，卵蓋，對側無增厚",
       "description": ""
     },
     {
@@ -815,7 +815,7 @@
         "Trichuris trichiura",
         "Trichuris trichiura adult"
       ],
-      "explanation": "",
+      "explanation": "一端粗一端細，本學期只有鞭蟲外觀長這樣",
       "description": ""
     },
     {
@@ -836,7 +836,7 @@
       "answer": [
         "Clonorchis sinensis"
       ],
-      "explanation": "",
+      "explanation": "這個大小ㄓ",
       "description": ""
     },
     {
@@ -863,7 +863,7 @@
       "answer": [
         "Strongyloides stercoralis"
       ],
-      "explanation": "",
+      "explanation": "Strongyloides stercoralis的 R-form larve有生殖原基",
       "description": ""
     },
     {
@@ -1009,7 +1009,7 @@
       "answer": [
         "Fasciolopsis buski"
       ],
-      "explanation": "",
+      "explanation": "菱角，為薑片中的vector",
       "description": "這是誰的中間宿主？"
     },
     {
@@ -1045,7 +1045,7 @@
       "answer": [
         "Paragonimus westermani"
       ],
-      "explanation": "",
+      "explanation": "花生米，深色大波浪花紋",
       "description": ""
     },
     {
@@ -1074,7 +1074,7 @@
       "answer": [
         "Paragonimus westermani"
       ],
-      "explanation": "",
+      "explanation": "淡水蝦蟹as 2nd IH",
       "description": ""
     },
     {
@@ -1117,7 +1117,7 @@
         "Brugia timori",
         "Dirofilaria immitis"
       ],
-      "explanation": "",
+      "explanation": "任一種淋巴絲蟲+犬心絲蟲",
       "description": "寫出一種以蚊子為中間宿主的蟲？"
     },
     {
@@ -1127,7 +1127,7 @@
         "fly",
         "蒼蠅"
       ],
-      "explanation": "",
+      "explanation": "就是",
       "description": "寫出Thelazia callipaeda 的中間宿主？（可寫中文）"
     },
     {
@@ -1136,7 +1136,7 @@
       "answer": [
         "Paragonimus westermani"
       ],
-      "explanation": "",
+      "explanation": "Paragonimus westermani 的2nd IH為淡水蝦蟹",
       "description": ""
     },
     {
@@ -1172,7 +1172,7 @@
         "Leishmania donovani",
         "Leishimania donovani amastigote"
       ],
-      "explanation": "",
+      "explanation": "錐鞭毛體(trypomastigote)的kinetoplast有一個大點(Trypanosoma gambiense為小點)，有波動膜",
       "description": ""
     },
     {
@@ -1182,7 +1182,7 @@
         "Toxoplasma gondii",
         "Toxoplasma gondii tachyzoite"
       ],
-      "explanation": "",
+      "explanation": "Toxoplasma gondii的tachyzoite呈新月形，有一個細胞核",
       "description": ""
     },
     {
@@ -1196,7 +1196,7 @@
         "Isospora belli oocyst",
         "Isospora belli"
       ],
-      "explanation": "",
+      "explanation": "mature oocyst中兩個sporocyst(immature oocyst中一個)",
       "description": ""
     },
     {
@@ -1206,7 +1206,7 @@
         "Plasmodium ovale",
         "Plasmodium ovale trophozoite"
       ],
-      "explanation": "",
+      "explanation": "RBC變成卵形，邊緣不規則破裂",
       "description": ""
     },
     {
@@ -1226,7 +1226,7 @@
         "Plasmodium falciparum",
         "Plasmodium falciparum gametocyte"
       ],
-      "explanation": "",
+      "explanation": "血中香蕉",
       "description": ""
     },
     {
@@ -1348,7 +1348,7 @@
         "Trypanosoma gambiense trypomastigote",
         "Trypanosoma rhodesiense trypomastigote"
       ],
-      "explanation": "",
+      "explanation": "Trypanosoma gambiense/rhodesiense的錐鞭毛體trypomastigote的kinetoplast有一小點(Trypanosoma cruzi是一大點)，有波動膜",
       "description": ""
     },
     {
@@ -1379,7 +1379,7 @@
         "Entamoeba histolytica",
         "Entamoeba histolytica trophozoite"
       ],
-      "explanation": "",
+      "explanation": "不偏心大核",
       "description": ""
     },
     {
@@ -1389,7 +1389,7 @@
         "Endolimax nana",
         "Endolimax nana cyst"
       ],
-      "explanation": "",
+      "explanation": "呈點狀的核",
       "description": ""
     },
     {
@@ -1427,7 +1427,7 @@
         "Armillifer agkistrodontis 成蟲",
         "Armillifer agkistrodontis 雌成蟲"
       ],
-      "explanation": "",
+      "explanation": "型態為爬蟲類舌蟲，我們有sample的只有這支",
       "description": ""
     },
     {
@@ -1438,7 +1438,7 @@
         "蜱",
         "Tick"
       ],
-      "explanation": "",
+      "explanation": "八足，明顯為蛛型鋼。整體型態胖胖的成梨形，是屬蜱",
       "description": "這是什麼？（可寫中文）"
     },
     {
@@ -1449,7 +1449,7 @@
         "Armillifer agkistrodontis larva",
         "Armillifer agkistrodontis 幼蟲"
       ],
-      "explanation": "",
+      "explanation": "型態為爬蟲類舌蟲幼蟲，而我們有樣本的只有百步蛇舌蟲",
       "description": ""
     },
     {
@@ -1462,7 +1462,7 @@
         "蛭",
         "leech"
       ],
-      "explanation": "",
+      "explanation": "尾部大型吸盤，成水滴型，可知非吸蟲",
       "description": "這是什麼？（可寫中文）"
     },
     {
@@ -1472,7 +1472,7 @@
         "陰蝨",
         "crab louse"
       ],
-      "explanation": "",
+      "explanation": "外觀明顯為蝨，足有鉤",
       "description": "這是什麼？（可寫中文）"
     },
     {
@@ -1499,7 +1499,7 @@
         "flea",
         "Flea"
       ],
-      "explanation": "",
+      "explanation": "最後一對足發達適應跳躍，除了跳蚤外應該沒有別的人體節肢動物寄生蟲有此特色",
       "description": "這是什麼？（可寫中文）"
     },
     {
@@ -1511,7 +1511,7 @@
         "Necator americanus  F-form larva",
         "Ancylostoma duodenale F-form larva"
       ],
-      "explanation": "",
+      "explanation": "有鞘，且口部有明顯的槍狀構造",
       "description": ""
     },
     {
@@ -1521,7 +1521,7 @@
         "Trichuris trichiura",
         "Trichuris trichiura female adult"
       ],
-      "explanation": "",
+      "explanation": "長的就像鞭子，鞭蟲無誤",
       "description": ""
     },
     {
@@ -1531,7 +1531,7 @@
         "Trichuris trichiura",
         "Trichuris trichiura male adult"
       ],
-      "explanation": "",
+      "explanation": "一端胖一端瘦，鞭蟲",
       "description": ""
     },
     {
@@ -1550,7 +1550,7 @@
         "Fasciola hepatica",
         "Fasciolopsis buski"
       ],
-      "explanation": "",
+      "explanation": "對策無",
       "description": ""
     },
     {
@@ -1638,7 +1638,7 @@
         "Strongyloides stercoralis",
         "Strongyloides stercoralis R-form larva"
       ],
-      "explanation": "",
+      "explanation": "生值原機",
       "description": ""
     },
     {
@@ -1647,7 +1647,7 @@
       "answer": [
         "Wuchereria bancrofti"
       ],
-      "explanation": "",
+      "explanation": "正規途徑是看尾核，",
       "description": ""
     },
     {
@@ -1657,7 +1657,7 @@
         "Taenia solium",
         "Taenia saginata"
       ],
-      "explanation": "",
+      "explanation": "輪胎紋",
       "description": ""
     },
     {
@@ -1685,7 +1685,7 @@
       "answer": [
         "Paragonimus westermani"
       ],
-      "explanation": "",
+      "explanation": "中大型蟲卵，卵蓋對側有金黃色不對稱增厚",
       "description": ""
     },
     {
@@ -1694,7 +1694,7 @@
       "answer": [
         "Ascaris lumbricoides"
       ],
-      "explanation": "",
+      "explanation": "這學期這個大小的線蟲基本上只有蛔蟲",
       "description": ""
     },
     {
@@ -1703,7 +1703,7 @@
       "answer": [
         "Angiostrongylus cantonensis"
       ],
-      "explanation": "",
+      "explanation": "福壽螺，",
       "description": ""
     },
     {
@@ -1713,7 +1713,7 @@
         "Capillaria philippinensis",
         "Capillaria philippinensis female adult"
       ],
-      "explanation": "",
+      "explanation": "看蟲卵型態可知是菲律賓毛線蟲",
       "description": ""
     },
     {
@@ -1731,7 +1731,7 @@
       "answer": [
         "Fasciola hepatica"
       ],
-      "explanation": "",
+      "explanation": "頭錐",
       "description": ""
     },
     {
@@ -1758,7 +1758,7 @@
       "answer": [
         "Capillaria hepatica"
       ],
-      "explanation": "",
+      "explanation": "身體微胖(對比Capillaria philippinensis有腰身)卵殼有紋路",
       "description": ""
     },
     {
@@ -1776,7 +1776,7 @@
       "answer": [
         "Trichostrongylus orientalis"
       ],
-      "explanation": "",
+      "explanation": "長橢圓形，一邊尖一邊圓鈍，大小比鉤蟲卵大， 內含物常見分裂為桑椹期的卵細胞",
       "description": ""
     },
     {
@@ -1785,7 +1785,7 @@
       "answer": [
         "Ascaris lumbricoides"
       ],
-      "explanation": "",
+      "explanation": "外圍不規則沉積，金黃色",
       "description": ""
     },
     {
@@ -1794,7 +1794,7 @@
       "answer": [
         "Ascaris lumbricoides"
       ],
-      "explanation": "",
+      "explanation": "中型蟲卵，外圍有不規則沉積，為受精蛔蟲卵(內含物和卵必有間隔)",
       "description": ""
     },
     {
@@ -1803,7 +1803,7 @@
       "answer": [
         "Fasciolopsis buski"
       ],
-      "explanation": "",
+      "explanation": "Fasciolopsis buski最大吸蟲，無頭錐(Fasciola hepatica有)，睪丸、卵巢、卵黃腺均呈現高度分枝。腸道沒有分枝(Fasciola hepatica腸道、睪丸、卵巢、卵黃腺均呈現高度分枝)",
       "description": ""
     },
     {
@@ -1822,7 +1822,7 @@
         "Trichinella spiralis",
         "Trichinella spiralis encysted larva"
       ],
-      "explanation": "",
+      "explanation": "組織內cyst，有螺旋狀幼蟲",
       "description": ""
     },
     {
@@ -1840,7 +1840,7 @@
       "answer": [
         "Enterobius vermicularis"
       ],
-      "explanation": "",
+      "explanation": "anal swab",
       "description": ""
     },
     {
@@ -1868,7 +1868,7 @@
         "Necator americanus",
         "Ancylostoma duodenale"
       ],
-      "explanation": "",
+      "explanation": "薄卵殼",
       "description": ""
     },
     {
@@ -1878,7 +1878,7 @@
         "Necator americanus",
         "Ancylostoma duodenale"
       ],
-      "explanation": "",
+      "explanation": "極薄的卵殼",
       "description": ""
     },
     {
@@ -1944,7 +1944,7 @@
         "Capillaria philippinensis",
         "Capillaria philippinensis male adult"
       ],
-      "explanation": "",
+      "explanation": "極長交尾刺，抽象一點的話可以看氣質，本學期這麼修長的蟲基本上只有菲律賓毛線蟲",
       "description": ""
     },
     {
@@ -1971,7 +1971,7 @@
       "answer": [
         "Hymenolepis nana"
       ],
-      "explanation": "",
+      "explanation": "卵殼無",
       "description": ""
     },
     {
@@ -1980,7 +1980,7 @@
       "answer": [
         "Ascaris lumbricoides"
       ],
-      "explanation": "",
+      "explanation": "卵週大波浪",
       "description": ""
     },
     {
@@ -1989,7 +1989,7 @@
       "answer": [
         "Ascaris lumbricoides"
       ],
-      "explanation": "",
+      "explanation": "卵週大波浪沈積",
       "description": ""
     },
     {
@@ -1999,7 +1999,7 @@
         "Trichinella spiralis",
         "Trichinella spiralis female adult"
       ],
-      "explanation": "",
+      "explanation": "體內可看到幼蟲但沒有蟲卵，為純胎生的旋毛蟲",
       "description": ""
     },
     {
@@ -2008,7 +2008,7 @@
       "answer": [
         "Hymenolepis diminuta"
       ],
-      "explanation": "",
+      "explanation": "無極絲，殼有橫紋",
       "description": ""
     },
     {
@@ -2027,7 +2027,7 @@
       "answer": [
         "Ancylostoma ceylanicum"
       ],
-      "explanation": "",
+      "explanation": "口部兩對腹齒，一大一小，呈愛心狀(鳥嘴狀)",
       "description": ""
     },
     {
@@ -2073,7 +2073,7 @@
       "answer": [
         "Schistosoma japonicum"
       ],
-      "explanation": "",
+      "explanation": "7粒睪丸排成一列",
       "description": ""
     },
     {
@@ -2082,7 +2082,7 @@
       "answer": [
         "Schistosoma mansoni"
       ],
-      "explanation": "",
+      "explanation": "雄蟲6~9粒睪丸排兩排(japonicum 7粒一排，haematobium 4~5粒)",
       "description": ""
     },
     {
@@ -2091,7 +2091,7 @@
       "answer": [
         "Schistosoma haematobium"
       ],
-      "explanation": "",
+      "explanation": "4~5粒睪丸(mansoni 6~9粒兩排，japonicum 7粒一排)",
       "description": ""
     },
     {
@@ -2100,7 +2100,7 @@
       "answer": [
         "Paragonimus westermani"
       ],
-      "explanation": "",
+      "explanation": "花生米，深色波浪狀花紋",
       "description": ""
     },
     {
@@ -2109,7 +2109,7 @@
       "answer": [
         "Paragonimus westermani"
       ],
-      "explanation": "",
+      "explanation": "花生米，再加上有兩側波浪狀深色花紋，衛氏肺吸蟲無誤",
       "description": ""
     },
     {
@@ -2145,7 +2145,7 @@
       "answer": [
         "Clonorchis sinensis"
       ],
-      "explanation": "",
+      "explanation": "瓶罐中約1~ 3 公分大小",
       "description": ""
     },
     {
@@ -2154,7 +2154,7 @@
       "answer": [
         "Paragonimus westermani"
       ],
-      "explanation": "",
+      "explanation": "淡水蝦蟹為衛氏的第二中間宿主",
       "description": ""
     },
     {
@@ -2203,7 +2203,7 @@
       "answer": [
         "Fasciolopsis buski"
       ],
-      "explanation": "",
+      "explanation": "扁蜷:IH of fasciolopsis buski",
       "description": ""
     },
     {
@@ -2251,7 +2251,7 @@
         "擬葉目",
         "擬葉目絛蟲"
       ],
-      "explanation": "",
+      "explanation": "生殖孔在身體中軸上",
       "description": "這是圓葉目絛蟲還是擬葉目絛蟲？"
     },
     {
@@ -2261,7 +2261,7 @@
         "圓葉目",
         "圓葉目絛蟲"
       ],
-      "explanation": "",
+      "explanation": "生殖孔在體節側面",
       "description": "這是圓葉目絛蟲還是擬葉目絛蟲？"
     },
     {
@@ -2273,7 +2273,7 @@
         "Taenia solium cysticercus",
         "Taenia saginata cysticercus"
       ],
-      "explanation": "",
+      "explanation": "約一公分大小橢圓形，內有一個頭節",
       "description": ""
     },
     {
@@ -2319,7 +2319,7 @@
         "Echinococcus granulosus",
         "Echinococcus granulosus protoscolex"
       ],
-      "explanation": "",
+      "explanation": "單胞絛蟲 protoscolex 原頭節，很像小香菇",
       "description": ""
     },
     {
@@ -2348,7 +2348,7 @@
       "answer": [
         "Taenia solium"
       ],
-      "explanation": "",
+      "explanation": "四個吸盤+明顯額嘴，額嘴上有倒鉤，為有鉤絛蟲(豬肉絛蟲)",
       "description": ""
     },
     {
@@ -2357,7 +2357,7 @@
       "answer": [
         "Taenia saginata"
       ],
-      "explanation": "",
+      "explanation": "四個吸盤，無額嘴，無鉤",
       "description": ""
     },
     {
@@ -2411,7 +2411,7 @@
       "answer": [
         "Spirometra mansoni"
       ],
-      "explanation": "",
+      "explanation": "生殖孔在體節中央，有子宮孔，有霜淇淋狀的子宮",
       "description": ""
     },
     {
@@ -2449,7 +2449,7 @@
         "Giardia lamblia",
         "Giardia lamblia trophozoite"
       ],
-      "explanation": "",
+      "explanation": "兩個核，整體成梨形",
       "description": ""
     },
     {
@@ -2485,7 +2485,7 @@
         "Trypanosoma gambiense trypomastigote",
         "Trypanosoma rhodesiense trypomastigote"
       ],
-      "explanation": "",
+      "explanation": "血中Trypomastigote, Kinetoplast 小",
       "description": ""
     },
     {
@@ -2505,7 +2505,7 @@
         "Toxoplasma gondii",
         "Toxoplasma gondii tachyzoite"
       ],
-      "explanation": "",
+      "explanation": "Toxoplasma gondii的tachyzoite為新月形，有一個細胞核",
       "description": ""
     },
     {
@@ -2515,7 +2515,7 @@
         "Plasmodium falciparum",
         "Plasmodium falciparum trophozoite"
       ],
-      "explanation": "",
+      "explanation": "血中香蕉",
       "description": ""
     },
     {
@@ -2535,7 +2535,7 @@
         "Plasmodium ovale",
         "Plasmodium ovale trophozoite"
       ],
-      "explanation": "",
+      "explanation": "RBC變",
       "description": ""
     },
     {
@@ -2565,7 +2565,7 @@
         "Endolimax nana",
         "Endolimax nana cyst"
       ],
-      "explanation": "",
+      "explanation": "四個細胞核，無核周染色質( peripheral  chromatin )",
       "description": "4個核"
     },
     {
@@ -2584,7 +2584,7 @@
       "answer": [
         "Blastocystis hominis"
       ],
-      "explanation": "",
+      "explanation": "細胞邊緣有數個小核",
       "description": ""
     },
     {
@@ -2598,7 +2598,7 @@
         "leech",
         "land leech"
       ],
-      "explanation": "",
+      "explanation": "外觀上有明顯吸盤，但不是吸蟲。又加上頭端較細的特徵，合理判斷是蛭",
       "description": ""
     }
   ]
