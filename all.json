@@ -6,7 +6,7 @@
         "Echinostoma malayanum",
         "Echinostoma revolutum"
       ],
-      "explanation": "卵蓋對側有實心增厚",
+      "explanation": "大型蟲卵、有卵蓋、透明。符合這幾個條件的只有兩大類吸 蟲卵，這種時候要特別留意卵蓋對側有無增厚，無為Fasciola hepatica/ Fasciolopsis buski，有為Echinostoma spp.",
       "description": ""
     },
     {
@@ -34,7 +34,7 @@
         "Giardia lamblia",
         "Giardia lamblia cyst"
       ],
-      "explanation": "有四個細胞核，有sucking disc碎片，有軸絲axonemes",
+      "explanation": "看到這種豆豆眼核（小黑點）的只需要考慮兩個可能：Endolimax nana 或Giardia lamblia。Giardia lamblia 的cyst可以想像成兩隻Giardia 側邊貼貼，所以會有四個同側的核而且整體較長偏卵型。相較之下E. nana 的核會隨便分佈，整體更圓一些。",
       "description": ""
     },
     {
@@ -43,7 +43,7 @@
       "answer": [
         "Diphyllobothrium latum"
       ],
-      "explanation": "花瓣狀子宮",
+      "explanation": "從體節長寬比就可以知道是裂頭絛蟲，子宮長這樣的是D. latum無誤。Spirometra mansoni 的子宮是迴旋狀（從屬名看的出來）",
       "description": ""
     },
     {
@@ -52,7 +52,7 @@
       "answer": [
         "Spirometra mansoni"
       ],
-      "explanation": "有卵蓋，不對稱",
+      "explanation": "不對稱蟲卵只有兩種，E. vermicularis & S. mansoni。兩種都是D型蟲卵，鑑別看1. 卵蓋2. 大小",
       "description": ""
     },
     {
@@ -70,7 +70,7 @@
       "answer": [
         "Taenia saginata"
       ],
-      "explanation": "分之",
+      "explanation": "體節長寬比可以知道是T屬絛蟲，區分看分支數，多者為T. saginata，少者為T. solium",
       "description": ""
     },
     {
@@ -267,7 +267,7 @@
         "tick",
         "蜱"
       ],
-      "explanation": "",
+      "explanation": "八足，蝨為六足故非蝨、蟎雖八足但足更短且更胖",
       "description": ""
     },
     {
@@ -342,7 +342,7 @@
       "answer": [
         "Plasmodium malariae"
       ],
-      "explanation": "",
+      "explanation": "Band form RBC",
       "description": ""
     },
     {
@@ -361,7 +361,7 @@
         "蟎",
         "mite"
       ],
-      "explanation": "8隻腳",
+      "explanation": "八足，蝨為六足故非蝨、蜱雖八足但足更長",
       "description": ""
     },
     {
@@ -908,7 +908,7 @@
       "answer": [
         "Diphyllobothrium latum"
       ],
-      "explanation": "",
+      "explanation": "從體節長寬比就可以知道是裂頭絛蟲，子宮長這樣的是D. latum無誤。Spirometra mansoni 的子宮是迴旋狀（從屬名看的出來）",
       "description": ""
     },
     {
@@ -935,7 +935,7 @@
       "answer": [
         "Taenia saginata"
       ],
-      "explanation": "單側子宮分支數>15",
+      "explanation": "體節長寬比可以知道是T屬絛蟲，區分看分支數，多者為T. saginata（單側子宮分支數>15），少者為T. solium",
       "description": ""
     },
     {
@@ -1216,7 +1216,7 @@
         "Giardia lamblia",
         "Giardia lamblia cyst"
       ],
-      "explanation": "可見median bodies 及axonemes",
+      "explanation": "看到這種豆豆眼核（小黑點）的只需要考慮兩個可能：Endolimax nana 或Giardia lamblia。Giardia lamblia 的cyst可以想像成兩隻Giardia 側邊貼貼，所以會有四個同側的核而且整體較長偏卵型。相較之下E. nana 的核會隨便分佈，整體更圓一些。",
       "description": ""
     },
     {
@@ -1403,7 +1403,7 @@
         "itch mite",
         "Itch mite"
       ],
-      "explanation": "",
+      "explanation": "八足，蝨為六足故非蝨、蜱雖八足但足更長",
       "description": "這是什麼？（可寫中文）"
     },
     {
@@ -1438,7 +1438,7 @@
         "蜱",
         "Tick"
       ],
-      "explanation": "八足，明顯為蛛型鋼。整體型態胖胖的成梨形，是屬蜱",
+      "explanation": "八足，蝨為六足故非蝨、蟎雖八足但足更短且更胖",
       "description": "這是什麼？（可寫中文）"
     },
     {
@@ -1767,7 +1767,7 @@
       "answer": [
         "Spirometra mansoni"
       ],
-      "explanation": "卵殼兩端較尖，卵殼不對稱",
+      "explanation": "不對稱蟲卵只有兩種，E. vermicularis & S. mansoni。兩種都是D型蟲卵，鑑別看1. 卵蓋2. 大小",
       "description": ""
     },
     {
@@ -1925,7 +1925,7 @@
         "Echinostoma malayanum",
         "Echinostoma revolutum"
       ],
-      "explanation": "大型蟲卵、有卵蓋、卵蓋對面的卵殼會有實心增厚",
+      "explanation": "大型蟲卵、有卵蓋、透明。符合這幾個條件的只有兩大類吸 蟲卵，這種時候要特別留意卵蓋對側有無增厚，無為Fasciola hepatica/ Fasciolopsis buski，有為Echinostoma spp.",
       "description": ""
     },
     {
@@ -2402,7 +2402,7 @@
       "answer": [
         "Diphyllobothrium latum"
       ],
-      "explanation": "花瓣狀子宮",
+      "explanation": "從體節長寬比就可以知道是裂頭絛蟲，子宮長這樣的是D. latum無誤。Spirometra mansoni 的子宮是迴旋狀（從屬名看的出來）",
       "description": ""
     },
     {
@@ -2459,7 +2459,7 @@
         "Giardia lamblia",
         "Giardia lamblia cyst"
       ],
-      "explanation": "Mature cyst有四個細胞核、細胞質內有髒線",
+      "explanation": "看到這種豆豆眼核（小黑點）的只需要考慮兩個可能：Endolimax nana 或Giardia lamblia。Giardia lamblia 的cyst可以想像成兩隻Giardia 側邊貼貼，所以會有四個同側的核而且整體較長偏卵型。相較之下E. nana 的核會隨便分佈，整體更圓一些。",
       "description": ""
     },
     {
