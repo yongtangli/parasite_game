@@ -1150,6 +1150,11 @@
     </div>
 
     <script type="module">
+        // prevent form submission while composing (IME)
+        let isComposing = false;
+        document.addEventListener('compositionstart', () => { isComposing = true; });
+        document.addEventListener('compositionend', () => { isComposing = false; });
+
         const firebaseConfig = {
             apiKey: "AIzaSyAjvO8nSRkKXUp7gopj-X7QsOGRBHTxj1s",
             authDomain: "jedieason-trivia.firebaseapp.com",
@@ -1719,7 +1724,8 @@
             return data;
         }
         function enterKeyEvent(event) {
-             if (event.key === 'Enter') {
+            if (isComposing) return;
+            if (event.key === 'Enter') {
                 const explanationInput = document.getElementById('explanation-input');
                 if (explanationInput && document.activeElement === explanationInput && explanationInput.offsetParent !== null) {
                     event.preventDefault();
@@ -1769,6 +1775,7 @@
             return ansArr.some(ans => ans.trim().toLowerCase() === normalizedInput);
         }
         function submitUserAnswer() {
+            if (isComposing) return;
             var userAnswerRaw = document.getElementById("answer").value;
             var lowerUserAnswer = userAnswerRaw.trim().toLowerCase();
 
