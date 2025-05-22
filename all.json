@@ -184,7 +184,7 @@
         "Acanthamoeba culbertsoni",
         "Acanthamoeba castellanii"
       ],
-      "explanation": "",
+      "explanation": "trophozoite 有透明棘狀偽足在圖片右上角。（指針處）",
       "description": "（08考古給的學名和09不一樣，但現在更新了09給的學名）"
     },
     {
@@ -324,7 +324,7 @@
       "answer": [
         "Ascaris lumbricoides"
       ],
-      "explanation": "卵週大波浪",
+      "explanation": "卵周大波浪",
       "description": ""
     },
     {
@@ -511,7 +511,7 @@
         "Taenia solium",
         "Taenia saginata"
       ],
-      "explanation": "",
+      "explanation": "Cysticercus, 何以? 雖似水泡，但大小與多/單胞均不合，也不似多頭會有一堆白色頭節；圓形、中小型、輪胎撞。胎蟲被殼包著六鉤幼蟲",
       "description": ""
     },
     {
@@ -908,7 +908,7 @@
       "answer": [
         "Diphyllobothrium latum"
       ],
-      "explanation": "從體節長寬比就可以知道是裂頭絛蟲，子宮長這樣的是D. latum無誤。Spirometra mansoni 的子宮是迴旋狀（從屬名看的出來）",
+      "explanation": "從體節長寬比就可以知道是裂頭絛蟲，子宮長這樣的是D. latum無誤。Spirometra mansoni 的子宮是迴旋狀（從屬名看的出來）；體節長寬比約1:2，可知為裂頭絛蟲類。又子宮非螺旋型，為D. latum",
       "description": ""
     },
     {
@@ -1000,7 +1000,7 @@
       "answer": [
         "Ancylostoma duodenale"
       ],
-      "explanation": "",
+      "explanation": "兩對腹齒",
       "description": ""
     },
     {
@@ -1414,7 +1414,7 @@
         "體蝨",
         "Human head louse"
       ],
-      "explanation": "",
+      "explanation": "六足為蝨，此蝨瘦長足無鉗，為頭/體蝨",
       "description": "這是什麼？（可寫中文）"
     },
     {
@@ -1599,7 +1599,7 @@
       "answer": [
         "Angiostrongylus cantonensis"
       ],
-      "explanation": "",
+      "explanation": "扁蝸牛，如何和其他捲捲的螺類區分? 雙臍螺(曼氏血吸蟲)&扁蜷(薑片蟲)的螺旋是扁的，兩邊中心都是凹洞，不會向一邊突出",
       "description": ""
     },
     {
@@ -1878,7 +1878,7 @@
         "Necator americanus",
         "Ancylostoma duodenale"
       ],
-      "explanation": "極薄的卵殼",
+      "explanation": "卵殼厚度：一層殼，很薄。 內含物：卵細胞或是幼蟲。 卵的兩端均較圓鈍。",
       "description": ""
     },
     {
@@ -2064,7 +2064,7 @@
       "answer": [
         "Metagonimus yokogawai"
       ],
-      "explanation": "",
+      "explanation": "最難的部份是和Heterophyes heterophyes 區分，雖然理論上兩者吸盤數量不一樣，但實在很難看清楚。建議可以看身體中段是否有個大圓型構造，此為Ovary，M. yokogawai的較為明顯",
       "description": ""
     },
     {
@@ -2285,7 +2285,7 @@
         "Taenia solium cysticercus",
         "Taenia saginata cysticercus"
       ],
-      "explanation": "",
+      "explanation": "肉中cysticercus",
       "description": ""
     },
     {
@@ -2525,7 +2525,7 @@
         "Plasmodium vivax",
         "Plasmodium vivax trophozoite"
       ],
-      "explanation": "",
+      "explanation": "看到RBC又無明顯兩點一組(nucleus+kinetoplast=>trypanosoma)，可知大概率為Plasmodium。無香蕉不為falciparum, 無band 不為malariae, 無卵形不為ovale, 則為vivax(有時候不規則增大不是那麼明顯，用刪去法好用)",
       "description": ""
     },
     {
@@ -2575,7 +2575,7 @@
         "Acanthamoeba castellanii",
         "Acanthamoeba castellanii trophozoite"
       ],
-      "explanation": "",
+      "explanation": "transparent jellyfish tails",
       "description": ""
     },
     {
