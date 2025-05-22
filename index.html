@@ -1050,7 +1050,7 @@
 
         <div class="start-title">Parasitology</div>
           <div class="leaderboard">
-            <h3 style="text-align:center;">排行榜 (Top 10)</h3>
+            <h3 style="text-align:center;">排行榜 (Top 10)</h3>
             <ol id="boardList" style="list-style:decimal inside; padding:0;"></ol>
           </div>
           <div class="player-input" style="text-align:center;">
@@ -1651,40 +1651,164 @@
               resumeBtn.addEventListener('click', () => {
                 document.querySelector('.progress-actions').style.display = 'block';
                 document.querySelector('.start-buttons').style.display = 'none';
-                const prog = JSON.parse(localStorage.getItem('gameProgress'));
-                if (prog) {
-                  data = prog.data;
-                  x = prog.x;
-                  done = prog.done;
-                  correct = prog.correct;
-                  wrong = prog.wrong;
-                  score = prog.score;
-                  updateScoreDisplay();
-                  document.querySelector('.start-screen').style.display = 'none';
-                  document.querySelector('.flashcard-container').style.display = 'flex';
-                  // Initialize event listeners without triggering nextProb
-                  document.addEventListener("keydown", enterKeyEvent);
-                  document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
-                  document.getElementById("dontKnow").addEventListener("click", showAnswer);
-                  document.getElementById("correctArea").addEventListener("click", showCorrectList);
-                  document.getElementById("wrongArea").addEventListener("click", showWrongList);
-                  document.getElementById("next").addEventListener("click", nextProb);
-                  document.getElementById('closeModal').addEventListener('click', function() {
-                      document.getElementById('modal').style.display = "none";
-                  });
-                  window.preloadNextImage(); // preload next if desired
-                  // Show the restored question
-                  updateImage();
+                const progString = localStorage.getItem('gameProgress');
+                if (!progString) {
+                    // No progress to resume, hide resume button and ensure start buttons are shown
+                    document.getElementById('resumeButton').style.display = 'none';
+                    document.querySelector('.progress-actions').style.display = 'none';
+                    document.querySelector('.start-buttons').style.display = 'flex';
+                    return; 
                 }
+
+                let prog;
+                try {
+                    prog = JSON.parse(progString);
+                    if (!prog) throw new Error("Parsed progress is null or undefined.");
+                } catch (e) {
+                    console.error("Failed to parse gameProgress from localStorage or it's invalid:", e);
+                    localStorage.removeItem('gameProgress'); // Clear corrupted progress
+                    showAlertModal('進度讀取失敗，已清除損壞的進度，請重新開始。');
+                    // Reset UI to initial start screen state
+                    document.getElementById('resumeButton').style.display = 'none';
+                    document.querySelector('.progress-actions').style.display = 'none';
+                    document.querySelector('.start-buttons').style.display = 'flex';
+                    document.querySelector('.flashcard-container').style.display = 'none';
+                    document.querySelector('.start-screen').style.display = 'flex';
+                    return;
+                }
+                
+                data = Array.isArray(prog.data) ? prog.data : [];
+                if (data.length === 0) {
+                    console.error("Resumed data is empty. Clearing progress.");
+                    localStorage.removeItem('gameProgress');
+                    document.getElementById('resumeButton').style.display = 'none';
+                    document.querySelector('.progress-actions').style.display = 'none';
+                    document.querySelector('.start-buttons').style.display = 'flex';
+                    document.querySelector('.flashcard-container').style.display = 'none';
+                    document.querySelector('.start-screen').style.display = 'flex';
+                    showAlertModal('進度讀取錯誤（無題目資料），已清除舊進度，請重新開始。');
+                    return;
+                }
+                numOfProbs = data.length;
+
+                x = Number(prog.x) || 0;
+                if (x < 0 || x >= numOfProbs) {
+                    console.warn(`Resumed question index ${prog.x} is out of bounds for ${numOfProbs} questions. Resetting to 0.`);
+                    x = 0; 
+                }
+                
+                // Ensure 'done' array is valid and matches numOfProbs
+                done = (Array.isArray(prog.done) && prog.done.length === numOfProbs) ? prog.done : new Array(numOfProbs).fill(false);
+                
+                correct = Number(prog.correct) || 0;
+                wrong = Number(prog.wrong) || 0;
+                score = Number(prog.score) || 0;
+                correctList = Array.isArray(prog.correctList) ? prog.correctList : [];
+                wrongList = Array.isArray(prog.wrongList) ? prog.wrongList : [];
+
+                updateScoreDisplay();
+                document.querySelector('.start-screen').style.display = 'none';
+                document.querySelector('.flashcard-container').style.display = 'flex';
+                
+                document.addEventListener("keydown", enterKeyEvent);
+                document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
+                document.getElementById("dontKnow").addEventListener("click", showAnswer);
+                document.getElementById("correctArea").addEventListener("click", showCorrectList);
+                document.getElementById("wrongArea").addEventListener("click", showWrongList);
+                document.getElementById("next").addEventListener("click", nextProb);
+                document.getElementById('closeModal').addEventListener('click', function() {
+                    document.getElementById('modal').style.display = "none";
+                });
+
+                updateImage(true); 
+
+                viewing = true; 
+                document.querySelector('.answer-input-container').style.visibility = 'hidden';
+                document.querySelector('.bottom-buttons').style.visibility = 'hidden';
+                document.querySelector('.your-answer-label').style.visibility = 'hidden';
+                
+                const cardAnswerDiv = document.querySelector(".card-answer");
+                cardAnswerDiv.style.display = "flex";
+                
+                const showAnsDiv = document.getElementById("showAnswer");
+                // Ensure data[x] exists before trying to access its properties
+                if (data[x] && data[x].answer) {
+                     showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
+                } else {
+                    showAnsDiv.innerHTML = "答案資訊錯誤"; 
+                    console.warn(`No answer found for restored question index ${x}`);
+                }
+                showExplanation(); // showExplanation also internally checks data[x]
+
+                const answerInput = document.getElementById("answer");
+                const desc = data[x]?.description; // Safely access description
+                if (desc && desc.trim() !== "") {
+                    answerInput.placeholder = desc;
+                } else {
+                    adjustPlaceholder(); 
+                }
+                
+                window.preloadNextImage(); 
               });
             }
             if (restartProgress) {
               restartProgress.addEventListener('click', () => {
                 localStorage.removeItem('gameProgress');
                 showAlertModal('進度已清除');
+
+                // Explicitly hide the game screen and ensure start screen is primary
+                document.querySelector('.flashcard-container').style.display = 'none';
+                document.querySelector('.start-screen').style.display = 'flex'; // Or its default initial display value like 'block'
+
+                // Reset UI elements on the start screen to their "pre-resume" state
                 document.getElementById('resumeButton').style.display = 'none';
-                document.querySelector('.progress-actions').style.display = 'none';
-                document.querySelector('.start-buttons').style.display = 'flex';
+                document.querySelector('.progress-actions').style.display = 'none'; // This contains resumeButton and restartProgress
+                document.querySelector('.start-buttons').style.display = 'flex'; // These are the main game start buttons
+
+                // Reset in-memory lists and counters that populate the modals
+                correct = 0;
+                wrong = 0;
+                correctList = [];
+                wrongList = [];
+                // total and state are reset by createStartHandler when a new game truly begins.
+
+                // Update displayed counts in the (now hidden) flashcard container's progress bar.
+                // This ensures that if it were to become visible before a new game, it shows 0/0.
+                // createStartHandler will also set these when a new game starts.
+                document.getElementById("correct").innerText = correct;
+                document.getElementById("wrong").innerText = wrong;
+                // The main score display on the flashcard container will be updated by createStartHandler.
+
+                // Clear any potentially visible stale data from the (now hidden) game area elements
+                const imageElement = document.getElementById("image");
+                if (imageElement) {
+                    imageElement.src = "";
+                    imageElement.alt = "Parasite Image"; // Reset alt text
+                    imageElement.classList.remove('loaded'); // Remove loaded class
+                }
+                const loadingScreen = document.querySelector('.loading-screen');
+                if (loadingScreen) {
+                    // Ensure loading screen isn't stuck if it was visible from a previous load
+                    loadingScreen.style.display = 'none';
+                }
+                const answerInput = document.getElementById("answer");
+                if (answerInput) {
+                    answerInput.value = "";
+                }
+                const showAnswerDiv = document.getElementById("showAnswer");
+                if (showAnswerDiv) {
+                    showAnswerDiv.innerHTML = "";
+                }
+                const showExplanationDiv = document.getElementById("showExplanation");
+                if (showExplanationDiv) {
+                    showExplanationDiv.innerHTML = "";
+                    showExplanationDiv.style.display = "none"; // Ensure it's hidden
+                }
+                const cardAnswerOverlay = document.querySelector(".card-answer");
+                if (cardAnswerOverlay) {
+                    cardAnswerOverlay.style.display = "none"; // Hide the answer overlay
+                }
+                adjustPlaceholder(); // Reset the placeholder text for the answer input
               });
             }
         }
@@ -1992,7 +2116,7 @@
             document.getElementById("showAnswer").innerHTML = "";
             document.getElementById("showExplanation").innerHTML = "";
             document.getElementById("showExplanation").style.display = "none";
-            localStorage.setItem('gameProgress', JSON.stringify({ data, x, done, correct, wrong, score }));
+            localStorage.setItem('gameProgress', JSON.stringify({ data, x, done, correct, wrong, score, correctList, wrongList }));
         }
         function pickNewImage() {
              const availableIndices = [];
@@ -2014,16 +2138,20 @@
             done[selectedIndex] = true;
             return selectedIndex;
         }
-        function updateImage() {
+        function updateImage(isResuming = false) {
              document.querySelector('.loading-screen').style.display = 'flex';
             var imageElement = document.getElementById("image");
             imageElement.classList.remove('loaded');
             imageElement.src = "";
 
-            x = pickNewImage();
-             if (x === -1) {
-                console.error("Could not pick a new image index.");
+            if (!isResuming) {
+                x = pickNewImage();
+            }
+            
+             if (x === -1 || data[x] === undefined) { // Check if data[x] is defined
+                console.error("Could not pick a new image index or data[x] is undefined.");
                 document.querySelector('.loading-screen').style.display = 'none';
+                // Optionally, handle this error more gracefully, e.g., show an error message to the user.
                 return;
             }
 
