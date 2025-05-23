@@ -1229,6 +1229,7 @@
         const dayNightToggle = document.getElementById('dayNightToggle');
         const dayNightIcon = document.getElementById('dayNightIcon');
         let isDay = true;
+        window.gameplayActive = false; // Initialize the flag
 
         function renderSun() {
             dayNightIcon.innerHTML = `
@@ -1419,28 +1420,49 @@
         }
 
         function updateCorrect() {
+            console.log("[updateCorrect] Called. Current correctList:", JSON.parse(JSON.stringify(correctList)), "Current wrongList:", JSON.parse(JSON.stringify(wrongList)));
             correct++;
             document.getElementById("correct").innerText = correct;
             score += 2;
-            if (data && data[x]) correctList.push(data[x]);
+            if (data && data[x]) {
+                console.log("[updateCorrect] Adding item to correctList:", JSON.parse(JSON.stringify(data[x])));
+                correctList.push(data[x]);
+            } else {
+                console.warn("[updateCorrect] data or data[x] is undefined. x:", x, "data:", data);
+            }
             updateScoreDisplay();
             writeScore(2).catch(err => console.error("寫入分數失敗：", err));
+            console.log("[updateCorrect] Exiting. New correctList:", JSON.parse(JSON.stringify(correctList)));
         }
         function updateWrong() {
+            console.log("[updateWrong] Called. Current correctList:", JSON.parse(JSON.stringify(correctList)), "Current wrongList:", JSON.parse(JSON.stringify(wrongList)));
             wrong++;
             document.getElementById("wrong").innerText = wrong;
             score -= 2;
-            if (data && data[x]) wrongList.push(data[x]);
+            if (data && data[x]) {
+                console.log("[updateWrong] Adding item to wrongList:", JSON.parse(JSON.stringify(data[x])));
+                wrongList.push(data[x]);
+            } else {
+                console.warn("[updateWrong] data or data[x] is undefined. x:", x, "data:", data);
+            }
             updateScoreDisplay();
             writeScore(-2).catch(err => console.error("寫入分數失敗：", err));
+            console.log("[updateWrong] Exiting. New wrongList:", JSON.parse(JSON.stringify(wrongList)));
         }
         function updateUnknown(){
+            console.log("[updateUnknown] Called. Current correctList:", JSON.parse(JSON.stringify(correctList)), "Current wrongList:", JSON.parse(JSON.stringify(wrongList)));
             wrong++;
             document.getElementById("wrong").innerText = wrong;
             score -= 1;
             updateScoreDisplay();
-            if (data && data[x]) wrongList.push(data[x]);
+            if (data && data[x]) {
+                console.log("[updateUnknown] Adding item to wrongList:", JSON.parse(JSON.stringify(data[x])));
+                wrongList.push(data[x]);
+            } else {
+                console.warn("[updateUnknown] data or data[x] is undefined. x:", x, "data:", data);
+            }
             writeScore(-1).catch(err => console.error("寫入分數失敗：", err));
+            console.log("[updateUnknown] Exiting. New wrongList:", JSON.parse(JSON.stringify(wrongList)));
         }
 
         function checkCompletion() {
@@ -1451,6 +1473,7 @@
             if (nextBtn) nextBtn.style.display = 'none';
         }
         function init() {
+            console.log("[init] Initializing application.");
             initDayNightToggle();
             const savedName = localStorage.getItem("parasite_player_name");
             if (savedName) {
@@ -1468,22 +1491,35 @@
             // 新的開始遊戲邏輯：多個按鈕與不同資料集
             function createStartHandler(jsonPath) {
                 return async function () {
+                    console.log(`[createStartHandler] Starting game with ${jsonPath}`);
+                    window.gameplayActive = true; // Set gameplay active
+                    console.log("[createStartHandler] Set window.gameplayActive to true");
                     const nameInput = document.getElementById("playerName").value.trim();
                     if (!nameInput) {
                         showAlertModal("請先輸入玩家名稱！");
                         document.getElementById("playerName").focus();
+                        window.gameplayActive = false; // Reset if start fails
                         return;
                     }
                     window.currentPlayer = nameInput;
                     localStorage.setItem("parasite_player_name", nameInput);
                     document.querySelector('.flashcard-container').style.display = 'flex';
                     fetchLeaderboard();
-                    document.removeEventListener("keypress", enterPressStart);
+                    
+                    // No longer need to remove globalEnterPressStart here if it checks gameplayActive
+                    // if (window.globalEnterPressStart) {
+                    //      document.removeEventListener("keypress", window.globalEnterPressStart);
+                    //      console.log("[createStartHandler] Removed 'globalEnterPressStart' listener.");
+                    // }
+
                     state = 1;
                     correct = 0; wrong = 0; total = 0; score = 0;
+                    console.log("[createStartHandler] Resetting scores and lists. Correct:", correct, "Wrong:", wrong, "Score:", score);
                     document.getElementById("correct").innerHTML = correct;
                     document.getElementById("wrong").innerHTML = wrong;
                     correctList = []; wrongList = [];
+                    console.log("[createStartHandler] Cleared correctList:", JSON.parse(JSON.stringify(correctList)), "wrongList:", JSON.parse(JSON.stringify(wrongList)));
+
 
                     $.getJSON(jsonPath)
                         .done(function (jsonData) {
@@ -1493,15 +1529,18 @@
                                 if (numOfProbs === 0) throw new Error("No data loaded from JSON.");
                                 data = parseMultiAns(data);
                                 done = new Array(numOfProbs).fill(false);
+                                console.log("[createStartHandler] Data loaded. numOfProbs:", numOfProbs, "Initial done array:", JSON.parse(JSON.stringify(done)));
                                 startGame();
                             } catch (error) {
                                 console.error("Error processing JSON data:", error);
                                 showAlertModal("Failed to load or process game data.");
+                                window.gameplayActive = false; // Reset on error
                             }
                         })
                         .fail(function (jqXHR, textStatus, errorThrown) {
                             console.error("Failed to load JSON:", textStatus, errorThrown);
                             showAlertModal("無法讀取遊戲資料");
+                            window.gameplayActive = false; // Reset on error
                         });
                 };
             }
@@ -1509,18 +1548,40 @@
             document.getElementById("startAllGame").addEventListener("click", createStartHandler("./all.json"));
             document.getElementById("startEggGame").addEventListener("click", createStartHandler("./egg.json"));
 
-            const enterPressStart = function (event) {
+            // Define enterPressStart in a scope accessible for removal
+            window.globalEnterPressStart = function (event) {
                 if (event.key === 'Enter') {
+                    console.log("[globalEnterPressStart] Enter key pressed.");
+                    if (window.gameplayActive) {
+                        console.log("[globalEnterPressStart] Gameplay is active, ignoring Enter for starting a new game.");
+                        return;
+                    }
+                    console.log("[globalEnterPressStart] Gameplay not active, proceeding to check for new game start.");
                     const nameInput = document.getElementById("playerName").value.trim();
                     if (!nameInput) {
                         showAlertModal("請先輸入玩家名稱！");
                         document.getElementById("playerName").focus();
+                        console.log("[globalEnterPressStart] Player name missing.");
                         return;
                     }
-                    document.getElementById("startAllGame").click();
+                    // Check if the start screen is actually visible before triggering start game
+                    const startScreen = document.querySelector('.start-screen');
+                    if (startScreen) {
+                        const displayStyle = getComputedStyle(startScreen).display;
+                        console.log("[globalEnterPressStart] start-screen display style:", displayStyle);
+                        if (displayStyle !== 'none') {
+                            console.log("[globalEnterPressStart] Start screen is visible, calling startAllGame.click().");
+                            document.getElementById("startAllGame").click();
+                        } else {
+                            console.log("[globalEnterPressStart] Start screen is NOT visible, not starting new game.");
+                        }
+                    } else {
+                        console.warn("[globalEnterPressStart] start-screen element not found.");
+                    }
                 }
             };
-            document.addEventListener("keypress", enterPressStart);
+            document.addEventListener("keypress", window.globalEnterPressStart);
+            console.log("[init] Added 'globalEnterPressStart' listener.");
 
             adjustPlaceholder();
             window.addEventListener('resize', adjustPlaceholder);
@@ -1649,25 +1710,46 @@
             const restartProgress = document.getElementById('restartProgress');
             if (resumeBtn) {
               resumeBtn.addEventListener('click', () => {
+                console.log("[resumeButton] Clicked. Attempting to resume progress.");
+                window.gameplayActive = true; // Set gameplay active on resume
+                console.log("[resumeButton] Set window.gameplayActive to true");
+
+                document.querySelector('.start-screen').style.display = 'none'; // Hide start screen first
+                console.log("[resumeButton] Set start-screen display to 'none'.");
                 document.querySelector('.progress-actions').style.display = 'block';
                 document.querySelector('.start-buttons').style.display = 'none';
+
                 const progString = localStorage.getItem('gameProgress');
                 if (!progString) {
+                    console.warn("[resumeButton] No progress found in localStorage.");
+                    window.gameplayActive = false; // Reset if resume fails
                     // No progress to resume, hide resume button and ensure start buttons are shown
                     document.getElementById('resumeButton').style.display = 'none';
                     document.querySelector('.progress-actions').style.display = 'none';
                     document.querySelector('.start-buttons').style.display = 'flex';
+                    document.querySelector('.start-screen').style.display = 'flex'; // Show start screen again if no progress
                     return; 
                 }
+
+                // No longer need to remove globalEnterPressStart here if it checks gameplayActive
+                // if (window.globalEnterPressStart) {
+                //     console.log("[resumeButton] Found window.globalEnterPressStart, type:", typeof window.globalEnterPressStart, ". Attempting to remove listener.");
+                //     document.removeEventListener("keypress", window.globalEnterPressStart);
+                //     console.log("[resumeButton] 'globalEnterPressStart' listener removal attempted.");
+                // } else {
+                //     console.warn("[resumeButton] window.globalEnterPressStart is not defined at listener removal time.");
+                // }
 
                 let prog;
                 try {
                     prog = JSON.parse(progString);
                     if (!prog) throw new Error("Parsed progress is null or undefined.");
+                     console.log("[resumeButton] Parsed progress from localStorage:", JSON.parse(JSON.stringify(prog)));
                 } catch (e) {
                     console.error("Failed to parse gameProgress from localStorage or it's invalid:", e);
                     localStorage.removeItem('gameProgress'); // Clear corrupted progress
                     showAlertModal('進度讀取失敗，已清除損壞的進度，請重新開始。');
+                    window.gameplayActive = false; // Reset if resume fails
                     // Reset UI to initial start screen state
                     document.getElementById('resumeButton').style.display = 'none';
                     document.querySelector('.progress-actions').style.display = 'none';
@@ -1678,9 +1760,11 @@
                 }
                 
                 data = Array.isArray(prog.data) ? prog.data : [];
+                 console.log("[resumeButton] Loaded data from progress. Length:", data.length);
                 if (data.length === 0) {
                     console.error("Resumed data is empty. Clearing progress.");
                     localStorage.removeItem('gameProgress');
+                    window.gameplayActive = false; // Reset if resume fails
                     document.getElementById('resumeButton').style.display = 'none';
                     document.querySelector('.progress-actions').style.display = 'none';
                     document.querySelector('.start-buttons').style.display = 'flex';
@@ -1693,23 +1777,30 @@
 
                 x = Number(prog.x) || 0;
                 if (x < 0 || x >= numOfProbs) {
-                    console.warn(`Resumed question index ${prog.x} is out of bounds for ${numOfProbs} questions. Resetting to 0.`);
+                    console.warn(`[resumeButton] Resumed question index ${prog.x} is out of bounds for ${numOfProbs} questions. Resetting to 0.`);
                     x = 0; 
                 }
+                 console.log("[resumeButton] Current question index x:", x);
                 
                 // Ensure 'done' array is valid and matches numOfProbs
                 done = (Array.isArray(prog.done) && prog.done.length === numOfProbs) ? prog.done : new Array(numOfProbs).fill(false);
+                 console.log("[resumeButton] Loaded 'done' array:", JSON.parse(JSON.stringify(done)));
                 
                 correct = Number(prog.correct) || 0;
                 wrong = Number(prog.wrong) || 0;
                 score = Number(prog.score) || 0;
                 correctList = Array.isArray(prog.correctList) ? prog.correctList : [];
                 wrongList = Array.isArray(prog.wrongList) ? prog.wrongList : [];
+                 console.log("[resumeButton] Loaded scores and lists. Correct:", correct, "Wrong:", wrong, "Score:", score);
+                 console.log("[resumeButton] correctList:", JSON.parse(JSON.stringify(correctList)));
+                 console.log("[resumeButton] wrongList:", JSON.parse(JSON.stringify(wrongList)));
+
 
                 updateScoreDisplay();
                 document.querySelector('.start-screen').style.display = 'none';
                 document.querySelector('.flashcard-container').style.display = 'flex';
                 
+                console.log("[resumeButton] Adding event listeners for game interactions.");
                 document.addEventListener("keydown", enterKeyEvent);
                 document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
                 document.getElementById("dontKnow").addEventListener("click", showAnswer);
@@ -1723,6 +1814,7 @@
                 updateImage(true); 
 
                 viewing = true; 
+                 console.log("[resumeButton] Setting viewing to true. UI elements for answering will be hidden.");
                 document.querySelector('.answer-input-container').style.visibility = 'hidden';
                 document.querySelector('.bottom-buttons').style.visibility = 'hidden';
                 document.querySelector('.your-answer-label').style.visibility = 'hidden';
@@ -1734,9 +1826,10 @@
                 // Ensure data[x] exists before trying to access its properties
                 if (data[x] && data[x].answer) {
                      showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
+                     console.log("[resumeButton] Displaying answer for resumed question:", data[x].answer.join(' / '));
                 } else {
                     showAnsDiv.innerHTML = "答案資訊錯誤"; 
-                    console.warn(`No answer found for restored question index ${x}`);
+                    console.warn(`[resumeButton] No answer found for restored question index ${x}. data[x]:`, data[x]);
                 }
                 showExplanation(); // showExplanation also internally checks data[x]
 
@@ -1749,10 +1842,14 @@
                 }
                 
                 window.preloadNextImage(); 
+                console.log("[resumeButton] Resume process finished.");
               });
             }
             if (restartProgress) {
               restartProgress.addEventListener('click', () => {
+                console.log("[restartProgress] Clicked. Clearing game progress from localStorage.");
+                window.gameplayActive = false; // Gameplay is no longer active
+                console.log("[restartProgress] Set window.gameplayActive to false");
                 localStorage.removeItem('gameProgress');
                 showAlertModal('進度已清除');
 
@@ -1766,10 +1863,12 @@
                 document.querySelector('.start-buttons').style.display = 'flex'; // These are the main game start buttons
 
                 // Reset in-memory lists and counters that populate the modals
+                console.log("[restartProgress] Resetting in-memory scores and lists before restart.");
                 correct = 0;
                 wrong = 0;
                 correctList = [];
                 wrongList = [];
+                console.log("[restartProgress] Cleared correctList:", JSON.parse(JSON.stringify(correctList)), "wrongList:", JSON.parse(JSON.stringify(wrongList)));
                 // total and state are reset by createStartHandler when a new game truly begins.
 
                 // Update displayed counts in the (now hidden) flashcard container's progress bar.
@@ -1809,6 +1908,7 @@
                     cardAnswerOverlay.style.display = "none"; // Hide the answer overlay
                 }
                 adjustPlaceholder(); // Reset the placeholder text for the answer input
+                console.log("[restartProgress] UI reset complete.");
               });
             }
         }
@@ -1862,6 +1962,7 @@
             }
         }
         function startGame() {
+            console.log("[startGame] Called. Setting up game event listeners.");
             document.addEventListener("keydown", enterKeyEvent);
             document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
             document.getElementById("dontKnow").addEventListener("click", showAnswer);
@@ -1892,6 +1993,7 @@
                 }
             });
             nextProb();
+            console.log("[startGame] Finished. Called nextProb().");
         }
         function checkAns(input, ansArr) {
             if (!Array.isArray(ansArr)) return false;
@@ -1899,17 +2001,27 @@
             return ansArr.some(ans => ans.trim().toLowerCase() === normalizedInput);
         }
         function submitUserAnswer() {
-            if (isComposing) return;
+            console.log("[submitUserAnswer] Called. viewing:", viewing, "isComposing:", isComposing);
+            if (isComposing) {
+                console.log("[submitUserAnswer] Bailed: isComposing is true.");
+                return;
+            }
             var userAnswerRaw = document.getElementById("answer").value;
             var lowerUserAnswer = userAnswerRaw.trim().toLowerCase();
+            console.log("[submitUserAnswer] User answer (raw):", userAnswerRaw, "(lower):", lowerUserAnswer);
+
 
             if (lowerUserAnswer && lowerCaseSwearWords.some(swearWord => lowerUserAnswer.includes(swearWord))) {
                 window.open('https://youtu.be/HmIMmFAV4BY', '_blank');
                 document.getElementById("answer").value = "";
+                console.log("[submitUserAnswer] Swear word detected. Bailing.");
                 return;
             }
 
-            if (viewing) return;
+            if (viewing) {
+                 console.log("[submitUserAnswer] Bailed: viewing is true.");
+                return;
+            }
             clearTimeout(tm);
 
             var userAnswer = userAnswerRaw;
@@ -1942,9 +2054,16 @@
             expDiv.innerHTML = "";
             expDiv.style.display = "none";
         }
-        function showAnswer() {
-            if (viewing) return;
+        function showAnswer() { // This is for "Don't Know" button
+            console.log("[showAnswer] Called (Don't Know). viewing:", viewing);
+            if (viewing) {
+                console.log("[showAnswer] Bailed: viewing is true.");
+                return;
+            }
             clearTimeout(tm);
+            console.log("[showAnswer] Current question item (data[x]):", JSON.parse(JSON.stringify(data[x])));
+            console.log("[showAnswer] correctList before update:", JSON.parse(JSON.stringify(correctList)));
+            console.log("[showAnswer] wrongList before update:", JSON.parse(JSON.stringify(wrongList)));
 
             viewing = true;
             document.querySelector('.answer-input-container').style.visibility = 'hidden';
@@ -1958,9 +2077,12 @@
             showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
             showExplanation();
             updateUnknown();
+            console.log("[showAnswer] correctList after update:", JSON.parse(JSON.stringify(correctList)));
+            console.log("[showAnswer] wrongList after update:", JSON.parse(JSON.stringify(wrongList)));
 
             total++;
             checkCompletion();
+             console.log("[showAnswer] Exiting. total:", total, "viewing:", viewing);
         }
         function showExplanation() {
              var expDiv = document.getElementById("showExplanation");
@@ -2093,16 +2215,23 @@
         }
         window.submitContribution = submitContribution;
         function nextProb() {
-            if (done.every(d => d)) return;
+            console.log("[nextProb] Called. Current state: done.every():", done.every(d => d), "viewing:", viewing);
+            console.log("[nextProb] current correctList:", JSON.parse(JSON.stringify(correctList)));
+            console.log("[nextProb] current wrongList:", JSON.parse(JSON.stringify(wrongList)));
+            if (done.every(d => d)) {
+                console.log("[nextProb] All questions done. Bailing.");
+                return;
+            }
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
             document.querySelector('.bottom-buttons').style.visibility = 'visible';
             document.querySelector('.your-answer-label').style.visibility = 'visible';
 
             viewing = false;
+            console.log("[nextProb] Set viewing to false.");
             resetTime();
             countdown();
-            updateImage();
+            updateImage(); // This will call pickNewImage if not resuming
             document.getElementById("answer").value = "";
             document.getElementById("answer").focus();
             // 根據 JSON description 動態設定 placeholder
@@ -2116,18 +2245,31 @@
             document.getElementById("showAnswer").innerHTML = "";
             document.getElementById("showExplanation").innerHTML = "";
             document.getElementById("showExplanation").style.display = "none";
-            localStorage.setItem('gameProgress', JSON.stringify({ data, x, done, correct, wrong, score, correctList, wrongList }));
+
+            // Make copies of the lists before saving to localStorage
+            const savedCorrectList = JSON.parse(JSON.stringify(correctList));
+            const savedWrongList = JSON.parse(JSON.stringify(wrongList));
+
+            localStorage.setItem('gameProgress', JSON.stringify({ data, x, done, correct, wrong, score, correctList: savedCorrectList, wrongList: savedWrongList }));
+            console.log("[nextProb] Saved progress to localStorage. x:", x, "correct:", correct, "wrong:", wrong, "score:", score);
+            console.log("[nextProb] Saved correctList:", JSON.parse(JSON.stringify(savedCorrectList)));
+            console.log("[nextProb] Saved wrongList:", JSON.parse(JSON.stringify(savedWrongList)));
+            console.log("[nextProb] Exiting.");
         }
         function pickNewImage() {
+            console.log("[pickNewImage] Called. Current 'done' array:", JSON.parse(JSON.stringify(done)));
              const availableIndices = [];
             for (let i = 0; i < numOfProbs; i++) {
                 if (!done[i]) availableIndices.push(i);
             }
+            console.log("[pickNewImage] Available indices:", JSON.parse(JSON.stringify(availableIndices)));
+
 
             if (availableIndices.length === 0) {
-                console.warn("All questions shown, restarting cycle.");
+                console.warn("[pickNewImage] All questions shown, restarting cycle.");
                 checkCompletion();
                 done.fill(false);
+                 console.log("[pickNewImage] Reset 'done' array:", JSON.parse(JSON.stringify(done)));
                 for (let i = 0; i < numOfProbs; i++) {
                     availableIndices.push(i);
                 }
@@ -2136,24 +2278,29 @@
             const randomIndex = Math.floor(Math.random() * availableIndices.length);
             const selectedIndex = availableIndices[randomIndex];
             done[selectedIndex] = true;
+            console.log(`[pickNewImage] Selected index: ${selectedIndex}. Updated 'done' array:`, JSON.parse(JSON.stringify(done)));
             return selectedIndex;
         }
         function updateImage(isResuming = false) {
+            console.log(`[updateImage] Called. isResuming: ${isResuming}. Current x: ${x}`);
              document.querySelector('.loading-screen').style.display = 'flex';
             var imageElement = document.getElementById("image");
             imageElement.classList.remove('loaded');
             imageElement.src = "";
 
             if (!isResuming) {
-                x = pickNewImage();
+                const newX = pickNewImage();
+                console.log(`[updateImage] Picked new image index. Old x: ${x}, New x: ${newX}`);
+                x = newX;
             }
             
              if (x === -1 || data[x] === undefined) { // Check if data[x] is defined
-                console.error("Could not pick a new image index or data[x] is undefined.");
+                console.error(`[updateImage] Could not pick a new image index or data[x] is undefined. x: ${x}, data[x]:`, data[x]);
                 document.querySelector('.loading-screen').style.display = 'none';
                 // Optionally, handle this error more gracefully, e.g., show an error message to the user.
                 return;
             }
+            console.log(`[updateImage] Updating image for index x: ${x}. Item:`, JSON.parse(JSON.stringify(data[x])));
 
             const picref = data[x]?.path;
 
@@ -2161,11 +2308,13 @@
                  imageElement.setAttribute('src', picref);
                  const altText = data[x]?.answer?.[0] || `Parasite image ${x + 1}`;
                  imageElement.setAttribute('alt', `Image for: ${altText}`);
+                 console.log(`[updateImage] Set image src to: ${picref}, alt: Image for: ${altText}`);
             } else {
-                 console.warn(`No image path found for index ${x}.`);
+                 console.warn(`[updateImage] No image path found for index ${x}.`);
                  imageElement.alt = "Image not available";
                  document.querySelector('.loading-screen').style.display = 'none';
             }
+            console.log("[updateImage] Exiting.");
         }
         function countdown() { }
         function resetTime() { clearTimeout(tm); }
