@@ -2222,14 +2222,14 @@
             document.querySelector('.your-answer-label').style.visibility = 'hidden';
 
             var showAnsDiv = document.getElementById("showAnswer");
-            var cardAnswerDiv = document.querySelector(".card-answer");
+            var cardAnswerDiv = document.querySelector(".card-answer"); // This variable is still fine for its other uses
             cardAnswerDiv.style.display = "flex";
 
             showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
             if (data[x].answer && data[x].answer.length > 0) {
                 const primaryAnswerToSpeak = data[x].answer[0];
                  if (primaryAnswerToSpeak) {
-                    addOrUpdateSpeakButton(primaryAnswerToSpeak, cardAnswerDiv);
+                    addOrUpdateSpeakButton(primaryAnswerToSpeak, showAnsDiv); // Corrected from cardAnswerDiv
                 }
             }
             showExplanation();
