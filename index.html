@@ -10,14 +10,13 @@
     <title>寄蟲跑台</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* Document viewer overlay */
         .doc-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); /* dim backdrop */
+            background-color: rgba(0, 0, 0, 0.6);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -65,7 +64,6 @@
         .doc-entry img:hover {
             transform: scale(1.1);
         }
-        /* Ensure answer and explanation appear in the right column under the image */
         .doc-entry p,
         .doc-entry pre {
             grid-column: 2;
@@ -78,7 +76,6 @@
             white-space: pre-wrap;
             word-break: break-word;
         }
-        /* Text wrapper for answer + explanation */
         .doc-text {
             display: flex;
             flex-direction: column;
@@ -221,9 +218,11 @@
         }
         .start-buttons {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
+            align-items: flex-start;
             margin-bottom: 20px;
+            position: relative;
         }
 
         .start-button {
@@ -248,6 +247,114 @@
             transform: translateY(0);
             box-shadow: 0 1px 3px var(--shadow-color);
         }
+
+        .dropdown-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            position: relative;
+            padding-right: 45px;
+        }
+
+        .dropdown-toggle::after {
+            content: '▼';
+            font-size: 0.7em;
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-menu:hover .dropdown-toggle::after,
+        .dropdown-menu.active .dropdown-toggle::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--bg-secondary);
+            min-width: 240px;
+            max-height: 280px;
+            box-shadow: 0 10px 25px var(--shadow-color);
+            z-index: 10;
+            border-radius: 8px;
+            padding: 8px;
+            bottom: 100%;
+            left: 50%;
+            margin-bottom: 8px;
+            transform-origin: bottom center;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-blue) var(--bg-secondary);
+        }
+
+        .dropdown-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .dropdown-content::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .dropdown-content::-webkit-scrollbar-thumb {
+            background-color: var(--accent-blue);
+            border-radius: 4px;
+            border: 2px solid var(--bg-secondary);
+        }
+
+        .dropdown-content::-webkit-scrollbar-thumb:hover {
+            background-color: var(--accent-blue-hover);
+        }
+
+
+        .dropdown-menu:hover .dropdown-content,
+        .dropdown-menu.active .dropdown-content {
+            display: block;
+            opacity: 0;
+            animation: elegantDropdownAppear 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes elegantDropdownAppear {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px) scaleY(0.85);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0) scaleY(1);
+            }
+        }
+
+        .dropdown-item {
+            width: 100%;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            background-color: transparent;
+            border: none;
+            color: var(--text-primary);
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .dropdown-item:not(:last-child) {
+            margin-bottom: 4px;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--accent-blue-hover);
+            color: var(--bg-secondary);
+            transform: none;
+        }
+
 
         .footer {
             position: absolute;
@@ -721,15 +828,13 @@
             transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
             border: 1px solid var(--border-primary);
         }
-        /* Hide scrollbar for image preview modal */
         #imageModal .modal-content {
             overflow: visible !important;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
         #imageModal .modal-content::-webkit-scrollbar {
-            display: none; /* Chrome, Safari */
+            display: none;
         }
-        /* 移除按鈕本體背景，只保留箭頭 */
         .nav-button {
             all: unset;
             position: absolute;
@@ -991,7 +1096,6 @@
             left: 50%;
             translate: -50%;
         }
-        /* 移除按鈕本體背景，只保留箭頭 */
         .nav-button {
             background-color: transparent;
             width: auto;
@@ -1041,7 +1145,14 @@
         @media screen and (max-width: 768px) {
             .progress {
                 gap: 0;
-            }      
+            }
+            .dropdown-menu.active .dropdown-content {
+                display: block;
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0) scaleY(1);
+                 animation: elegantDropdownAppear 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            }
         }
     </style>
 </head>
@@ -1063,7 +1174,17 @@
           </div>
     <div class="start-buttons">
       <button id="startAllGame" class="start-button">全部</button>
-      <button id="startEggGame" class="start-button">蟲卵</button>
+      <div class="dropdown-menu">
+          <button class="dropdown-toggle start-button">單元</button>
+          <div class="dropdown-content">
+              <button class="dropdown-item" data-json="egg.json">蟲卵</button>
+              <button class="dropdown-item" data-json="線蟲.json">線蟲</button>
+              <button class="dropdown-item" data-json="吸蟲.json">吸蟲</button>
+              <button class="dropdown-item" data-json="絛蟲.json">絛蟲</button>
+              <button class="dropdown-item" data-json="原蟲.json">原蟲</button>
+              <button class="dropdown-item" data-json="舌蟲、蛭類、節肢動物.json">舌蟲、蛭類、節肢動物</button>
+          </div>
+      </div>
       <button id="openDoc" class="start-button">題庫</button>
     </div>
     <div class="progress-actions" style="text-align:center; margin-top:10px; display:none;">
@@ -1135,7 +1256,6 @@
         <span class="close" onclick="closeAlertModal()">×</span>
         <div id="alertModalBody"></div>
     </div>
-    <!-- Document viewer -->
     <div id="docContainer" class="doc-container" style="display:none;">
       <div class="doc-page">
         <span id="closeDoc" class="close">&times;</span>
@@ -1143,7 +1263,6 @@
       </div>
     </div>
 
-    <!-- Image lightbox modal -->
     <div id="imageModal" class="modal" style="z-index:3000;">
       <div class="modal-content">
         <span id="closeImageModal" class="close" style="top: 4px; right: 10px;">&times;</span>
@@ -1158,7 +1277,6 @@
     </div>
 
     <script type="module">
-        // prevent form submission while composing (IME)
         let isComposing = false;
         document.addEventListener('compositionstart', () => { isComposing = true; });
         document.addEventListener('compositionend', () => { isComposing = false; });
@@ -1202,7 +1320,6 @@
                 window.currentUserUid = null;
             }
         });
-        // Load progress from localStorage
         const savedProg = localStorage.getItem('gameProgress');
         if (savedProg) {
           const prog = JSON.parse(savedProg);
@@ -1237,7 +1354,7 @@
         const dayNightToggle = document.getElementById('dayNightToggle');
         const dayNightIcon = document.getElementById('dayNightIcon');
         let isDay = true;
-        window.gameplayActive = false; // Initialize the flag
+        window.gameplayActive = false;
 
         function renderSun() {
             dayNightIcon.innerHTML = `
@@ -1297,7 +1414,6 @@
         }
 
         function addOrUpdateSpeakButton(answerToSpeak, answerDisplayElement) {
-            // Remove any existing speak button first
             let existingSpeakButton = answerDisplayElement.querySelector('.speak-answer-icon-button');
             if (existingSpeakButton) {
                 existingSpeakButton.remove();
@@ -1314,15 +1430,15 @@
             `;
             speakButton.style.background = 'none';
             speakButton.style.border = 'none';
-            speakButton.style.padding = '0 0 0 8px'; // Add some space to the left of the icon
+            speakButton.style.padding = '0 0 0 8px';
             speakButton.style.cursor = 'pointer';
-            speakButton.style.display = 'inline-flex'; // To align SVG properly
+            speakButton.style.display = 'inline-flex';
             speakButton.style.alignItems = 'center';
-            speakButton.style.verticalAlign = 'middle'; // Align with text
+            speakButton.style.verticalAlign = 'middle';
 
 
             speakButton.onclick = (event) => {
-                event.stopPropagation(); // Prevent any parent click handlers
+                event.stopPropagation();
                 if (speechSynthesis.speaking) {
                     speechSynthesis.cancel();
                 }
@@ -1336,7 +1452,7 @@
                 }
                 speechSynthesis.speak(utterance);
             };
-            
+
             answerDisplayElement.appendChild(speakButton);
         }
 
@@ -1457,7 +1573,6 @@
                         li.classList.add('current-user');
                         const rankSpan = document.createElement('span');
                         rankSpan.className = 'leaderboard-rank';
-                        // Calculate rank for user not in top 10, considering ties
                         let userActualRank = 0;
                         let scoreForPrevRank = null;
                         let runningRankForUser = 0;
@@ -1471,7 +1586,7 @@
                                 break;
                             }
                         }
-                        rankSpan.textContent = userActualRank || (sorted.filter(it => it.score > item.score).length + 1); // Fallback if loop fails
+                        rankSpan.textContent = userActualRank || (sorted.filter(it => it.score > item.score).length + 1);
                         const nameSpan = document.createElement('span');
                         nameSpan.className = 'leaderboard-name';
                         nameSpan.textContent = item.name;
@@ -1582,7 +1697,7 @@
         function init() {
             console.log("[init] Initializing application.");
             initDayNightToggle();
-            populateVoices(); // Populate speech synthesis voices
+            populateVoices();
 
             const savedName = localStorage.getItem("parasite_player_name");
             if (savedName) {
@@ -1597,9 +1712,8 @@
                 });
             }
 
-            // Global '/' key listener
             document.addEventListener("keydown", function(e) {
-                if (window.isComposing) return; // Respect IME composition, assuming isComposing is globally available
+                if (window.isComposing) return;
 
                 if (e.key === "/") {
                     const answerInput = document.getElementById("answer");
@@ -1611,13 +1725,12 @@
 
                     let focused = false;
                     if (isGameActive) {
-                        // Only focus answerInput if it's not already focused and explanation input is not focused
-                        if (answerInput && document.activeElement !== answerInput && 
+                        if (answerInput && document.activeElement !== answerInput &&
                            (!explanationContribInput || document.activeElement !== explanationContribInput)) {
                             answerInput.focus();
                             focused = true;
                         }
-                    } else { // Potentially on the start screen
+                    } else {
                         const startScreen = document.querySelector('.start-screen');
                         const isStartScreenActive = startScreen && getComputedStyle(startScreen).display !== 'none';
                         if (isStartScreenActive && playerNameInput && document.activeElement !== playerNameInput) {
@@ -1627,34 +1740,27 @@
                     }
 
                     if (focused) {
-                        e.preventDefault(); // Prevent default browser find action only if we focused an element
+                        e.preventDefault();
                     }
                 }
             });
 
-            // 新的開始遊戲邏輯：多個按鈕與不同資料集
             function createStartHandler(jsonPath) {
                 return async function () {
                     console.log(`[createStartHandler] Starting game with ${jsonPath}`);
-                    window.gameplayActive = true; // Set gameplay active
+                    window.gameplayActive = true;
                     console.log("[createStartHandler] Set window.gameplayActive to true");
                     const nameInput = document.getElementById("playerName").value.trim();
                     if (!nameInput) {
                         showAlertModal("請先輸入玩家名稱！");
                         document.getElementById("playerName").focus();
-                        window.gameplayActive = false; // Reset if start fails
+                        window.gameplayActive = false;
                         return;
                     }
                     window.currentPlayer = nameInput;
                     localStorage.setItem("parasite_player_name", nameInput);
                     document.querySelector('.flashcard-container').style.display = 'flex';
                     fetchLeaderboard();
-                    
-                    // No longer need to remove globalEnterPressStart here if it checks gameplayActive
-                    // if (window.globalEnterPressStart) {
-                    //      document.removeEventListener("keypress", window.globalEnterPressStart);
-                    //      console.log("[createStartHandler] Removed 'globalEnterPressStart' listener.");
-                    // }
 
                     state = 1;
                     correct = 0; wrong = 0; total = 0; score = 0;
@@ -1678,21 +1784,51 @@
                             } catch (error) {
                                 console.error("Error processing JSON data:", error);
                                 showAlertModal("Failed to load or process game data.");
-                                window.gameplayActive = false; // Reset on error
+                                window.gameplayActive = false;
                             }
                         })
                         .fail(function (jqXHR, textStatus, errorThrown) {
                             console.error("Failed to load JSON:", textStatus, errorThrown);
                             showAlertModal("無法讀取遊戲資料");
-                            window.gameplayActive = false; // Reset on error
+                            window.gameplayActive = false;
                         });
                 };
             }
 
             document.getElementById("startAllGame").addEventListener("click", createStartHandler("./all.json"));
-            document.getElementById("startEggGame").addEventListener("click", createStartHandler("./egg.json"));
 
-            // Define enterPressStart in a scope accessible for removal
+            const dropdownItems = document.querySelectorAll(".dropdown-item");
+            dropdownItems.forEach(item => {
+                item.addEventListener("click", function() {
+                    const jsonPath = this.dataset.json;
+                    createStartHandler(`./${jsonPath}`)();
+                    const dropdownMenuElement = this.closest('.dropdown-menu');
+                    if (dropdownMenuElement && dropdownMenuElement.classList.contains('active')) {
+                        dropdownMenuElement.classList.remove('active');
+                    }
+                });
+            });
+
+            const dropdownMenuToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenuElement = document.querySelector('.dropdown-menu');
+
+            if (dropdownMenuToggle && dropdownMenuElement) {
+                dropdownMenuToggle.addEventListener('click', function(event) {
+                    if (window.matchMedia("(pointer: coarse)").matches) {
+                        dropdownMenuElement.classList.toggle('active');
+                        event.stopPropagation();
+                    }
+                });
+
+                document.addEventListener('click', function(event) {
+                    if (dropdownMenuElement.classList.contains('active') &&
+                        !dropdownMenuElement.contains(event.target)) {
+                        dropdownMenuElement.classList.remove('active');
+                    }
+                });
+            }
+
+
             window.globalEnterPressStart = function (event) {
                 if (event.key === 'Enter') {
                     console.log("[globalEnterPressStart] Enter key pressed.");
@@ -1708,7 +1844,6 @@
                         console.log("[globalEnterPressStart] Player name missing.");
                         return;
                     }
-                    // Check if the start screen is actually visible before triggering start game
                     const startScreen = document.querySelector('.start-screen');
                     if (startScreen) {
                         const displayStyle = getComputedStyle(startScreen).display;
@@ -1724,13 +1859,12 @@
                     }
                 }
             };
-            document.addEventListener("keypress", window.globalEnterPressStart); // Handles 'Enter' on start screen for player name
+            document.addEventListener("keypress", window.globalEnterPressStart);
             console.log("[init] Added 'globalEnterPressStart' listener.");
 
             adjustPlaceholder();
             window.addEventListener('resize', adjustPlaceholder);
 
-            // Document viewer open/close handlers
             document.getElementById("openDoc").addEventListener("click", function() {
                 const container = document.getElementById("docContainer");
                 const content = document.getElementById("docContent");
@@ -1742,7 +1876,6 @@
                     dataArr.forEach(item => {
                       const entry = document.createElement('div');
                       entry.className = 'doc-entry';
-                      // Image
                       if (item.path) {
                         const img = document.createElement('img');
                         img.src = item.path;
@@ -1759,14 +1892,11 @@
                           window.modalIndex = dataArr.indexOf(item);
                         });
                       }
-                      // Text container for answer + explanation
                       const textWrapper = document.createElement('div');
                       textWrapper.className = 'doc-text';
-                      // Answer
                       const ans = document.createElement('p');
                       ans.innerHTML = `<strong>${item.answer.join(' / ')}</strong>`;
                       textWrapper.appendChild(ans);
-                      // Explanation
                       if (item.explanation) {
                         const pre = document.createElement('pre');
                         pre.textContent = item.explanation;
@@ -1782,11 +1912,9 @@
                     container.style.display = 'block';
                   });
             });
-            // Close image modal
             document.getElementById('closeImageModal').addEventListener('click', () => {
               document.getElementById('imageModal').style.display = 'none';
             });
-            // Image modal navigation buttons
             const prevBtn = document.getElementById('prevImageButton');
             const nextBtn = document.getElementById('nextImageButton');
             prevBtn.addEventListener('click', () => {
@@ -1807,7 +1935,6 @@
                     document.getElementById('modalExplanation').textContent = it.explanation || '';
                 }
             });
-            // Close button
             document.getElementById("closeDoc").addEventListener("click", function() {
                 document.getElementById("docContainer").style.display = 'none';
             });
@@ -1849,16 +1976,15 @@
                 if (downloadBlock) downloadBlock.style.display = "none";
             }
 
-            // Progress resume/restart listeners
             const resumeBtn = document.getElementById('resumeButton');
             const restartProgress = document.getElementById('restartProgress');
             if (resumeBtn) {
               resumeBtn.addEventListener('click', () => {
                 console.log("[resumeButton] Clicked. Attempting to resume progress.");
-                window.gameplayActive = true; // Set gameplay active on resume
+                window.gameplayActive = true;
                 console.log("[resumeButton] Set window.gameplayActive to true");
 
-                document.querySelector('.start-screen').style.display = 'none'; // Hide start screen first
+                document.querySelector('.start-screen').style.display = 'none';
                 console.log("[resumeButton] Set start-screen display to 'none'.");
                 document.querySelector('.progress-actions').style.display = 'block';
                 document.querySelector('.start-buttons').style.display = 'none';
@@ -1866,23 +1992,13 @@
                 const progString = localStorage.getItem('gameProgress');
                 if (!progString) {
                     console.warn("[resumeButton] No progress found in localStorage.");
-                    window.gameplayActive = false; // Reset if resume fails
-                    // No progress to resume, hide resume button and ensure start buttons are shown
+                    window.gameplayActive = false;
                     document.getElementById('resumeButton').style.display = 'none';
                     document.querySelector('.progress-actions').style.display = 'none';
                     document.querySelector('.start-buttons').style.display = 'flex';
-                    document.querySelector('.start-screen').style.display = 'flex'; // Show start screen again if no progress
-                    return; 
+                    document.querySelector('.start-screen').style.display = 'flex';
+                    return;
                 }
-
-                // No longer need to remove globalEnterPressStart here if it checks gameplayActive
-                // if (window.globalEnterPressStart) {
-                //     console.log("[resumeButton] Found window.globalEnterPressStart, type:", typeof window.globalEnterPressStart, ". Attempting to remove listener.");
-                //     document.removeEventListener("keypress", window.globalEnterPressStart);
-                //     console.log("[resumeButton] 'globalEnterPressStart' listener removal attempted.");
-                // } else {
-                //     console.warn("[resumeButton] window.globalEnterPressStart is not defined at listener removal time.");
-                // }
 
                 let prog;
                 try {
@@ -1891,10 +2007,9 @@
                      console.log("[resumeButton] Parsed progress from localStorage:", JSON.parse(JSON.stringify(prog)));
                 } catch (e) {
                     console.error("Failed to parse gameProgress from localStorage or it's invalid:", e);
-                    localStorage.removeItem('gameProgress'); // Clear corrupted progress
+                    localStorage.removeItem('gameProgress');
                     showAlertModal('進度讀取失敗，已清除損壞的進度，請重新開始。');
-                    window.gameplayActive = false; // Reset if resume fails
-                    // Reset UI to initial start screen state
+                    window.gameplayActive = false;
                     document.getElementById('resumeButton').style.display = 'none';
                     document.querySelector('.progress-actions').style.display = 'none';
                     document.querySelector('.start-buttons').style.display = 'flex';
@@ -1902,13 +2017,13 @@
                     document.querySelector('.start-screen').style.display = 'flex';
                     return;
                 }
-                
+
                 data = Array.isArray(prog.data) ? prog.data : [];
                  console.log("[resumeButton] Loaded data from progress. Length:", data.length);
                 if (data.length === 0) {
                     console.error("Resumed data is empty. Clearing progress.");
                     localStorage.removeItem('gameProgress');
-                    window.gameplayActive = false; // Reset if resume fails
+                    window.gameplayActive = false;
                     document.getElementById('resumeButton').style.display = 'none';
                     document.querySelector('.progress-actions').style.display = 'none';
                     document.querySelector('.start-buttons').style.display = 'flex';
@@ -1922,14 +2037,13 @@
                 x = Number(prog.x) || 0;
                 if (x < 0 || x >= numOfProbs) {
                     console.warn(`[resumeButton] Resumed question index ${prog.x} is out of bounds for ${numOfProbs} questions. Resetting to 0.`);
-                    x = 0; 
+                    x = 0;
                 }
                  console.log("[resumeButton] Current question index x:", x);
-                
-                // Ensure 'done' array is valid and matches numOfProbs
+
                 done = (Array.isArray(prog.done) && prog.done.length === numOfProbs) ? prog.done : new Array(numOfProbs).fill(false);
                  console.log("[resumeButton] Loaded 'done' array:", JSON.parse(JSON.stringify(done)));
-                
+
                 correct = Number(prog.correct) || 0;
                 wrong = Number(prog.wrong) || 0;
                 score = Number(prog.score) || 0;
@@ -1945,7 +2059,7 @@
 
                 document.querySelector('.start-screen').style.display = 'none';
                 document.querySelector('.flashcard-container').style.display = 'flex';
-                
+
                 console.log("[resumeButton] Adding event listeners for game interactions.");
                 document.addEventListener("keydown", enterKeyEvent);
                 document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
@@ -1957,83 +2071,72 @@
                     document.getElementById('modal').style.display = "none";
                 });
 
-                updateImage(true); 
+                updateImage(true);
 
-                viewing = true; 
+                viewing = true;
                  console.log("[resumeButton] Setting viewing to true. UI elements for answering will be hidden.");
                 document.querySelector('.answer-input-container').style.visibility = 'hidden';
                 document.querySelector('.bottom-buttons').style.visibility = 'hidden';
                 document.querySelector('.your-answer-label').style.visibility = 'hidden';
-                
+
                 const cardAnswerDiv = document.querySelector(".card-answer");
                 cardAnswerDiv.style.display = "flex";
-                
+
                 const showAnsDiv = document.getElementById("showAnswer");
-                // Ensure data[x] exists before trying to access its properties
                 if (data[x] && data[x].answer) {
                      showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
                      console.log("[resumeButton] Displaying answer for resumed question:", data[x].answer.join(' / '));
                 } else {
-                    showAnsDiv.innerHTML = "答案資訊錯誤"; 
+                    showAnsDiv.innerHTML = "答案資訊錯誤";
                     console.warn(`[resumeButton] No answer found for restored question index ${x}. data[x]:`, data[x]);
                 }
-                showExplanation(); // showExplanation also internally checks data[x]
+                showExplanation();
 
                 const answerInput = document.getElementById("answer");
-                const desc = data[x]?.description; // Safely access description
+                const desc = data[x]?.description;
                 if (desc && desc.trim() !== "") {
                     answerInput.placeholder = desc;
                 } else {
-                    adjustPlaceholder(); 
+                    adjustPlaceholder();
                 }
-                
-                window.preloadNextImage(); 
+
+                window.preloadNextImage();
                 console.log("[resumeButton] Resume process finished.");
               });
             }
             if (restartProgress) {
               restartProgress.addEventListener('click', () => {
                 console.log("[restartProgress] Clicked. Clearing game progress from localStorage.");
-                window.gameplayActive = false; // Gameplay is no longer active
+                window.gameplayActive = false;
                 console.log("[restartProgress] Set window.gameplayActive to false");
                 localStorage.removeItem('gameProgress');
                 showAlertModal('進度已清除');
 
-                // Explicitly hide the game screen and ensure start screen is primary
                 document.querySelector('.flashcard-container').style.display = 'none';
-                document.querySelector('.start-screen').style.display = 'flex'; // Or its default initial display value like 'block'
+                document.querySelector('.start-screen').style.display = 'flex';
 
-                // Reset UI elements on the start screen to their "pre-resume" state
                 document.getElementById('resumeButton').style.display = 'none';
-                document.querySelector('.progress-actions').style.display = 'none'; // This contains resumeButton and restartProgress
-                document.querySelector('.start-buttons').style.display = 'flex'; // These are the main game start buttons
+                document.querySelector('.progress-actions').style.display = 'none';
+                document.querySelector('.start-buttons').style.display = 'flex';
 
-                // Reset in-memory lists and counters that populate the modals
                 console.log("[restartProgress] Resetting in-memory scores and lists before restart.");
                 correct = 0;
                 wrong = 0;
                 correctList = [];
                 wrongList = [];
                 console.log("[restartProgress] Cleared correctList:", JSON.parse(JSON.stringify(correctList)), "wrongList:", JSON.parse(JSON.stringify(wrongList)));
-                // total and state are reset by createStartHandler when a new game truly begins.
 
-                // Update displayed counts in the (now hidden) flashcard container's progress bar.
-                // This ensures that if it were to become visible before a new game, it shows 0/0.
-                // createStartHandler will also set these when a new game starts.
                 document.getElementById("correct").innerText = correct;
                 document.getElementById("wrong").innerText = wrong;
-                // The main score display on the flashcard container will be updated by createStartHandler.
 
-                // Clear any potentially visible stale data from the (now hidden) game area elements
                 const imageElement = document.getElementById("image");
                 if (imageElement) {
                     imageElement.src = "";
-                    imageElement.alt = "Parasite Image"; // Reset alt text
-                    imageElement.classList.remove('loaded'); // Remove loaded class
+                    imageElement.alt = "Parasite Image";
+                    imageElement.classList.remove('loaded');
                 }
                 const loadingScreen = document.querySelector('.loading-screen');
                 if (loadingScreen) {
-                    // Ensure loading screen isn't stuck if it was visible from a previous load
                     loadingScreen.style.display = 'none';
                 }
                 const answerInput = document.getElementById("answer");
@@ -2047,13 +2150,13 @@
                 const showExplanationDiv = document.getElementById("showExplanation");
                 if (showExplanationDiv) {
                     showExplanationDiv.innerHTML = "";
-                    showExplanationDiv.style.display = "none"; // Ensure it's hidden
+                    showExplanationDiv.style.display = "none";
                 }
                 const cardAnswerOverlay = document.querySelector(".card-answer");
                 if (cardAnswerOverlay) {
-                    cardAnswerOverlay.style.display = "none"; // Hide the answer overlay
+                    cardAnswerOverlay.style.display = "none";
                 }
-                adjustPlaceholder(); // Reset the placeholder text for the answer input
+                adjustPlaceholder();
                 console.log("[restartProgress] UI reset complete.");
               });
             }
@@ -2126,11 +2229,6 @@
                 }
             });
 
-            // The specific '/' listener previously here is now handled by the global one in init()
-            // So, we remove the old one if it was planned to be here or ensure it's not added.
-            // Based on the provided code, the specific one was an anonymous function added via addEventListener.
-            // It's better to not add it here anymore.
-
             nextProb();
             console.log("[startGame] Finished. Called nextProb().");
         }
@@ -2188,7 +2286,7 @@
             } else {
                 showAnsDiv.innerHTML = `<strong style="color: #EF4444;">錯了錯了😭</strong> 正確答案是：${data[x].answer.join(' / ')}`;
                 if (data[x].answer && data[x].answer.length > 0) {
-                    const primaryAnswerToSpeak = data[x].answer[0]; // Or join(' / ') if you want to speak all
+                    const primaryAnswerToSpeak = data[x].answer[0];
                     if (primaryAnswerToSpeak) {
                         addOrUpdateSpeakButton(primaryAnswerToSpeak, showAnsDiv);
                     }
@@ -2205,7 +2303,7 @@
             expDiv.innerHTML = "";
             expDiv.style.display = "none";
         }
-        function showAnswer() { // This is for "Don't Know" button
+        function showAnswer() {
             console.log("[showAnswer] Called (Don't Know). viewing:", viewing);
             if (viewing) {
                 console.log("[showAnswer] Bailed: viewing is true.");
@@ -2222,14 +2320,14 @@
             document.querySelector('.your-answer-label').style.visibility = 'hidden';
 
             var showAnsDiv = document.getElementById("showAnswer");
-            var cardAnswerDiv = document.querySelector(".card-answer"); // This variable is still fine for its other uses
+            var cardAnswerDiv = document.querySelector(".card-answer");
             cardAnswerDiv.style.display = "flex";
 
             showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
             if (data[x].answer && data[x].answer.length > 0) {
                 const primaryAnswerToSpeak = data[x].answer[0];
                  if (primaryAnswerToSpeak) {
-                    addOrUpdateSpeakButton(primaryAnswerToSpeak, showAnsDiv); // Corrected from cardAnswerDiv
+                    addOrUpdateSpeakButton(primaryAnswerToSpeak, showAnsDiv);
                 }
             }
             showExplanation();
@@ -2306,7 +2404,6 @@
             if (wrongEl) wrongEl.textContent = wrong;
         }
         async function submitContribution() {
-            // Gather contributor metadata
             let ip = 'unknown';
             try {
                 const ipRes = await fetch('https://api.ipify.org?format=json');
@@ -2394,10 +2491,9 @@
             console.log("[nextProb] Set viewing to false.");
             resetTime();
             countdown();
-            updateImage(); // This will call pickNewImage if not resuming
+            updateImage();
             document.getElementById("answer").value = "";
             document.getElementById("answer").focus();
-            // 根據 JSON description 動態設定 placeholder
             const answerInput = document.getElementById("answer");
             const desc = data[x]?.description;
             if (desc && desc.trim() !== "") {
@@ -2409,7 +2505,6 @@
             document.getElementById("showExplanation").innerHTML = "";
             document.getElementById("showExplanation").style.display = "none";
 
-            // Make copies of the lists before saving to localStorage
             const savedCorrectList = JSON.parse(JSON.stringify(correctList));
             const savedWrongList = JSON.parse(JSON.stringify(wrongList));
 
@@ -2456,11 +2551,10 @@
                 console.log(`[updateImage] Picked new image index. Old x: ${x}, New x: ${newX}`);
                 x = newX;
             }
-            
-             if (x === -1 || data[x] === undefined) { // Check if data[x] is defined
+
+             if (x === -1 || data[x] === undefined) {
                 console.error(`[updateImage] Could not pick a new image index or data[x] is undefined. x: ${x}, data[x]:`, data[x]);
                 document.querySelector('.loading-screen').style.display = 'none';
-                // Optionally, handle this error more gracefully, e.g., show an error message to the user.
                 return;
             }
             console.log(`[updateImage] Updating image for index x: ${x}. Item:`, JSON.parse(JSON.stringify(data[x])));
