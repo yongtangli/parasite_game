@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -468,6 +469,13 @@
             cursor: pointer;
             transition: color 0.3s ease, transform 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
             border: 1px solid var(--border-primary);
+            flex-shrink: 0;
+        }
+        @media screen and (max-width: 768px) {
+            .progress-item span {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
         }
         .progress-item:hover {
             background-color: var(--bg-secondary);
@@ -1150,7 +1158,17 @@
                 opacity: 1;
                 visibility: visible;
                 transform: translateX(-50%) translateY(0) scaleY(1);
-                 animation: elegantDropdownAppear 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+                animation: elegantDropdownAppear 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            }
+            #wrongArea span:not(.progress-number-orange),
+            #correctArea span:not(.progress-number-green) {
+                display: none;
+            }
+            .progress-number-green {
+                margin-left: 0;
+            }
+            .progress-number-orange {
+                margin-right: 0;
             }
         }
     </style>
