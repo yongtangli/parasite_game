@@ -1038,6 +1038,11 @@
             opacity: 0.4;
             filter: blur(10px);
         }
+        @media screen and (max-width: 768px) {
+            .progress {
+                gap: 0;
+            }      
+        }
     </style>
 </head>
 <body onload="init();">
@@ -1279,6 +1284,60 @@
             dayNightIcon.classList.remove('day');
             dayNightIcon.classList.add('night');
             dayNightIcon.classList.add('rotate');
+        }
+
+        let availableVoices = [];
+        function populateVoices() {
+            availableVoices = speechSynthesis.getVoices();
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = () => {
+                    availableVoices = speechSynthesis.getVoices();
+                };
+            }
+        }
+
+        function addOrUpdateSpeakButton(answerToSpeak, answerDisplayElement) {
+            // Remove any existing speak button first
+            let existingSpeakButton = answerDisplayElement.querySelector('.speak-answer-icon-button');
+            if (existingSpeakButton) {
+                existingSpeakButton.remove();
+            }
+
+            const speakButton = document.createElement('button');
+            speakButton.className = 'speak-answer-icon-button';
+            speakButton.setAttribute('aria-label', 'Play answer');
+            speakButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgb(102, 102, 102)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+            `;
+            speakButton.style.background = 'none';
+            speakButton.style.border = 'none';
+            speakButton.style.padding = '0 0 0 8px'; // Add some space to the left of the icon
+            speakButton.style.cursor = 'pointer';
+            speakButton.style.display = 'inline-flex'; // To align SVG properly
+            speakButton.style.alignItems = 'center';
+            speakButton.style.verticalAlign = 'middle'; // Align with text
+
+
+            speakButton.onclick = (event) => {
+                event.stopPropagation(); // Prevent any parent click handlers
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                }
+                const utterance = new SpeechSynthesisUtterance(answerToSpeak);
+                let targetVoice = availableVoices.find(voice => voice.lang.startsWith('en') && (voice.name.toLowerCase().includes('google') || voice.name.toLowerCase().includes('natural')));
+                if (!targetVoice) {
+                    targetVoice = availableVoices.find(voice => voice.lang.startsWith('en'));
+                }
+                if (targetVoice) {
+                    utterance.voice = targetVoice;
+                }
+                speechSynthesis.speak(utterance);
+            };
+            
+            answerDisplayElement.appendChild(speakButton);
         }
 
         function toggleTheme() {
@@ -1523,6 +1582,8 @@
         function init() {
             console.log("[init] Initializing application.");
             initDayNightToggle();
+            populateVoices(); // Populate speech synthesis voices
+
             const savedName = localStorage.getItem("parasite_player_name");
             if (savedName) {
                 const nameField = document.getElementById("playerName");
@@ -1535,6 +1596,41 @@
                     this.classList.toggle('expanded');
                 });
             }
+
+            // Global '/' key listener
+            document.addEventListener("keydown", function(e) {
+                if (window.isComposing) return; // Respect IME composition, assuming isComposing is globally available
+
+                if (e.key === "/") {
+                    const answerInput = document.getElementById("answer");
+                    const playerNameInput = document.getElementById("playerName");
+                    const explanationContribInput = document.getElementById('explanation-input');
+
+                    const flashcardContainer = document.querySelector('.flashcard-container');
+                    const isGameActive = flashcardContainer && getComputedStyle(flashcardContainer).display !== 'none';
+
+                    let focused = false;
+                    if (isGameActive) {
+                        // Only focus answerInput if it's not already focused and explanation input is not focused
+                        if (answerInput && document.activeElement !== answerInput && 
+                           (!explanationContribInput || document.activeElement !== explanationContribInput)) {
+                            answerInput.focus();
+                            focused = true;
+                        }
+                    } else { // Potentially on the start screen
+                        const startScreen = document.querySelector('.start-screen');
+                        const isStartScreenActive = startScreen && getComputedStyle(startScreen).display !== 'none';
+                        if (isStartScreenActive && playerNameInput && document.activeElement !== playerNameInput) {
+                             playerNameInput.focus();
+                             focused = true;
+                        }
+                    }
+
+                    if (focused) {
+                        e.preventDefault(); // Prevent default browser find action only if we focused an element
+                    }
+                }
+            });
 
             // 新的開始遊戲邏輯：多個按鈕與不同資料集
             function createStartHandler(jsonPath) {
@@ -1628,7 +1724,7 @@
                     }
                 }
             };
-            document.addEventListener("keypress", window.globalEnterPressStart);
+            document.addEventListener("keypress", window.globalEnterPressStart); // Handles 'Enter' on start screen for player name
             console.log("[init] Added 'globalEnterPressStart' listener.");
 
             adjustPlaceholder();
@@ -2030,18 +2126,11 @@
                 }
             });
 
-            document.addEventListener("keydown", function(e) {
-                const answerInput = document.getElementById("answer");
-                const explanationInput = document.getElementById("explanation-input");
-                 if (e.key === "/" && document.activeElement !== answerInput && document.activeElement !== explanationInput) {
-                    e.preventDefault();
-                    if (explanationInput && explanationInput.offsetParent !== null) {
-                        explanationInput.focus();
-                    } else {
-                        answerInput.focus();
-                    }
-                }
-            });
+            // The specific '/' listener previously here is now handled by the global one in init()
+            // So, we remove the old one if it was planned to be here or ensure it's not added.
+            // Based on the provided code, the specific one was an anonymous function added via addEventListener.
+            // It's better to not add it here anymore.
+
             nextProb();
             console.log("[startGame] Finished. Called nextProb().");
         }
@@ -2088,10 +2177,22 @@
 
             if (checkAns(userAnswer, data[x].answer)) {
                 showAnsDiv.innerHTML = `<strong style="color: #10B981;">對了欸！！🥹</strong> 答案是：${data[x].answer.join(' / ')}`;
+                if (data[x].answer && data[x].answer.length > 0) {
+                    const primaryAnswerToSpeak = data[x].answer[0];
+                    if (primaryAnswerToSpeak) {
+                        addOrUpdateSpeakButton(primaryAnswerToSpeak, showAnsDiv);
+                    }
+                }
                 showExplanation();
                 updateCorrect();
             } else {
                 showAnsDiv.innerHTML = `<strong style="color: #EF4444;">錯了錯了😭</strong> 正確答案是：${data[x].answer.join(' / ')}`;
+                if (data[x].answer && data[x].answer.length > 0) {
+                    const primaryAnswerToSpeak = data[x].answer[0]; // Or join(' / ') if you want to speak all
+                    if (primaryAnswerToSpeak) {
+                        addOrUpdateSpeakButton(primaryAnswerToSpeak, showAnsDiv);
+                    }
+                }
                 showExplanation();
                 updateWrong();
             }
@@ -2125,6 +2226,12 @@
             cardAnswerDiv.style.display = "flex";
 
             showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
+            if (data[x].answer && data[x].answer.length > 0) {
+                const primaryAnswerToSpeak = data[x].answer[0];
+                 if (primaryAnswerToSpeak) {
+                    addOrUpdateSpeakButton(primaryAnswerToSpeak, cardAnswerDiv);
+                }
+            }
             showExplanation();
             updateUnknown();
             console.log("[showAnswer] correctList after update:", JSON.parse(JSON.stringify(correctList)));
@@ -2272,10 +2379,16 @@
                 console.log("[nextProb] All questions done. Bailing.");
                 return;
             }
+
+            const showAnsDiv = document.getElementById("showAnswer");
+            const existingSpeakButton = showAnsDiv.querySelector('.speak-answer-icon-button');
+            if (existingSpeakButton) {
+                existingSpeakButton.remove();
+            }
+
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
             document.querySelector('.bottom-buttons').style.visibility = 'visible';
-            document.querySelector('.your-answer-label').style.visibility = 'visible';
 
             viewing = false;
             console.log("[nextProb] Set viewing to false.");
