@@ -1084,8 +1084,11 @@
                 <span>錯誤</span>
             </div>
             <div class="progress-item" style="border:none; cursor:default;">
-                <span>目前分數：</span>
+                <span>分數：</span>
                 <span id="score-display">0</span>
+                <span style="margin: 0 5px;">｜</span>
+                <span>排名：</span>
+                <span id="rank-display">N/A</span>
             </div>
             <div class="progress-item" id="correctArea">
                 <span>正確</span>
@@ -1359,7 +1362,6 @@
 
                 listEl.innerHTML = '';
                 let inTop = false;
-                // Add tie tracking variables
                 let prevScore = null;
                 let prevRank = 0;
                 sorted.forEach((item, index) => {
@@ -1368,7 +1370,6 @@
                         if (item.uid === window.currentUserUid) li.classList.add('current-user');
                         const rankSpan = document.createElement('span');
                         rankSpan.className = 'leaderboard-rank';
-                        // 取得名次（同分併列）
                         let rank;
                         if (item.score === prevScore) {
                             rank = prevRank;
@@ -1397,8 +1398,21 @@
                         li.classList.add('current-user');
                         const rankSpan = document.createElement('span');
                         rankSpan.className = 'leaderboard-rank';
-                        const rank = sorted.filter(it => it.score > item.score).length + 1;
-                        rankSpan.textContent = rank;
+                        // Calculate rank for user not in top 10, considering ties
+                        let userActualRank = 0;
+                        let scoreForPrevRank = null;
+                        let runningRankForUser = 0;
+                        for(let i=0; i < sorted.length; i++) {
+                            if (sorted[i].score !== scoreForPrevRank) {
+                                runningRankForUser = i + 1;
+                                scoreForPrevRank = sorted[i].score;
+                            }
+                            if (sorted[i].uid === window.currentUserUid) {
+                                userActualRank = runningRankForUser;
+                                break;
+                            }
+                        }
+                        rankSpan.textContent = userActualRank || (sorted.filter(it => it.score > item.score).length + 1); // Fallback if loop fails
                         const nameSpan = document.createElement('span');
                         nameSpan.className = 'leaderboard-name';
                         nameSpan.textContent = item.name;
@@ -1413,9 +1427,34 @@
                 const playerScore = playerData ? playerData.score : 0;
                 document.getElementById("score-display").textContent = playerScore;
                 score = playerScore;
+
+                const rankDisplay = document.getElementById("rank-display");
+                if (rankDisplay) {
+                    if (playerData) {
+                        let userDisplayRank = "N/A";
+                        let currentOverallRank = 0;
+                        let scoreForLastOverallRank = null;
+                        for (let i = 0; i < sorted.length; i++) {
+                            const entry = sorted[i];
+                            if (entry.score !== scoreForLastOverallRank) {
+                                currentOverallRank = i + 1;
+                                scoreForLastOverallRank = entry.score;
+                            }
+                            if (entry.uid === window.currentUserUid) {
+                                userDisplayRank = currentOverallRank;
+                                break;
+                            }
+                        }
+                        rankDisplay.textContent = userDisplayRank;
+                    } else {
+                        rankDisplay.textContent = "N/A";
+                    }
+                }
             } catch (err) {
                 console.error("讀排行榜失敗：", err);
                 listEl.innerHTML = '<li>讀取失敗</li>';
+                const rankDisplay = document.getElementById("rank-display");
+                if (rankDisplay) rankDisplay.textContent = "N/A";
             }
         }
 
@@ -1423,7 +1462,8 @@
             console.log("[updateCorrect] Called. Current correctList:", JSON.parse(JSON.stringify(correctList)), "Current wrongList:", JSON.parse(JSON.stringify(wrongList)));
             correct++;
             document.getElementById("correct").innerText = correct;
-            score += 2;
+            const pointsEarned = 2;
+            score += pointsEarned;
             if (data && data[x]) {
                 console.log("[updateCorrect] Adding item to correctList:", JSON.parse(JSON.stringify(data[x])));
                 correctList.push(data[x]);
@@ -1431,14 +1471,17 @@
                 console.warn("[updateCorrect] data or data[x] is undefined. x:", x, "data:", data);
             }
             updateScoreDisplay();
-            writeScore(2).catch(err => console.error("寫入分數失敗：", err));
+            writeScore(pointsEarned)
+                .then(() => fetchLeaderboard())
+                .catch(err => console.error("寫入分數或更新排名失敗：", err));
             console.log("[updateCorrect] Exiting. New correctList:", JSON.parse(JSON.stringify(correctList)));
         }
         function updateWrong() {
             console.log("[updateWrong] Called. Current correctList:", JSON.parse(JSON.stringify(correctList)), "Current wrongList:", JSON.parse(JSON.stringify(wrongList)));
             wrong++;
             document.getElementById("wrong").innerText = wrong;
-            score -= 2;
+            const pointsLost = -2;
+            score += pointsLost;
             if (data && data[x]) {
                 console.log("[updateWrong] Adding item to wrongList:", JSON.parse(JSON.stringify(data[x])));
                 wrongList.push(data[x]);
@@ -1446,14 +1489,17 @@
                 console.warn("[updateWrong] data or data[x] is undefined. x:", x, "data:", data);
             }
             updateScoreDisplay();
-            writeScore(-2).catch(err => console.error("寫入分數失敗：", err));
+            writeScore(pointsLost)
+                .then(() => fetchLeaderboard())
+                .catch(err => console.error("寫入分數或更新排名失敗：", err));
             console.log("[updateWrong] Exiting. New wrongList:", JSON.parse(JSON.stringify(wrongList)));
         }
         function updateUnknown(){
             console.log("[updateUnknown] Called. Current correctList:", JSON.parse(JSON.stringify(correctList)), "Current wrongList:", JSON.parse(JSON.stringify(wrongList)));
             wrong++;
             document.getElementById("wrong").innerText = wrong;
-            score -= 1;
+            const pointsLost = -1;
+            score += pointsLost;
             updateScoreDisplay();
             if (data && data[x]) {
                 console.log("[updateUnknown] Adding item to wrongList:", JSON.parse(JSON.stringify(data[x])));
@@ -1461,7 +1507,9 @@
             } else {
                 console.warn("[updateUnknown] data or data[x] is undefined. x:", x, "data:", data);
             }
-            writeScore(-1).catch(err => console.error("寫入分數失敗：", err));
+            writeScore(pointsLost)
+                .then(() => fetchLeaderboard())
+                .catch(err => console.error("寫入分數或更新排名失敗：", err));
             console.log("[updateUnknown] Exiting. New wrongList:", JSON.parse(JSON.stringify(wrongList)));
         }
 
@@ -1797,6 +1845,8 @@
 
 
                 updateScoreDisplay();
+                fetchLeaderboard().catch(err => console.error("[resumeButton] Failed to fetch leaderboard on resume:", err));
+
                 document.querySelector('.start-screen').style.display = 'none';
                 document.querySelector('.flashcard-container').style.display = 'flex';
                 
