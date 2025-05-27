@@ -45,8 +45,8 @@
         }
 
         #docContent {
-          counter-reset: docEntryCounter;
-          padding-left: 25px;
+            counter-reset: docEntryCounter;
+            padding-left: 25px;
         }
 
         .doc-entry {
@@ -59,14 +59,14 @@
         }
 
         .doc-entry::before {
-          counter-increment: docEntryCounter;
-          content: counter(docEntryCounter) ".";
-          position: absolute;
-          left: -25px;
-          top: 0;
-          width: 20px;
-          text-align: right;
-          color: var(--text-primary);
+            counter-increment: docEntryCounter;
+            content: counter(docEntryCounter) ".";
+            position: absolute;
+            left: -25px;
+            top: 0;
+            width: 20px;
+            text-align: right;
+            color: var(--text-primary);
         }
 
         .doc-entry:last-child {
@@ -892,10 +892,10 @@
         }
         .nav-left { left: -80px; }
         .nav-right { right: -80px; }
-         @keyframes scaleUpModal {
+           @keyframes scaleUpModal {
             from { transform: scale(0.95); opacity: 0;}
             to { transform: scale(1); opacity: 1;}
-         }
+           }
         .close {
             position: absolute;
             top: 13px;
@@ -1072,13 +1072,13 @@
             color: var(--accent-blue);
         }
 
-         .leaderboard.expanded {
-             max-height: 500px;
-         }
-         .leaderboard.expanded::after {
-             opacity: 0;
-             transition-delay: 0s;
-         }
+           .leaderboard.expanded {
+               max-height: 500px;
+           }
+           .leaderboard.expanded::after {
+               opacity: 0;
+               transition-delay: 0s;
+           }
         .leaderboard:hover {
             max-height: 500px;
             transition-delay: 0s;
@@ -1648,7 +1648,7 @@
                 const playerData = sorted.find(item => item.uid === window.currentUserUid);
                 const playerScore = playerData ? playerData.score : 0;
                 document.getElementById("score-display").textContent = playerScore;
-                score = playerScore;
+                score = playerScore; // Initialize global score with Firebase score
 
                 const rankDisplay = document.getElementById("rank-display");
                 if (rankDisplay) {
@@ -1681,67 +1681,134 @@
         }
 
         function updateCorrect() {
-            console.log("[updateCorrect] Called. Current correctList:", JSON.parse(JSON.stringify(correctList)), "Current wrongList:", JSON.parse(JSON.stringify(wrongList)));
             correct++;
             document.getElementById("correct").innerText = correct;
             const pointsEarned = 2;
-            score += pointsEarned;
+            score += pointsEarned; // Local score variable for Firebase update
             if (data && data[x]) {
-                console.log("[updateCorrect] Adding item to correctList:", JSON.parse(JSON.stringify(data[x])));
                 correctList.push(data[x]);
-            } else {
-                console.warn("[updateCorrect] data or data[x] is undefined. x:", x, "data:", data);
             }
-            updateScoreDisplay();
-            writeScore(pointsEarned)
-                .then(() => fetchLeaderboard())
+            updateScoreDisplay(); // Update UI score
+            writeScore(pointsEarned) // Update Firebase score
+                .then(() => fetchLeaderboard()) // Refresh leaderboard after score update
                 .catch(err => console.error("寫入分數或更新排名失敗：", err));
-            console.log("[updateCorrect] Exiting. New correctList:", JSON.parse(JSON.stringify(correctList)));
         }
         function updateWrong() {
-            console.log("[updateWrong] Called. Current correctList:", JSON.parse(JSON.stringify(correctList)), "Current wrongList:", JSON.parse(JSON.stringify(wrongList)));
             wrong++;
             document.getElementById("wrong").innerText = wrong;
             const pointsLost = -2;
             score += pointsLost;
             if (data && data[x]) {
-                console.log("[updateWrong] Adding item to wrongList:", JSON.parse(JSON.stringify(data[x])));
                 wrongList.push(data[x]);
-            } else {
-                console.warn("[updateWrong] data or data[x] is undefined. x:", x, "data:", data);
             }
             updateScoreDisplay();
             writeScore(pointsLost)
                 .then(() => fetchLeaderboard())
                 .catch(err => console.error("寫入分數或更新排名失敗：", err));
-            console.log("[updateWrong] Exiting. New wrongList:", JSON.parse(JSON.stringify(wrongList)));
         }
         function updateUnknown(){
-            console.log("[updateUnknown] Called. Current correctList:", JSON.parse(JSON.stringify(correctList)), "Current wrongList:", JSON.parse(JSON.stringify(wrongList)));
             wrong++;
             document.getElementById("wrong").innerText = wrong;
             const pointsLost = -1;
             score += pointsLost;
-            updateScoreDisplay();
             if (data && data[x]) {
-                console.log("[updateUnknown] Adding item to wrongList:", JSON.parse(JSON.stringify(data[x])));
                 wrongList.push(data[x]);
-            } else {
-                console.warn("[updateUnknown] data or data[x] is undefined. x:", x, "data:", data);
             }
+            updateScoreDisplay();
             writeScore(pointsLost)
                 .then(() => fetchLeaderboard())
                 .catch(err => console.error("寫入分數或更新排名失敗：", err));
-            console.log("[updateUnknown] Exiting. New wrongList:", JSON.parse(JSON.stringify(wrongList)));
         }
 
-        function checkCompletion() {
-            if (!done.every(x => x)) return;
-            const finalScore = score;
-            showAlertModal(`恭喜你完成！最終分數：${finalScore} 🎉`);
+        function handleEndOfRound() {
             const nextBtn = document.getElementById('next');
-            if (nextBtn) nextBtn.style.display = 'none';
+            const cardAnswerDiv = document.querySelector(".card-answer");
+
+            cardAnswerDiv.style.display = "flex"; // Show answer area for the button
+            document.querySelector('.answer-input-container').style.visibility = 'hidden';
+            document.querySelector('.bottom-buttons').style.visibility = 'hidden';
+            document.querySelector('.your-answer-label').style.visibility = 'hidden';
+            nextBtn.style.display = 'block'; // Ensure next button is visible
+
+            if (wrongList.length > 0) {
+                nextBtn.innerText = "重玩錯誤";
+                nextBtn.removeEventListener('click', nextProb);
+                nextBtn.addEventListener('click', startReviewWrong);
+                showAlertModal(`本回合錯誤 ${wrongList.length} 題。點擊「重玩錯誤」再次挑戰！`);
+            } else {
+                showAlertModal(`恭喜你全部答對！最終分數：${score} 🎉`);
+                nextBtn.style.display = 'none';
+                localStorage.removeItem('gameProgress');
+                window.gameplayActive = false;
+
+                // Clean up game event listeners
+                document.removeEventListener("keydown", enterKeyEvent);
+                const submitBtnEl = document.getElementById("submitAnswer");
+                if (submitBtnEl) submitBtnEl.removeEventListener("click", submitUserAnswer);
+                const dontKnowBtnEl = document.getElementById("dontKnow");
+                if (dontKnowBtnEl) dontKnowBtnEl.removeEventListener("click", showAnswer);
+                const correctAreaEl = document.getElementById("correctArea");
+                if (correctAreaEl) correctAreaEl.removeEventListener("click", showCorrectList);
+                const wrongAreaEl = document.getElementById("wrongArea");
+                if (wrongAreaEl) wrongAreaEl.removeEventListener("click", showWrongList);
+                if (nextBtn) nextBtn.removeEventListener('click', nextProb); // Might have been set
+
+                setTimeout(() => {
+                    document.querySelector('.flashcard-container').style.display = 'none';
+                    document.querySelector('.start-screen').style.display = 'flex';
+                    const resumeButtonEl = document.getElementById('resumeButton');
+                    const progressActionsEl = document.querySelector('.progress-actions');
+                    const startButtonsEl = document.querySelector('.start-buttons');
+                    if(resumeButtonEl) resumeButtonEl.style.display = 'none';
+                    if(progressActionsEl) progressActionsEl.style.display = 'none';
+                    if(startButtonsEl) startButtonsEl.style.display = 'flex';
+                    fetchLeaderboard();
+                }, 3000);
+            }
         }
+
+        function startReviewWrong() {
+            console.log("[startReviewWrong] Starting review of wrong answers.");
+            if (wrongList.length === 0) {
+                console.warn("[startReviewWrong] No wrong answers to review.");
+                // This case should ideally not be reached if button logic is correct
+                handleEndOfRound(); // Or show a final completion message
+                return;
+            }
+
+            data = [...wrongList]; // Use a copy of wrongList for the new round
+            numOfProbs = data.length;
+
+            // Reset for the new round of wrong questions
+            wrongList = [];
+            correctList = []; // Also reset correctList for the new round's calculation
+            correct = 0;
+            wrong = 0;
+            // score variable (total score) is not reset here, only current round's correct/wrong
+
+            document.getElementById("correct").innerText = correct;
+            document.getElementById("wrong").innerText = wrong;
+            // updateScoreDisplay(); // UI score display will reflect total score
+
+            done = new Array(numOfProbs).fill(false);
+            x = -1; // To pick the first question in nextProb
+
+            const nextBtn = document.getElementById('next');
+            nextBtn.innerText = "下一個";
+            nextBtn.removeEventListener('click', startReviewWrong);
+            nextBtn.addEventListener('click', nextProb);
+
+            // Reset UI to question state
+            document.querySelector('.card-answer').style.display = 'none';
+            document.querySelector('.answer-input-container').style.visibility = 'visible';
+            document.querySelector('.bottom-buttons').style.visibility = 'visible';
+            document.querySelector('.your-answer-label').style.visibility = 'visible';
+            viewing = false;
+
+            nextProb(); // Start the review round
+        }
+
+
         function init() {
             console.log("[init] Initializing application.");
             initDayNightToggle();
@@ -1774,7 +1841,7 @@
                     let focused = false;
                     if (isGameActive) {
                         if (answerInput && document.activeElement !== answerInput &&
-                           (!explanationContribInput || document.activeElement !== explanationContribInput)) {
+                            (!explanationContribInput || document.activeElement !== explanationContribInput)) {
                             answerInput.focus();
                             focused = true;
                         }
@@ -1807,16 +1874,24 @@
                     }
                     window.currentPlayer = nameInput;
                     localStorage.setItem("parasite_player_name", nameInput);
+                    document.querySelector('.start-screen').style.display = 'none'; // Hide start screen
                     document.querySelector('.flashcard-container').style.display = 'flex';
                     fetchLeaderboard();
 
                     state = 1;
-                    correct = 0; wrong = 0; total = 0; score = 0;
-                    console.log("[createStartHandler] Resetting scores and lists. Correct:", correct, "Wrong:", wrong, "Score:", score);
+                    correct = 0; wrong = 0; total = 0; 
+                    // score is initialized/updated from Firebase in fetchLeaderboard or writeScore
+                    console.log("[createStartHandler] Resetting scores and lists. Correct:", correct, "Wrong:", wrong);
                     document.getElementById("correct").innerHTML = correct;
                     document.getElementById("wrong").innerHTML = wrong;
                     correctList = []; wrongList = [];
                     console.log("[createStartHandler] Cleared correctList:", JSON.parse(JSON.stringify(correctList)), "wrongList:", JSON.parse(JSON.stringify(wrongList)));
+
+                    // Ensure "Next" button is in its default state
+                    const nextBtn = document.getElementById('next');
+                    nextBtn.innerText = "下一個";
+                    nextBtn.removeEventListener('click', startReviewWrong); // Remove if it was set
+                    nextBtn.addEventListener('click', nextProb); // Add default
 
 
                     $.getJSON(jsonPath)
@@ -2094,16 +2169,16 @@
 
                 correct = Number(prog.correct) || 0;
                 wrong = Number(prog.wrong) || 0;
-                score = Number(prog.score) || 0;
+                // score is loaded from Firebase via fetchLeaderboard
                 correctList = Array.isArray(prog.correctList) ? prog.correctList : [];
                 wrongList = Array.isArray(prog.wrongList) ? prog.wrongList : [];
-                 console.log("[resumeButton] Loaded scores and lists. Correct:", correct, "Wrong:", wrong, "Score:", score);
+                 console.log("[resumeButton] Loaded scores and lists. Correct:", correct, "Wrong:", wrong);
                  console.log("[resumeButton] correctList:", JSON.parse(JSON.stringify(correctList)));
                  console.log("[resumeButton] wrongList:", JSON.parse(JSON.stringify(wrongList)));
 
 
-                updateScoreDisplay();
-                fetchLeaderboard().catch(err => console.error("[resumeButton] Failed to fetch leaderboard on resume:", err));
+                updateScoreDisplay(); // Update UI for correct/wrong counts
+                fetchLeaderboard().catch(err => console.error("[resumeButton] Failed to fetch leaderboard on resume:", err)); // This will set global score
 
                 document.querySelector('.start-screen').style.display = 'none';
                 document.querySelector('.flashcard-container').style.display = 'flex';
@@ -2114,40 +2189,53 @@
                 document.getElementById("dontKnow").addEventListener("click", showAnswer);
                 document.getElementById("correctArea").addEventListener("click", showCorrectList);
                 document.getElementById("wrongArea").addEventListener("click", showWrongList);
-                document.getElementById("next").addEventListener("click", nextProb);
+                
+                const nextButton = document.getElementById("next");
+                nextButton.removeEventListener('click', startReviewWrong); // Clean up potential old listener
+                nextButton.addEventListener("click", nextProb); // Set default listener
+
                 document.getElementById('closeModal').addEventListener('click', function() {
                     document.getElementById('modal').style.display = "none";
                 });
 
-                updateImage(true);
+                updateImage(true); // isResuming = true, uses prog.x
 
-                viewing = true;
-                 console.log("[resumeButton] Setting viewing to true. UI elements for answering will be hidden.");
-                document.querySelector('.answer-input-container').style.visibility = 'hidden';
-                document.querySelector('.bottom-buttons').style.visibility = 'hidden';
-                document.querySelector('.your-answer-label').style.visibility = 'hidden';
-
-                const cardAnswerDiv = document.querySelector(".card-answer");
-                cardAnswerDiv.style.display = "flex";
-
-                const showAnsDiv = document.getElementById("showAnswer");
-                if (data[x] && data[x].answer) {
-                     showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
-                     console.log("[resumeButton] Displaying answer for resumed question:", data[x].answer.join(' / '));
+                if (done.every(d => d)) {
+                    // All questions in the loaded set were done, trigger end of round logic
+                    handleEndOfRound();
                 } else {
-                    showAnsDiv.innerHTML = "答案資訊錯誤";
-                    console.warn(`[resumeButton] No answer found for restored question index ${x}. data[x]:`, data[x]);
-                }
-                showExplanation();
+                    // Game was in progress, show the answer for the current question
+                    viewing = true;
+                    console.log("[resumeButton] Setting viewing to true. UI elements for answering will be hidden.");
+                    document.querySelector('.answer-input-container').style.visibility = 'hidden';
+                    document.querySelector('.bottom-buttons').style.visibility = 'hidden';
+                    document.querySelector('.your-answer-label').style.visibility = 'hidden';
 
-                const answerInput = document.getElementById("answer");
-                const desc = data[x]?.description;
-                if (desc && desc.trim() !== "") {
-                    answerInput.placeholder = desc;
-                } else {
-                    adjustPlaceholder();
-                }
+                    const cardAnswerDiv = document.querySelector(".card-answer");
+                    cardAnswerDiv.style.display = "flex";
+                    nextButton.style.display = 'block'; // Ensure next button is visible
 
+                    const showAnsDiv = document.getElementById("showAnswer");
+                    if (data[x] && data[x].answer) {
+                         showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
+                         console.log("[resumeButton] Displaying answer for resumed question:", data[x].answer.join(' / '));
+                         if (data[x].answer.length > 0 && data[x].answer[0]) {
+                            addOrUpdateSpeakButton(data[x].answer[0], showAnsDiv);
+                         }
+                    } else {
+                        showAnsDiv.innerHTML = "答案資訊錯誤";
+                        console.warn(`[resumeButton] No answer found for restored question index ${x}. data[x]:`, data[x]);
+                    }
+                    showExplanation(); // Show explanation if available
+
+                    const answerInput = document.getElementById("answer");
+                    const desc = data[x]?.description;
+                    if (desc && desc.trim() !== "") {
+                        answerInput.placeholder = desc;
+                    } else {
+                        adjustPlaceholder();
+                    }
+                }
                 window.preloadNextImage();
                 console.log("[resumeButton] Resume process finished.");
               });
@@ -2176,6 +2264,7 @@
 
                 document.getElementById("correct").innerText = correct;
                 document.getElementById("wrong").innerText = wrong;
+                // score will be re-fetched or reset when a new game starts
 
                 const imageElement = document.getElementById("image");
                 if (imageElement) {
@@ -2185,7 +2274,7 @@
                 }
                 const loadingScreen = document.querySelector('.loading-screen');
                 if (loadingScreen) {
-                    loadingScreen.style.display = 'none';
+                    loadingScreen.style.display = 'none'; // Or 'flex' if you want spinner initially
                 }
                 const answerInput = document.getElementById("answer");
                 if (answerInput) {
@@ -2254,7 +2343,10 @@
                 } else if (!viewing && document.getElementById("answer").value.trim() !== "") {
                     submitUserAnswer();
                 } else if (viewing && document.querySelector('.card-answer').style.display === 'flex') {
-                    nextProb();
+                    const nextBtn = document.getElementById('next');
+                    if (nextBtn && nextBtn.style.display !== 'none') {
+                         nextBtn.click(); // This will trigger either nextProb or startReviewWrong
+                    }
                 }
             }
         }
@@ -2265,7 +2357,7 @@
             document.getElementById("dontKnow").addEventListener("click", showAnswer);
             document.getElementById("correctArea").addEventListener("click", showCorrectList);
             document.getElementById("wrongArea").addEventListener("click", showWrongList);
-            document.getElementById("next").addEventListener("click", nextProb);
+            // document.getElementById("next").addEventListener("click", nextProb); // Already set in createStartHandler
             document.getElementById('closeModal').addEventListener('click', function() {
                 document.getElementById('modal').style.display = "none";
             });
@@ -2344,7 +2436,7 @@
             }
 
             total++;
-            checkCompletion();
+            // checkCompletion(); // This is handled by nextProb -> handleEndOfRound
         }
         function hideExplanation() {
             const expDiv = document.getElementById("showExplanation");
@@ -2384,7 +2476,7 @@
             console.log("[showAnswer] wrongList after update:", JSON.parse(JSON.stringify(wrongList)));
 
             total++;
-            checkCompletion();
+            // checkCompletion(); // This is handled by nextProb -> handleEndOfRound
              console.log("[showAnswer] Exiting. total:", total, "viewing:", viewing);
         }
         function showExplanation() {
@@ -2444,12 +2536,15 @@
             }
         }
         function updateScoreDisplay() {
+            // This updates the global score display from Firebase
+            // Individual round correct/wrong are updated directly by updateCorrect/updateWrong
             const scoreDisplay = document.getElementById("score-display");
-            if (scoreDisplay) scoreDisplay.textContent = score;
+            if (scoreDisplay) scoreDisplay.textContent = score; // score is the global accumulated score
+            
             const correctEl = document.getElementById("correct");
-            if (correctEl) correctEl.textContent = correct;
+            if (correctEl) correctEl.textContent = correct; // correct is for the current round
             const wrongEl = document.getElementById("wrong");
-            if (wrongEl) wrongEl.textContent = wrong;
+            if (wrongEl) wrongEl.textContent = wrong; // wrong is for the current round
         }
         async function submitContribution() {
             let ip = 'unknown';
@@ -2507,21 +2602,21 @@
             console.log("Sending content:", content);
             const fullContent = contributorInfo + content;
             sendToGoogleDocs(fullContent);
-            writeScore(10)
-              .then(newScore => {
-                score = newScore;
-                updateScoreDisplay();
-                showAlertModal(`賺了10分！目前分數：${newScore}`);
+            writeScore(10) // Give 10 points for contribution
+              .then(newTotalScore => { // writeScore returns the new total score from Firebase
+                score = newTotalScore; // Update local total score
+                updateScoreDisplay(); // Update UI
+                showAlertModal(`賺了10分！目前總分數：${newTotalScore}`);
               })
               .catch(err => console.error("寫入分數失敗：", err));
         }
         window.submitContribution = submitContribution;
+
         function nextProb() {
-            console.log("[nextProb] Called. Current state: done.every():", done.every(d => d), "viewing:", viewing);
-            console.log("[nextProb] current correctList:", JSON.parse(JSON.stringify(correctList)));
-            console.log("[nextProb] current wrongList:", JSON.parse(JSON.stringify(wrongList)));
+            console.log("[nextProb] Called. done:", JSON.parse(JSON.stringify(done)));
             if (done.every(d => d)) {
-                console.log("[nextProb] All questions done. Bailing.");
+                console.log("[nextProb] All questions in current set are done. Handling end of round.");
+                handleEndOfRound();
                 return;
             }
 
@@ -2531,15 +2626,23 @@
                 existingSpeakButton.remove();
             }
 
+            // Reset UI to question state
+            viewing = false;
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
             document.querySelector('.bottom-buttons').style.visibility = 'visible';
+            document.querySelector('.your-answer-label').style.visibility = 'visible';
 
-            viewing = false;
-            console.log("[nextProb] Set viewing to false.");
             resetTime();
             countdown();
-            updateImage();
+            
+            const imageUpdated = updateImage();
+            if (!imageUpdated && !done.every(d=>d)) { // Should not happen if done.every is checked first
+                console.error("[nextProb] Image not updated, but not all questions are done. This state should not be reached.");
+                handleEndOfRound(); // Force end of round to prevent issues
+                return;
+            }
+
             document.getElementById("answer").value = "";
             document.getElementById("answer").focus();
             const answerInput = document.getElementById("answer");
@@ -2557,7 +2660,7 @@
             const savedWrongList = JSON.parse(JSON.stringify(wrongList));
 
             localStorage.setItem('gameProgress', JSON.stringify({ data, x, done, correct, wrong, score, correctList: savedCorrectList, wrongList: savedWrongList }));
-            console.log("[nextProb] Saved progress to localStorage. x:", x, "correct:", correct, "wrong:", wrong, "score:", score);
+            console.log("[nextProb] Saved progress to localStorage. x:", x, "correct (round):", correct, "wrong (round):", wrong, "score (total):", score);
             console.log("[nextProb] Saved correctList:", JSON.parse(JSON.stringify(savedCorrectList)));
             console.log("[nextProb] Saved wrongList:", JSON.parse(JSON.stringify(savedWrongList)));
             console.log("[nextProb] Exiting.");
@@ -2572,18 +2675,14 @@
 
 
             if (availableIndices.length === 0) {
-                console.warn("[pickNewImage] All questions shown, restarting cycle.");
-                checkCompletion();
-                done.fill(false);
-                 console.log("[pickNewImage] Reset 'done' array:", JSON.parse(JSON.stringify(done)));
-                for (let i = 0; i < numOfProbs; i++) {
-                    availableIndices.push(i);
-                }
+                // This means all questions in the current set (data) have been shown
+                // The calling function (nextProb) will handle this by calling handleEndOfRound
+                return -1; 
             }
 
             const randomIndex = Math.floor(Math.random() * availableIndices.length);
             const selectedIndex = availableIndices[randomIndex];
-            done[selectedIndex] = true;
+            done[selectedIndex] = true; // Mark as shown for this round
             console.log(`[pickNewImage] Selected index: ${selectedIndex}. Updated 'done' array:`, JSON.parse(JSON.stringify(done)));
             return selectedIndex;
         }
@@ -2596,14 +2695,18 @@
 
             if (!isResuming) {
                 const newX = pickNewImage();
-                console.log(`[updateImage] Picked new image index. Old x: ${x}, New x: ${newX}`);
+                if (newX === -1) { // All questions in current set are done
+                    console.log("[updateImage] pickNewImage returned -1, no more images in this set.");
+                    document.querySelector('.loading-screen').style.display = 'none';
+                    return false; // Indicate failure to update, nextProb will handleEndOfRound
+                }
                 x = newX;
             }
 
-             if (x === -1 || data[x] === undefined) {
-                console.error(`[updateImage] Could not pick a new image index or data[x] is undefined. x: ${x}, data[x]:`, data[x]);
+             if (x === -1 || data[x] === undefined) { // x could be -1 if newX was -1 and somehow not caught
+                console.error(`[updateImage] Invalid question index or data. x: ${x}, data[x]:`, data[x]);
                 document.querySelector('.loading-screen').style.display = 'none';
-                return;
+                return false; // Indicate failure
             }
             console.log(`[updateImage] Updating image for index x: ${x}. Item:`, JSON.parse(JSON.stringify(data[x])));
 
@@ -2620,6 +2723,7 @@
                  document.querySelector('.loading-screen').style.display = 'none';
             }
             console.log("[updateImage] Exiting.");
+            return true; // Indicate success
         }
         function countdown() { }
         function resetTime() { clearTimeout(tm); }
@@ -2693,7 +2797,10 @@
         });
 
         window.preloadNextImage = function preloadNextImage() {
-            const nextIndex = (x + 1) % numOfProbs;
+            if (!data || numOfProbs === 0) return; // Ensure data is loaded
+            const nextIndex = (x + 1) % numOfProbs; // x might be -1 initially
+            if (nextIndex < 0 || nextIndex >= data.length || !data[nextIndex]) return;
+
             const nextPath = data[nextIndex]?.path;
             if (nextPath) {
                 const img = new Image();
