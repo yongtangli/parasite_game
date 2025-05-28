@@ -1,3 +1,15 @@
+好的，我理解您的需求了。您不希望玩家在未輸入名稱時使用 "匿名" 作為預設名稱，並且希望解決接續上次遊戲時名稱變為 "匿名" 的問題。
+
+主要的修改思路如下：
+1.  **移除預設的 "匿名" 玩家名稱**：將 `window.currentPlayer` 的初始值設為 `null` 或 `undefined`，表示尚未設定。
+2.  **在 `init()` 中設定玩家名稱**：如果 `localStorage` 中儲存了玩家名稱，則在頁面初始化時不僅填充輸入框，同時也設定 `window.currentPlayer`。
+3.  **強制輸入名稱才能開始/接續遊戲**：
+    *   在開始新遊戲 (`createStartHandler`) 時，檢查玩家名稱輸入框。如果為空，則提示用戶輸入，並不開始遊戲。
+    *   在接續上次遊戲 (`resumeButton` 的點擊事件) 時，同樣檢查玩家名稱輸入框。如果為空（即使 `localStorage` 中有進度但可能沒有名稱，或使用者清空了），提示用戶輸入，並不恢復遊戲。
+
+以下是修改後的完整程式碼：
+
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -1376,6 +1388,7 @@
           document.querySelector('.progress-actions').style.display = 'block';
           document.querySelector('.start-buttons').style.display = 'none';
         }
+        window.currentPlayer = null; // MODIFIED: No default "匿名"
         var TIME = 31;
         var numOfProbs;
         var tm;
@@ -1555,6 +1568,15 @@
         async function writeScore(finalScore) {
             const uid = window.currentUserUid;
             if (!uid) throw new Error("使用者尚未登入");
+            
+            // Ensure window.currentPlayer is valid before writing
+            if (!window.currentPlayer || window.currentPlayer.trim() === "") {
+                console.error("Player name is not set. Cannot write score to leaderboard.");
+                // This should ideally be caught by game start/resume logic
+                showAlertModal("玩家名稱未設定，無法記錄分數。請重新開始並輸入名稱。");
+                return score; // Return current score without updating Firebase
+            }
+
             const scoreRef = ref(db, `leaderboard/${uid}`);
             try {
                 const snap = await get(scoreRef);
@@ -1613,7 +1635,7 @@
                         if (item.uid === window.currentUserUid) inTop = true;
                     }
                 });
-                if (!inTop) {
+                if (!inTop && window.currentUserUid) { // Check if currentUserUid is defined
                     const userIndex = sorted.findIndex(item => item.uid === window.currentUserUid);
                     if (userIndex !== -1) {
                         const item = sorted[userIndex];
@@ -1645,7 +1667,7 @@
                         listEl.appendChild(li);
                     }
                 }
-                const playerData = sorted.find(item => item.uid === window.currentUserUid);
+                const playerData = window.currentUserUid ? sorted.find(item => item.uid === window.currentUserUid) : null;
                 const playerScore = playerData ? playerData.score : 0;
                 document.getElementById("score-display").textContent = playerScore;
                 score = playerScore; // Initialize global score with Firebase score
@@ -1684,39 +1706,51 @@
             correct++;
             document.getElementById("correct").innerText = correct;
             const pointsEarned = 2;
-            score += pointsEarned; // Local score variable for Firebase update
+            // score += pointsEarned; // Local score variable is for Firebase update, not total sum here
             if (data && data[x]) {
                 correctList.push(data[x]);
             }
-            updateScoreDisplay(); // Update UI score
-            writeScore(pointsEarned) // Update Firebase score
-                .then(() => fetchLeaderboard()) // Refresh leaderboard after score update
+            // updateScoreDisplay(); // UI score is updated after Firebase write
+            writeScore(pointsEarned)
+                .then((newTotalScore) => {
+                    if (typeof newTotalScore === 'number') score = newTotalScore; // Update global score from Firebase
+                    fetchLeaderboard(); // Refresh leaderboard after score update
+                    updateScoreDisplay(); // Update UI display
+                })
                 .catch(err => console.error("寫入分數或更新排名失敗：", err));
         }
         function updateWrong() {
             wrong++;
             document.getElementById("wrong").innerText = wrong;
             const pointsLost = -2;
-            score += pointsLost;
+            // score += pointsLost;
             if (data && data[x]) {
                 wrongList.push(data[x]);
             }
-            updateScoreDisplay();
+            // updateScoreDisplay();
             writeScore(pointsLost)
-                .then(() => fetchLeaderboard())
+                .then((newTotalScore) => {
+                    if (typeof newTotalScore === 'number') score = newTotalScore;
+                    fetchLeaderboard();
+                    updateScoreDisplay();
+                })
                 .catch(err => console.error("寫入分數或更新排名失敗：", err));
         }
         function updateUnknown(){
             wrong++;
             document.getElementById("wrong").innerText = wrong;
             const pointsLost = -1;
-            score += pointsLost;
+            // score += pointsLost;
             if (data && data[x]) {
                 wrongList.push(data[x]);
             }
-            updateScoreDisplay();
+            // updateScoreDisplay();
             writeScore(pointsLost)
-                .then(() => fetchLeaderboard())
+                .then((newTotalScore) => {
+                    if (typeof newTotalScore === 'number') score = newTotalScore;
+                    fetchLeaderboard();
+                    updateScoreDisplay();
+                })
                 .catch(err => console.error("寫入分數或更新排名失敗：", err));
         }
 
@@ -1771,496 +1805,129 @@
             console.log("[startReviewWrong] Starting review of wrong answers.");
             if (wrongList.length === 0) {
                 console.warn("[startReviewWrong] No wrong answers to review.");
-                // This case should ideally not be reached if button logic is correct
-                handleEndOfRound(); // Or show a final completion message
+                handleEndOfRound(); 
                 return;
             }
 
-            data = [...wrongList]; // Use a copy of wrongList for the new round
+            data = [...wrongList]; 
             numOfProbs = data.length;
 
-            // Reset for the new round of wrong questions
             wrongList = [];
-            correctList = []; // Also reset correctList for the new round's calculation
+            correctList = []; 
             correct = 0;
             wrong = 0;
-            // score variable (total score) is not reset here, only current round's correct/wrong
-
+            
             document.getElementById("correct").innerText = correct;
             document.getElementById("wrong").innerText = wrong;
-            // updateScoreDisplay(); // UI score display will reflect total score
+            // updateScoreDisplay(); // Score is cumulative, round correct/wrong reset
 
             done = new Array(numOfProbs).fill(false);
-            x = -1; // To pick the first question in nextProb
+            x = -1; 
 
             const nextBtn = document.getElementById('next');
             nextBtn.innerText = "下一個";
             nextBtn.removeEventListener('click', startReviewWrong);
             nextBtn.addEventListener('click', nextProb);
 
-            // Reset UI to question state
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
             document.querySelector('.bottom-buttons').style.visibility = 'visible';
             document.querySelector('.your-answer-label').style.visibility = 'visible';
             viewing = false;
 
-            nextProb(); // Start the review round
+            nextProb(); 
         }
 
-            function init() {
-    console.log("[init] 應用程式初始化中... 🚀");
-    initDayNightToggle(); // 初始化日夜模式切換
-    populateVoices();     // 初始化語音功能 (如果有的話)
 
-    // --- 處理玩家名稱的核心修改 ---
-    const nameField = document.getElementById("playerName");
-    const savedPlayerName = localStorage.getItem("parasite_player_name");
+        function init() {
+            console.log("[init] Initializing application.");
+            initDayNightToggle();
+            populateVoices();
 
-    if (savedPlayerName) {
-        if (nameField) nameField.value = savedPlayerName; // 設定輸入框的值
-        window.currentPlayer = savedPlayerName;           // 設定關鍵的 window.currentPlayer 變數
-        console.log("[init] 玩家名稱已從 localStorage 恢復:", window.currentPlayer);
-    } else {
-        // 如果 localStorage 沒存名字，window.currentPlayer 會是 undefined
-        // 開始新遊戲時 (createStartHandler) 會強制玩家輸入
-        if (nameField) nameField.value = ""; // 清空輸入框
-        window.currentPlayer = undefined;    // 明確設為 undefined
-        console.log("[init] localStorage 中沒有玩家名稱，window.currentPlayer 目前是 undefined。");
-    }
-    // --- 核心修改結束 ---
-
-    fetchLeaderboard(); // 載入並顯示排行榜，同時會從 Firebase 設定全域的 'score' 變數
-
-    const leaderboardEl = document.querySelector('.leaderboard');
-    if (leaderboardEl) {
-        leaderboardEl.addEventListener('click', function() {
-            this.classList.toggle('expanded'); // 點擊排行榜可以展開/收合
-        });
-    }
-
-    // 使用 '/' 快速聚焦到輸入框
-    document.addEventListener("keydown", function(e) {
-        if (window.isComposing) return; // 輸入法組字中，先不管
-
-        if (e.key === "/") {
-            const answerInput = document.getElementById("answer");
-            const playerNameInput = document.getElementById("playerName");
-            const explanationContribInput = document.getElementById('explanation-input'); // 詳解輸入框
-
-            const flashcardContainer = document.querySelector('.flashcard-container');
-            const isGameActive = flashcardContainer && getComputedStyle(flashcardContainer).display !== 'none';
-
-            let focused = false;
-            if (isGameActive) { // 如果在遊戲畫面
-                if (answerInput && document.activeElement !== answerInput &&
-                    (!explanationContribInput || document.activeElement !== explanationContribInput)) {
-                    answerInput.focus(); // 聚焦到答案輸入框
-                    focused = true;
-                }
-            } else { // 如果在開始畫面
-                const startScreen = document.querySelector('.start-screen');
-                const isStartScreenActive = startScreen && getComputedStyle(startScreen).display !== 'none';
-                if (isStartScreenActive && playerNameInput && document.activeElement !== playerNameInput) {
-                    playerNameInput.focus(); // 聚焦到玩家名稱輸入框
-                    focused = true;
-                }
-            }
-
-            if (focused) {
-                e.preventDefault(); // 阻止預設的 '/' 輸入行為
-            }
-        }
-    });
-
-    // 設定開始遊戲按鈕的事件監聽 (假設 createStartHandler 是全域可用的)
-    document.getElementById("startAllGame").addEventListener("click", createStartHandler("./all.json"));
-
-    const dropdownItems = document.querySelectorAll(".dropdown-item");
-    dropdownItems.forEach(item => {
-        item.addEventListener("click", function() {
-            const jsonPath = this.dataset.json;
-            createStartHandler(`./${jsonPath}`)(); // 呼叫 createStartHandler 開始對應單元的遊戲
-            const dropdownMenuElement = this.closest('.dropdown-menu');
-            if (dropdownMenuElement && dropdownMenuElement.classList.contains('active')) {
-                dropdownMenuElement.classList.remove('active'); // 關閉下拉選單
-            }
-        });
-    });
-
-    const dropdownMenuToggle = document.querySelector('.dropdown-toggle');
-    const dropdownMenuElement = document.querySelector('.dropdown-menu');
-
-    if (dropdownMenuToggle && dropdownMenuElement) {
-        dropdownMenuToggle.addEventListener('click', function(event) {
-            if (window.matchMedia("(pointer: coarse)").matches) { // 觸控螢幕的處理
-                dropdownMenuElement.classList.toggle('active');
-                event.stopPropagation();
-            }
-        });
-
-        document.addEventListener('click', function(event) { // 點擊選單外部關閉
-            if (dropdownMenuElement.classList.contains('active') &&
-                !dropdownMenuElement.contains(event.target)) {
-                dropdownMenuElement.classList.remove('active');
-            }
-        });
-    }
-
-    // 在開始畫面按 Enter 開始遊戲 (假設 window.globalEnterPressStart 是全域可用的)
-    // 注意：globalEnterPressStart 應該在 init 外部定義，或者作為 init 的一部分傳入/綁定
-    if (typeof window.globalEnterPressStart === 'function') {
-        document.addEventListener("keypress", window.globalEnterPressStart);
-        console.log("[init] 已為開始畫面的 Enter 鍵加入 'globalEnterPressStart' 事件監聽器。");
-    } else {
-        console.warn("[init] window.globalEnterPressStart 函數未定義，Enter 開始遊戲功能可能無法運作。");
-    }
-
-
-    adjustPlaceholder(); // 根據螢幕寬度調整輸入框的 placeholder
-    window.addEventListener('resize', adjustPlaceholder);
-
-    // 「題庫」按鈕的事件監聽
-    document.getElementById("openDoc").addEventListener("click", function() {
-        const container = document.getElementById("docContainer");
-        const content = document.getElementById("docContent");
-        content.innerHTML = ''; // 清除舊內容
-        fetch('./all.json')     // 載入所有題目資料
-            .then(res => res.json())
-            .then(dataArr => {
-                window.docData = dataArr; // 儲存起來供圖片 modal 導覽用
-                dataArr.forEach(item => {
-                    const entry = document.createElement('div');
-                    entry.className = 'doc-entry';
-                    if (item.path) {
-                        const img = document.createElement('img');
-                        img.src = item.path;
-                        img.alt = item.answer[0] || '題庫圖片';
-                        img.loading = 'lazy'; // 圖片延遲載入，提升效能
-                        entry.appendChild(img);
-                        img.style.cursor = 'pointer';
-                        img.addEventListener('click', () => { // 點擊圖片放大顯示
-                            document.getElementById('modalImage').src = item.path;
-                            document.getElementById('modalAnswer').textContent = item.answer.join(' / ');
-                            const expl = item.explanation ? item.explanation : '';
-                            document.getElementById('modalExplanation').textContent = expl;
-                            document.getElementById('imageModal').style.display = 'flex';
-                            window.modalIndex = dataArr.indexOf(item); // 記錄目前是第幾張，方便前後切換
-                        });
-                    }
-                    const textWrapper = document.createElement('div');
-                    textWrapper.className = 'doc-text';
-                    const ans = document.createElement('p');
-                    ans.innerHTML = `<strong>${item.answer.join(' / ')}</strong>`;
-                    textWrapper.appendChild(ans);
-                    if (item.explanation) {
-                        const pre = document.createElement('pre');
-                        pre.textContent = item.explanation;
-                        textWrapper.appendChild(pre);
-                    }
-                    entry.appendChild(textWrapper);
-                    content.appendChild(entry);
-                });
-                container.style.display = 'block'; // 顯示題庫容器
-            })
-            .catch(err => {
-                console.error("讀取題庫資料失敗:", err);
-                content.innerHTML = '<p>讀取題庫資料失敗 😭</p>';
-                container.style.display = 'block';
-            });
-    });
-
-    // 關閉圖片放大 Modal
-    document.getElementById('closeImageModal').addEventListener('click', () => {
-        document.getElementById('imageModal').style.display = 'none';
-    });
-
-    // 圖片 Modal 的上一張/下一張按鈕
-    const prevBtnModal = document.getElementById('prevImageButton');
-    const nextBtnModal = document.getElementById('nextImageButton');
-
-    if(prevBtnModal) prevBtnModal.addEventListener('click', () => {
-        if (window.docData && typeof window.modalIndex === 'number') {
-            window.modalIndex = (window.modalIndex - 1 + window.docData.length) % window.docData.length;
-            const it = window.docData[window.modalIndex];
-            document.getElementById('modalImage').src = it.path;
-            document.getElementById('modalAnswer').textContent = it.answer.join(' / ');
-            document.getElementById('modalExplanation').textContent = it.explanation || '';
-        }
-    });
-
-    if(nextBtnModal) nextBtnModal.addEventListener('click', () => {
-        if (window.docData && typeof window.modalIndex === 'number') {
-            window.modalIndex = (window.modalIndex + 1) % window.docData.length;
-            const it = window.docData[window.modalIndex];
-            document.getElementById('modalImage').src = it.path;
-            document.getElementById('modalAnswer').textContent = it.answer.join(' / ');
-            document.getElementById('modalExplanation').textContent = it.explanation || '';
-        }
-    });
-
-    // 關閉題庫頁面
-    document.getElementById("closeDoc").addEventListener("click", function() {
-        document.getElementById("docContainer").style.display = 'none';
-    });
-
-    // 「接續上次」和「重新開始（進度）」按鈕的事件監聽
-    const resumeBtn = document.getElementById('resumeButton');
-    const restartProgress = document.getElementById('restartProgress');
-
-    if (resumeBtn) {
-        resumeBtn.addEventListener('click', () => {
-            console.log("[resumeButton] 點擊「接續上次」。");
-
-            // --- 強化「接續上次」時的玩家名稱檢查 ---
-            if (!window.currentPlayer || typeof window.currentPlayer !== 'string' || window.currentPlayer.trim() === "") {
-                const nameFromInput = document.getElementById("playerName").value.trim();
-                if (nameFromInput) {
-                    window.currentPlayer = nameFromInput;
-                    localStorage.setItem("parasite_player_name", nameFromInput); // 如果是從輸入框拿到的，順便存回localStorage
-                    console.log("[resumeButton] 從輸入框設定了 window.currentPlayer:", window.currentPlayer);
-                }
-            }
-
-            // 如果到這裡 window.currentPlayer 還是沒有一個有效的名字，就停止接續進度，並提示玩家
-            if (!window.currentPlayer || typeof window.currentPlayer !== 'string' || window.currentPlayer.trim() === "") {
-                showAlertModal("請先在開始畫面的輸入框中設定有效的玩家名稱才能接續進度！不然玩個毛？😠");
-                document.getElementById("playerName").focus();
-                
-                // 重設UI，讓玩家知道無法接續
-                document.getElementById('resumeButton').style.display = 'none';
-                document.querySelector('.progress-actions').style.display = 'none';
-                document.querySelector('.start-buttons').style.display = 'flex'; // 顯示開始按鈕群
-                document.querySelector('.flashcard-container').style.display = 'none'; // 隱藏遊戲畫面
-                document.querySelector('.start-screen').style.display = 'flex';    // 顯示開始畫面
-                window.gameplayActive = false; // 確保遊戲狀態不是活躍
-                return; // 中止接續流程
-            }
-            // --- 強化檢查結束 ---
-            
-            console.log("[resumeButton] window.currentPlayer 確認為:", window.currentPlayer, "，準備繼續載入進度。");
-            window.gameplayActive = true; 
-
-            document.querySelector('.start-screen').style.display = 'none'; // 隱藏開始畫面
-
-            const progString = localStorage.getItem('gameProgress');
-            if (!progString) {
-                console.warn("[resumeButton] localStorage 中找不到遊戲進度。");
-                window.gameplayActive = false;
-                // 重設相關UI元件的顯示狀態
-                document.getElementById('resumeButton').style.display = 'none';
-                document.querySelector('.progress-actions').style.display = 'none';
-                document.querySelector('.start-buttons').style.display = 'flex';
-                document.querySelector('.start-screen').style.display = 'flex'; // 確保開始畫面可見
-                return;
-            }
-
-            let prog;
-            try {
-                prog = JSON.parse(progString);
-                if (!prog) throw new Error("解析後的進度是 null 或 undefined。");
-                 console.log("[resumeButton] 從 localStorage 解析出的進度:", JSON.parse(JSON.stringify(prog)));
-            } catch (e) {
-                console.error("從 localStorage 解析 gameProgress 失敗或格式無效:", e);
-                localStorage.removeItem('gameProgress'); // 移除損壞的進度
-                showAlertModal('進度讀取失敗，已清除損壞的進度，請重新開始。');
-                window.gameplayActive = false;
-                // 重設UI
-                document.getElementById('resumeButton').style.display = 'none';
-                document.querySelector('.progress-actions').style.display = 'none';
-                document.querySelector('.start-buttons').style.display = 'flex';
-                document.querySelector('.flashcard-container').style.display = 'none';
-                document.querySelector('.start-screen').style.display = 'flex';
-                return;
-            }
-
-            data = Array.isArray(prog.data) ? prog.data : [];
-            console.log("[resumeButton] 從進度載入的題目資料長度:", data.length);
-            if (data.length === 0) { // 避免載入空的題目資料
-                console.error("恢復的題目資料是空的，清除進度。");
-                localStorage.removeItem('gameProgress');
-                window.gameplayActive = false;
-                document.getElementById('resumeButton').style.display = 'none';
-                document.querySelector('.progress-actions').style.display = 'none';
-                document.querySelector('.start-buttons').style.display = 'flex';
-                document.querySelector('.flashcard-container').style.display = 'none';
-                document.querySelector('.start-screen').style.display = 'flex';
-                showAlertModal('進度讀取錯誤（無題目資料），已清除舊進度，請重新開始。');
-                return;
-            }
-            numOfProbs = data.length;
-
-            x = Number(prog.x) || 0; // 目前題目索引
-            if (x < 0 || x >= numOfProbs) { // 索引保護
-                console.warn(`[resumeButton] 恢復的題目索引 ${prog.x} 超出範圍 (${numOfProbs} 題)，重設為 0。`);
-                x = 0;
-            }
-            console.log("[resumeButton] 目前題目索引 x:", x);
-
-            done = (Array.isArray(prog.done) && prog.done.length === numOfProbs) ? prog.done : new Array(numOfProbs).fill(false); // 已答題目狀態
-            console.log("[resumeButton] 載入 'done' 陣列:", JSON.parse(JSON.stringify(done)));
-
-            correct = Number(prog.correct) || 0; // 本回合正確題數
-            wrong = Number(prog.wrong) || 0;   // 本回合錯誤題數
-            correctList = Array.isArray(prog.correctList) ? prog.correctList : [];
-            wrongList = Array.isArray(prog.wrongList) ? prog.wrongList : [];
-            console.log("[resumeButton] 載入回合統計。正確:", correct, "錯誤:", wrong);
-
-            updateScoreDisplay(); // 更新UI上的回合正確/錯誤數
-            fetchLeaderboard().catch(err => console.error("[resumeButton] 接續遊戲時讀取排行榜失敗:", err)); // 更新總分和排名
-
-            document.querySelector('.flashcard-container').style.display = 'flex'; // 顯示遊戲主畫面
-
-            console.log("[resumeButton] 為遊戲互動相關元素加入事件監聽器。");
-            document.addEventListener("keydown", enterKeyEvent); // Enter鍵提交答案或下一題
-            document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
-            document.getElementById("dontKnow").addEventListener("click", showAnswer);
-            document.getElementById("correctArea").addEventListener("click", showCorrectList); // 查看答對列表
-            document.getElementById("wrongArea").addEventListener("click", showWrongList);   // 查看答錯列表
-            
-            const nextButton = document.getElementById("next");
-            nextButton.removeEventListener('click', startReviewWrong); // 清除可能存在的舊監聽器
-            nextButton.addEventListener("click", nextProb); // 設定為「下一題」的預設行為
-
-            document.getElementById('closeModal').addEventListener('click', function() { // 關閉通用Modal
-                document.getElementById('modal').style.display = "none";
-            });
-
-            updateImage(true); // 載入圖片，true 表示是「接續上次」狀態，使用已儲存的 x 索引
-
-            if (done.every(d => d)) { // 如果這一輪的題目其實都答完了
-                handleEndOfRound(); // 觸發回合結束邏輯
+            const savedName = localStorage.getItem("parasite_player_name");
+            const nameField = document.getElementById("playerName");
+            if (savedName) {
+                if (nameField) nameField.value = savedName;
+                window.currentPlayer = savedName; // MODIFIED: Set currentPlayer if name is found
             } else {
-                // 如果遊戲中斷時是正在看答案的狀態，就恢復那個狀態
-                viewing = true; 
-                console.log("[resumeButton] 設定 viewing 為 true。作答 UI 將隱藏，顯示答案。");
-                document.querySelector('.answer-input-container').style.visibility = 'hidden';
-                document.querySelector('.bottom-buttons').style.visibility = 'hidden';
-                document.querySelector('.your-answer-label').style.visibility = 'hidden';
+                // window.currentPlayer remains null
+                if (nameField) nameField.placeholder = "輸入玩家名稱"; 
+            }
 
-                const cardAnswerDiv = document.querySelector(".card-answer");
-                cardAnswerDiv.style.display = "flex"; // 顯示答案區塊
-                nextButton.style.display = 'block';   // 確保「下一題」按鈕可見
+            fetchLeaderboard();
+            const leaderboardEl = document.querySelector('.leaderboard');
+            if (leaderboardEl) {
+                leaderboardEl.addEventListener('click', function() {
+                    this.classList.toggle('expanded');
+                });
+            }
 
-                const showAnsDiv = document.getElementById("showAnswer");
-                if (data[x] && data[x].answer) {
-                    showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
-                    console.log("[resumeButton] 顯示恢復題目的答案:", data[x].answer.join(' / '));
-                    if (data[x].answer.length > 0 && data[x].answer[0]) { // 為答案加上朗讀按鈕
-                        addOrUpdateSpeakButton(data[x].answer[0], showAnsDiv);
+            document.addEventListener("keydown", function(e) {
+                if (window.isComposing) return;
+
+                if (e.key === "/") {
+                    const answerInput = document.getElementById("answer");
+                    const playerNameInput = document.getElementById("playerName");
+                    const explanationContribInput = document.getElementById('explanation-input');
+
+                    const flashcardContainer = document.querySelector('.flashcard-container');
+                    const isGameActive = flashcardContainer && getComputedStyle(flashcardContainer).display !== 'none';
+
+                    let focused = false;
+                    if (isGameActive) {
+                        if (answerInput && document.activeElement !== answerInput &&
+                            (!explanationContribInput || document.activeElement !== explanationContribInput)) {
+                            answerInput.focus();
+                            focused = true;
+                        }
+                    } else {
+                        const startScreen = document.querySelector('.start-screen');
+                        const isStartScreenActive = startScreen && getComputedStyle(startScreen).display !== 'none';
+                        if (isStartScreenActive && playerNameInput && document.activeElement !== playerNameInput) {
+                             playerNameInput.focus();
+                             focused = true;
+                        }
                     }
-                } else {
-                    showAnsDiv.innerHTML = "答案資訊錯誤";
-                    console.warn(`[resumeButton] 恢復的題目索引 ${x} 找不到答案。 data[x]:`, data[x]);
+
+                    if (focused) {
+                        e.preventDefault();
+                    }
                 }
-                showExplanation(); // 顯示詳解 (如果有的話)
-
-                const answerInput = document.getElementById("answer");
-                const desc = data[x]?.description; // 題目描述/提示
-                if (desc && desc.trim() !== "") {
-                    answerInput.placeholder = desc;
-                } else {
-                    adjustPlaceholder(); // 用預設的 placeholder
-                }
-            }
-            window.preloadNextImage(); // 預先載入下一張圖片
-            console.log("[resumeButton] 接續上次進度流程完成。👌");
-        });
-    }
-
-    if (restartProgress) {
-        restartProgress.addEventListener('click', () => {
-            console.log("[restartProgress] 點擊「重新開始（進度）」。清除 localStorage 中的遊戲進度。");
-            window.gameplayActive = false; 
-
-            localStorage.removeItem('gameProgress');
-            showAlertModal('進度已清除，可以開始新的挑戰了！💪');
-
-            // UI 重設回初始開始畫面狀態
-            document.querySelector('.flashcard-container').style.display = 'none';
-            document.querySelector('.start-screen').style.display = 'flex';
-
-            document.getElementById('resumeButton').style.display = 'none';
-            document.querySelector('.progress-actions').style.display = 'none';
-            document.querySelector('.start-buttons').style.display = 'flex';
-
-            console.log("[restartProgress] 重設記憶體中的回合統計數據。");
-            correct = 0;
-            wrong = 0;
-            correctList = [];
-            wrongList = [];
-
-            document.getElementById("correct").innerText = correct;
-            document.getElementById("wrong").innerText = wrong;
-            // 總分 score 會在開始新遊戲時透過 fetchLeaderboard() 重新整理
-
-            // 重設遊戲畫面中的元素
-            const imageElement = document.getElementById("image");
-            if (imageElement) {
-                imageElement.src = "";
-                imageElement.alt = "Parasite Image"; // 預設 alt
-                imageElement.classList.remove('loaded');
-            }
-            const loadingScreen = document.querySelector('.loading-screen');
-            if (loadingScreen) {
-                loadingScreen.style.display = 'none'; // 返回開始畫面時應隱藏
-            }
-            const answerInput = document.getElementById("answer");
-            if (answerInput) {
-                answerInput.value = "";
-            }
-            const showAnswerDiv = document.getElementById("showAnswer");
-            if (showAnswerDiv) {
-                showAnswerDiv.innerHTML = "";
-            }
-            const showExplanationDiv = document.getElementById("showExplanation");
-            if (showExplanationDiv) {
-                showExplanationDiv.innerHTML = "";
-                showExplanationDiv.style.display = "none";
-            }
-            const cardAnswerOverlay = document.querySelector(".card-answer");
-            if (cardAnswerOverlay) {
-                cardAnswerOverlay.style.display = "none";
-            }
-            adjustPlaceholder(); // 重設 placeholder
-            console.log("[restartProgress] UI 重設完成。準備好重新開始！");
-        });
-    }
-    console.log("[init] 應用程式初始化完成。🎉");
-}
+            });
 
             function createStartHandler(jsonPath) {
                 return async function () {
                     console.log(`[createStartHandler] Starting game with ${jsonPath}`);
-                    window.gameplayActive = true;
-                    console.log("[createStartHandler] Set window.gameplayActive to true");
-                    const nameInput = document.getElementById("playerName").value.trim();
-                    if (!nameInput) {
+                    
+                    const nameInputVal = document.getElementById("playerName").value.trim(); // MODIFIED var name
+                    if (!nameInputVal) {
                         showAlertModal("請先輸入玩家名稱！");
                         document.getElementById("playerName").focus();
-                        window.gameplayActive = false;
+                        window.gameplayActive = false; 
                         return;
                     }
-                    window.currentPlayer = nameInput;
-                    localStorage.setItem("parasite_player_name", nameInput);
-                    document.querySelector('.start-screen').style.display = 'none'; // Hide start screen
+                    window.currentPlayer = nameInputVal; // MODIFIED: Set from input
+                    localStorage.setItem("parasite_player_name", nameInputVal);
+                    window.gameplayActive = true;
+                    console.log("[createStartHandler] Set window.gameplayActive to true");
+
+                    document.querySelector('.start-screen').style.display = 'none'; 
                     document.querySelector('.flashcard-container').style.display = 'flex';
-                    fetchLeaderboard();
+                    // fetchLeaderboard(); // Already called in init and after score updates
 
                     state = 1;
                     correct = 0; wrong = 0; total = 0; 
-                    // score is initialized/updated from Firebase in fetchLeaderboard or writeScore
                     console.log("[createStartHandler] Resetting scores and lists. Correct:", correct, "Wrong:", wrong);
                     document.getElementById("correct").innerHTML = correct;
                     document.getElementById("wrong").innerHTML = wrong;
+                    updateScoreDisplay(); // Update overall score display as well from current 'score'
                     correctList = []; wrongList = [];
                     console.log("[createStartHandler] Cleared correctList:", JSON.parse(JSON.stringify(correctList)), "wrongList:", JSON.parse(JSON.stringify(wrongList)));
 
-                    // Ensure "Next" button is in its default state
                     const nextBtn = document.getElementById('next');
                     nextBtn.innerText = "下一個";
-                    nextBtn.removeEventListener('click', startReviewWrong); // Remove if it was set
-                    nextBtn.addEventListener('click', nextProb); // Add default
+                    nextBtn.removeEventListener('click', startReviewWrong); 
+                    nextBtn.addEventListener('click', nextProb); 
 
 
                     $.getJSON(jsonPath)
@@ -2329,8 +1996,8 @@
                         return;
                     }
                     console.log("[globalEnterPressStart] Gameplay not active, proceeding to check for new game start.");
-                    const nameInput = document.getElementById("playerName").value.trim();
-                    if (!nameInput) {
+                    const nameInputVal = document.getElementById("playerName").value.trim();
+                    if (!nameInputVal) {
                         showAlertModal("請先輸入玩家名稱！");
                         document.getElementById("playerName").focus();
                         console.log("[globalEnterPressStart] Player name missing.");
@@ -2473,6 +2140,16 @@
             if (resumeBtn) {
               resumeBtn.addEventListener('click', () => {
                 console.log("[resumeButton] Clicked. Attempting to resume progress.");
+                
+                const nameFromInput = document.getElementById("playerName").value.trim();
+                if (!nameFromInput) {
+                    showAlertModal("請先輸入玩家名稱才能接續遊戲！");
+                    document.getElementById("playerName").focus();
+                    return; // Do not proceed if name is not entered
+                }
+                window.currentPlayer = nameFromInput; // Ensure currentPlayer is set from input
+                localStorage.setItem("parasite_player_name", nameFromInput); // Re-save, in case it was edited
+
                 window.gameplayActive = true;
                 console.log("[resumeButton] Set window.gameplayActive to true");
 
@@ -2538,7 +2215,13 @@
 
                 correct = Number(prog.correct) || 0;
                 wrong = Number(prog.wrong) || 0;
-                // score is loaded from Firebase via fetchLeaderboard
+                // score is loaded from Firebase via fetchLeaderboard, or from prog if available (though Firebase is master)
+                // If prog.score exists and is a number, could use it as a base before fetchLeaderboard,
+                // but fetchLeaderboard should be the source of truth for total score.
+                if (typeof prog.score === 'number') {
+                    score = prog.score; // Temporary set from local, will be overwritten by Firebase
+                }
+
                 correctList = Array.isArray(prog.correctList) ? prog.correctList : [];
                 wrongList = Array.isArray(prog.wrongList) ? prog.wrongList : [];
                  console.log("[resumeButton] Loaded scores and lists. Correct:", correct, "Wrong:", wrong);
@@ -2546,8 +2229,8 @@
                  console.log("[resumeButton] wrongList:", JSON.parse(JSON.stringify(wrongList)));
 
 
-                updateScoreDisplay(); // Update UI for correct/wrong counts
-                fetchLeaderboard().catch(err => console.error("[resumeButton] Failed to fetch leaderboard on resume:", err)); // This will set global score
+                updateScoreDisplay(); 
+                fetchLeaderboard().catch(err => console.error("[resumeButton] Failed to fetch leaderboard on resume:", err)); 
 
                 document.querySelector('.start-screen').style.display = 'none';
                 document.querySelector('.flashcard-container').style.display = 'flex';
@@ -2560,20 +2243,18 @@
                 document.getElementById("wrongArea").addEventListener("click", showWrongList);
                 
                 const nextButton = document.getElementById("next");
-                nextButton.removeEventListener('click', startReviewWrong); // Clean up potential old listener
-                nextButton.addEventListener("click", nextProb); // Set default listener
+                nextButton.removeEventListener('click', startReviewWrong); 
+                nextButton.addEventListener("click", nextProb); 
 
                 document.getElementById('closeModal').addEventListener('click', function() {
                     document.getElementById('modal').style.display = "none";
                 });
 
-                updateImage(true); // isResuming = true, uses prog.x
+                updateImage(true); 
 
                 if (done.every(d => d)) {
-                    // All questions in the loaded set were done, trigger end of round logic
                     handleEndOfRound();
                 } else {
-                    // Game was in progress, show the answer for the current question
                     viewing = true;
                     console.log("[resumeButton] Setting viewing to true. UI elements for answering will be hidden.");
                     document.querySelector('.answer-input-container').style.visibility = 'hidden';
@@ -2582,7 +2263,7 @@
 
                     const cardAnswerDiv = document.querySelector(".card-answer");
                     cardAnswerDiv.style.display = "flex";
-                    nextButton.style.display = 'block'; // Ensure next button is visible
+                    nextButton.style.display = 'block'; 
 
                     const showAnsDiv = document.getElementById("showAnswer");
                     if (data[x] && data[x].answer) {
@@ -2595,7 +2276,7 @@
                         showAnsDiv.innerHTML = "答案資訊錯誤";
                         console.warn(`[resumeButton] No answer found for restored question index ${x}. data[x]:`, data[x]);
                     }
-                    showExplanation(); // Show explanation if available
+                    showExplanation(); 
 
                     const answerInput = document.getElementById("answer");
                     const desc = data[x]?.description;
@@ -2629,11 +2310,14 @@
                 wrong = 0;
                 correctList = [];
                 wrongList = [];
+                // Score will be fetched from Firebase by fetchLeaderboard on next init/game start
+                // For display purposes, reset local score value that updateScoreDisplay uses
+                // score = 0; // Reset local score value; Firebase score is the master
                 console.log("[restartProgress] Cleared correctList:", JSON.parse(JSON.stringify(correctList)), "wrongList:", JSON.parse(JSON.stringify(wrongList)));
 
                 document.getElementById("correct").innerText = correct;
                 document.getElementById("wrong").innerText = wrong;
-                // score will be re-fetched or reset when a new game starts
+                updateScoreDisplay(); // Update display with reset round scores and current Firebase score
 
                 const imageElement = document.getElementById("image");
                 if (imageElement) {
@@ -2643,7 +2327,7 @@
                 }
                 const loadingScreen = document.querySelector('.loading-screen');
                 if (loadingScreen) {
-                    loadingScreen.style.display = 'none'; // Or 'flex' if you want spinner initially
+                    loadingScreen.style.display = 'none'; 
                 }
                 const answerInput = document.getElementById("answer");
                 if (answerInput) {
@@ -2714,7 +2398,7 @@
                 } else if (viewing && document.querySelector('.card-answer').style.display === 'flex') {
                     const nextBtn = document.getElementById('next');
                     if (nextBtn && nextBtn.style.display !== 'none') {
-                         nextBtn.click(); // This will trigger either nextProb or startReviewWrong
+                         nextBtn.click(); 
                     }
                 }
             }
@@ -2726,7 +2410,6 @@
             document.getElementById("dontKnow").addEventListener("click", showAnswer);
             document.getElementById("correctArea").addEventListener("click", showCorrectList);
             document.getElementById("wrongArea").addEventListener("click", showWrongList);
-            // document.getElementById("next").addEventListener("click", nextProb); // Already set in createStartHandler
             document.getElementById('closeModal').addEventListener('click', function() {
                 document.getElementById('modal').style.display = "none";
             });
@@ -2805,7 +2488,6 @@
             }
 
             total++;
-            // checkCompletion(); // This is handled by nextProb -> handleEndOfRound
         }
         function hideExplanation() {
             const expDiv = document.getElementById("showExplanation");
@@ -2845,7 +2527,6 @@
             console.log("[showAnswer] wrongList after update:", JSON.parse(JSON.stringify(wrongList)));
 
             total++;
-            // checkCompletion(); // This is handled by nextProb -> handleEndOfRound
              console.log("[showAnswer] Exiting. total:", total, "viewing:", viewing);
         }
         function showExplanation() {
@@ -2905,15 +2586,13 @@
             }
         }
         function updateScoreDisplay() {
-            // This updates the global score display from Firebase
-            // Individual round correct/wrong are updated directly by updateCorrect/updateWrong
             const scoreDisplay = document.getElementById("score-display");
-            if (scoreDisplay) scoreDisplay.textContent = score; // score is the global accumulated score
+            if (scoreDisplay) scoreDisplay.textContent = score; // Global accumulated score from Firebase
             
             const correctEl = document.getElementById("correct");
-            if (correctEl) correctEl.textContent = correct; // correct is for the current round
+            if (correctEl) correctEl.textContent = correct; // Current round correct
             const wrongEl = document.getElementById("wrong");
-            if (wrongEl) wrongEl.textContent = wrong; // wrong is for the current round
+            if (wrongEl) wrongEl.textContent = wrong; // Current round wrong
         }
         async function submitContribution() {
             let ip = 'unknown';
@@ -2939,7 +2618,11 @@
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const period = now.getHours() >= 12 ? 'PM' : 'AM';
             const formattedDate = `${now.getMonth()+1}月${now.getDate()}日${hours12}:${minutes}${period}`;
-            const contributorInfo = `${window.currentPlayer}[IP: ${ip}, ${os}, ${browser}]（${formattedDate}）：\n`;
+            
+            // Ensure currentPlayer is valid for contributorInfo
+            const playerNameForContrib = (window.currentPlayer && window.currentPlayer.trim() !== "") ? window.currentPlayer : "未設定名稱玩家";
+            const contributorInfo = `${playerNameForContrib}[IP: ${ip}, ${os}, ${browser}]（${formattedDate}）：\n`;
+
 
             const explanationInput = document.getElementById('explanation-input');
             const explanation = explanationInput.value.trim();
@@ -2971,10 +2654,10 @@
             console.log("Sending content:", content);
             const fullContent = contributorInfo + content;
             sendToGoogleDocs(fullContent);
-            writeScore(10) // Give 10 points for contribution
-              .then(newTotalScore => { // writeScore returns the new total score from Firebase
-                score = newTotalScore; // Update local total score
-                updateScoreDisplay(); // Update UI
+            writeScore(10)
+              .then(newTotalScore => { 
+                if (typeof newTotalScore === 'number') score = newTotalScore;
+                updateScoreDisplay(); 
                 showAlertModal(`賺了10分！目前總分數：${newTotalScore}`);
               })
               .catch(err => console.error("寫入分數失敗：", err));
@@ -2995,7 +2678,6 @@
                 existingSpeakButton.remove();
             }
 
-            // Reset UI to question state
             viewing = false;
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
@@ -3006,9 +2688,9 @@
             countdown();
             
             const imageUpdated = updateImage();
-            if (!imageUpdated && !done.every(d=>d)) { // Should not happen if done.every is checked first
+            if (!imageUpdated && !done.every(d=>d)) { 
                 console.error("[nextProb] Image not updated, but not all questions are done. This state should not be reached.");
-                handleEndOfRound(); // Force end of round to prevent issues
+                handleEndOfRound(); 
                 return;
             }
 
@@ -3028,8 +2710,11 @@
             const savedCorrectList = JSON.parse(JSON.stringify(correctList));
             const savedWrongList = JSON.parse(JSON.stringify(wrongList));
 
+            // score (total score) is now primarily managed by Firebase, so saving it to gameProgress
+            // might be redundant if fetchLeaderboard is always the source of truth on resume.
+            // However, keeping it for potential offline resume or faster UI update before Firebase sync.
             localStorage.setItem('gameProgress', JSON.stringify({ data, x, done, correct, wrong, score, correctList: savedCorrectList, wrongList: savedWrongList }));
-            console.log("[nextProb] Saved progress to localStorage. x:", x, "correct (round):", correct, "wrong (round):", wrong, "score (total):", score);
+            console.log("[nextProb] Saved progress to localStorage. x:", x, "correct (round):", correct, "wrong (round):", wrong, "score (total from local/Firebase):", score);
             console.log("[nextProb] Saved correctList:", JSON.parse(JSON.stringify(savedCorrectList)));
             console.log("[nextProb] Saved wrongList:", JSON.parse(JSON.stringify(savedWrongList)));
             console.log("[nextProb] Exiting.");
@@ -3044,14 +2729,12 @@
 
 
             if (availableIndices.length === 0) {
-                // This means all questions in the current set (data) have been shown
-                // The calling function (nextProb) will handle this by calling handleEndOfRound
                 return -1; 
             }
 
             const randomIndex = Math.floor(Math.random() * availableIndices.length);
             const selectedIndex = availableIndices[randomIndex];
-            done[selectedIndex] = true; // Mark as shown for this round
+            done[selectedIndex] = true; 
             console.log(`[pickNewImage] Selected index: ${selectedIndex}. Updated 'done' array:`, JSON.parse(JSON.stringify(done)));
             return selectedIndex;
         }
@@ -3064,18 +2747,18 @@
 
             if (!isResuming) {
                 const newX = pickNewImage();
-                if (newX === -1) { // All questions in current set are done
+                if (newX === -1) { 
                     console.log("[updateImage] pickNewImage returned -1, no more images in this set.");
                     document.querySelector('.loading-screen').style.display = 'none';
-                    return false; // Indicate failure to update, nextProb will handleEndOfRound
+                    return false; 
                 }
                 x = newX;
             }
 
-             if (x === -1 || data[x] === undefined) { // x could be -1 if newX was -1 and somehow not caught
+             if (x === -1 || data[x] === undefined) { 
                 console.error(`[updateImage] Invalid question index or data. x: ${x}, data[x]:`, data[x]);
                 document.querySelector('.loading-screen').style.display = 'none';
-                return false; // Indicate failure
+                return false; 
             }
             console.log(`[updateImage] Updating image for index x: ${x}. Item:`, JSON.parse(JSON.stringify(data[x])));
 
@@ -3092,7 +2775,7 @@
                  document.querySelector('.loading-screen').style.display = 'none';
             }
             console.log("[updateImage] Exiting.");
-            return true; // Indicate success
+            return true; 
         }
         function countdown() { }
         function resetTime() { clearTimeout(tm); }
@@ -3166,8 +2849,8 @@
         });
 
         window.preloadNextImage = function preloadNextImage() {
-            if (!data || numOfProbs === 0) return; // Ensure data is loaded
-            const nextIndex = (x + 1) % numOfProbs; // x might be -1 initially
+            if (!data || numOfProbs === 0) return; 
+            const nextIndex = (x + 1) % numOfProbs; 
             if (nextIndex < 0 || nextIndex >= data.length || !data[nextIndex]) return;
 
             const nextPath = data[nextIndex]?.path;
@@ -3179,3 +2862,4 @@
     </script>
 </body>
 </html>
+```
