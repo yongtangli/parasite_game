@@ -1,0 +1,3181 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Parasite Game">
+    <meta name="keywords" content="parasites">
+    <link rel="icon" href="icon.png" type="image/png">
+    <script type="text/JavaScript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <title>寄蟲跑台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .doc-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .doc-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-bg);
+            color: var(--text-primary);
+            padding: 30px;
+            overflow-y: auto;
+            box-shadow: none;
+            border: none;
+            border-radius: 0;
+            z-index: 2001;
+        }
+
+        body.dark-mode .doc-page {
+            background-color: var(--modal-bg);
+            color: var(--text-primary);
+        }
+
+        #docContent {
+            counter-reset: docEntryCounter;
+            padding-left: 25px;
+        }
+
+        .doc-entry {
+            margin: 0 auto 25px auto;
+            padding: 0;
+            padding-bottom: 20px;
+            max-width: 650px;
+            border-bottom: 1px solid var(--border-primary);
+            position: relative;
+        }
+
+        .doc-entry::before {
+            counter-increment: docEntryCounter;
+            content: counter(docEntryCounter) ".";
+            position: absolute;
+            left: -25px;
+            top: 0;
+            width: 20px;
+            text-align: right;
+            color: var(--text-primary);
+        }
+
+        .doc-entry:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .doc-entry img {
+            display: block;
+            max-width: 150px;
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-primary);
+            box-shadow: 0 2px 5px var(--shadow-color);
+            background-color: var(--bg-secondary);
+        }
+
+        .doc-text {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 100%;
+        }
+
+        .doc-text p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-primary);
+            margin-bottom: 0;
+        }
+
+        .doc-text p strong {
+            font-weight: 600;
+        }
+
+        .doc-text pre {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-top: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: inherit;
+            background: none;
+            padding: 0;
+            border: none;
+            border-radius: 0;
+        }
+
+        @font-face {
+            font-family: 'Germgoth';
+            src: url('fonts/Germgoth.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            --bg-primary: #F9F7F3;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #404040;
+            --text-secondary: #666;
+            --text-muted: #999;
+            --heading-color: #383838;
+            --border-primary: #EAEAEA;
+            --border-secondary: #D8D8D8;
+            --accent-blue: #6D8A96;
+            --accent-blue-hover: #5A7580;
+            --accent-green: #79A88F;
+            --accent-orange: #D98C60;
+            --accent-red: #C76D6D;
+            --shadow-color: rgba(0, 0, 0, 0.07);
+            --focus-ring: rgba(109, 138, 150, 0.15);
+            --modal-bg: #FDFBF8;
+            --card-answer-bg: rgba(249, 247, 243, 0.85);
+            --toggle-icon-color: #2C3E50;
+            --toggle-moon-mask: #F9F7F3;
+
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        body.dark-mode {
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #2a2a2a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #757575;
+            --heading-color: #e0e0e0;
+            --border-primary: #383838;
+            --border-secondary: #505050;
+            --accent-blue: #7aa0b2;
+            --accent-blue-hover: #95b9cd;
+            --accent-green: #87c7a8;
+            --accent-orange: #eaa67a;
+            --accent-red: #e08484;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --focus-ring: rgba(122, 160, 178, 0.3);
+            --modal-bg: #2a2a2a;
+            --card-answer-bg: rgba(42, 42, 42, 0.9);
+            --toggle-icon-color: #e0e0e0;
+            --toggle-moon-mask: #1e1e1e;
+        }
+
+        .flashcard-title, .start-title {
+            font-family: "Germgoth", serif;
+            color: var(--heading-color);
+            font-weight: normal;
+            letter-spacing: 0.5px;
+            text-align: center;
+            padding-bottom: 5px;
+            transition: color 0.4s ease;
+        }
+        .start-title {
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .start-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -30%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg);
+            animation: shine 2.5s infinite;
+            filter: blur(4px);
+        }
+        body.dark-mode .start-title::before {
+            background: linear-gradient(to right, transparent, rgba(30,30,30,0.4), transparent);
+
+        }
+        .flashcard-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .start-screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+            position: relative;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 10px var(--accent-blue); }
+            50%  { box-shadow: 0 0 20px var(--accent-blue-hover); }
+            100% { box-shadow: 0 0 10px var(--accent-blue); }
+        }
+
+        @keyframes shine {
+            0%   { left: -50%; }
+            100% { left: 150%; }
+        }
+        .start-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .start-button {
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            background-color: var(--accent-blue);
+            color: var(--bg-secondary);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .start-button:hover {
+            background-color: var(--accent-blue-hover);
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+        .start-button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
+
+        .dropdown-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            position: relative;
+            padding-right: 45px;
+        }
+
+        .dropdown-toggle::after {
+            content: '▲';
+            font-size: 0.7em;
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-menu:hover .dropdown-toggle::after,
+        .dropdown-menu.active .dropdown-toggle::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--bg-secondary);
+            min-width: 240px;
+            box-shadow: 0 10px 25px var(--shadow-color);
+            z-index: 10;
+            border-radius: 8px;
+            padding: 8px;
+            bottom: 100%;
+            left: 50%;
+            margin-bottom: 8px;
+            transform-origin: bottom center;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-blue) var(--bg-secondary);
+        }
+
+        .dropdown-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .dropdown-content::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .dropdown-content::-webkit-scrollbar-thumb {
+            background-color: var(--accent-blue);
+            border-radius: 4px;
+            border: 2px solid var(--bg-secondary);
+        }
+
+        .dropdown-content::-webkit-scrollbar-thumb:hover {
+            background-color: var(--accent-blue-hover);
+        }
+
+
+        .dropdown-menu:hover .dropdown-content,
+        .dropdown-menu.active .dropdown-content {
+            display: block;
+            opacity: 0;
+            animation: elegantDropdownAppear 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes elegantDropdownAppear {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px) scaleY(0.85);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0) scaleY(1);
+            }
+        }
+
+        .dropdown-item {
+            width: 100%;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            background-color: transparent;
+            border: none;
+            color: var(--text-primary);
+            text-align: left;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .dropdown-item:not(:last-child) {
+            margin-bottom: 4px;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--accent-blue-hover);
+            color: var(--bg-secondary);
+            transform: none;
+        }
+
+
+        .footer {
+            position: absolute;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: color 0.4s ease;
+        }
+        .footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: var(--accent-blue-hover);
+            text-decoration: none;
+        }
+
+        .day-night-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+        .day-night-toggle:focus {
+            outline: none;
+        }
+        .day-night-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .toggle-icon {
+            width: 32px;
+            height: 32px;
+            overflow: visible;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .toggle-icon .icon-shape {
+            fill: var(--toggle-icon-color);
+            transition: fill 0.4s ease;
+        }
+        .toggle-icon .sun-ray {
+            stroke: var(--toggle-icon-color);
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke 0.4s ease, opacity 0.5s ease;
+        }
+        .toggle-icon .moon-mask {
+            fill: var(--toggle-moon-mask);
+            transition: fill 0.4s ease;
+        }
+
+        .toggle-icon.rotate {
+            transform: rotate(180deg);
+        }
+        .toggle-icon .sun-rays {
+            opacity: 1;
+            transition: opacity 0.5s 0.1s ease;
+        }
+        .toggle-icon .moon-group {
+            opacity: 1;
+            transition: opacity 0.5s 0.1s ease;
+        }
+
+        .toggle-icon.night .sun-rays {
+            opacity: 0;
+        }
+        .toggle-icon.day .moon-group {
+            opacity: 0;
+        }
+
+        .flashcard-container {
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            background-color: var(--bg-primary);
+            padding: 25px;
+            position: relative;
+            max-width: 1400px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeIn 0.6s 0.2s ease-out forwards;
+            transition: background-color 0.4s ease;
+        }
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            gap: 15px;
+        }
+        .progress-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            background-color: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
+            border: 1px solid var(--border-primary);
+            flex-shrink: 0;
+        }
+        @media screen and (max-width: 768px) {
+            .progress-item span {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+        }
+        .progress-item:hover {
+            background-color: var(--bg-secondary);
+            border-color: var(--border-secondary);
+            transform: scale(1.03);
+        }
+        .progress-number-orange {
+            margin-right: 8px;
+            color: var(--accent-orange);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .progress-number-green {
+            margin-left: 8px;
+            color: var(--accent-green);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .card-content {
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            background-color: var(--bg-secondary);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            border: 1px solid var(--border-primary);
+            transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+        .loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(var(--bg-secondary-rgb, 255, 255, 255), 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            border-radius: 10px;
+            transition: background-color 0.4s ease, opacity 0.3s ease-out;
+        }
+        body.dark-mode .loading-screen {
+            --bg-secondary-rgb: 42, 42, 42;
+        }
+        .spinner {
+            border: 4px solid var(--border-primary);
+            border-top: 4px solid var(--accent-blue);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            transition: border-color 0.4s ease;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .card-content img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+            border-radius: 10px;
+        }
+        .card-content img.loaded {
+            opacity: 1;
+        }
+
+        .your-answer-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding-left: 5px;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease, color 0.4s ease;
+        }
+        .answer-input-container {
+            margin-bottom: 20px;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease;
+        }
+        .answer-input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1rem;
+            border: 1px solid var(--border-secondary);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease, color 0.4s ease;
+            appearance: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset;
+        }
+        .answer-input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+            transition: color 0.4s ease;
+        }
+        .answer-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--focus-ring), 0 1px 3px rgba(0, 0, 0, 0.05) inset;
+        }
+
+        .bottom-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease;
+        }
+        .dont-know-button, .answer-button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .dont-know-button {
+            background-color: transparent;
+            color: var(--accent-blue);
+            border: 1px solid transparent;
+        }
+        .dont-know-button:hover {
+            color: var(--accent-blue-hover);
+            background-color: rgba(var(--accent-blue-rgb, 109, 138, 150), 0.08);
+            transform: scale(1.02);
+        }
+        body.dark-mode .dont-know-button:hover {
+            --accent-blue-rgb: 122, 160, 178;
+        }
+        .answer-button {
+            background-color: var(--accent-blue);
+            color: var(--bg-secondary);
+            box-shadow: 0 2px 5px var(--shadow-color);
+        }
+        .answer-button:hover {
+            background-color: var(--accent-blue-hover);
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+        .dont-know-button:active, .answer-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
+
+        .card-answer {
+            display: none;
+            position: absolute;
+            bottom: 25px;
+            left: 25px;
+            right: 25px;
+            background-color: var(--card-answer-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 20px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            z-index: 3;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeSlideIn 0.4s ease-out forwards;
+            color: var(--text-primary);
+            text-align: center;
+            transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+        }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #showAnswer strong {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+        #showAnswer strong[style*="#10B981"] {
+            color: var(--accent-green) !important;
+        }
+        #showAnswer strong[style*="#EF4444"] {
+            color: var(--accent-red) !important;
+        }
+        #showAnswer strong[style*="#F59E0B"] {
+            color: var(--accent-orange) !important;
+        }
+
+        #showExplanation {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-top: 5px;
+            max-height: 100px;
+            overflow-y: auto;
+            overflow: visible;
+            transition: color 0.4s ease;
+        }
+        #showExplanation strong {
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+        #showExplanation .contribute-link {
+            color: var(--accent-blue);
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: 500;
+            margin-left: 5px;
+            transition: color 0.3s ease;
+        }
+        #showExplanation .contribute-link:hover {
+            color: var(--accent-blue-hover);
+        }
+
+        .contribution-area {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            transition: border-color 0.4s ease;
+        }
+        .contribution-area input {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 1rem;
+            border: 1px solid var(--border-secondary);
+            border-radius: 6px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            outline: none;
+            resize: vertical;
+            margin-right: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset;
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .contribution-area input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--focus-ring), 0 1px 3px rgba(0, 0, 0, 0.05) inset;
+        }
+        .contribution-area button {
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-weight: 500;
+            background-color: var(--accent-blue);
+            color: var(--bg-secondary);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            float: right;
+        }
+        .contribution-area button:hover {
+            background-color: var(--accent-blue-hover);
+        }
+        .contribution-area button:active {
+            transform: scale(0.97);
+        }
+        .contribution-area button.loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        .contribution-area button.loading::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin-top: -8px;
+            margin-left: -8px;
+            border: 2px solid rgba(var(--bg-secondary-rgb, 255, 255, 255), 0.4);
+            border-top-color: var(--bg-secondary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            transition: border-color 0.4s ease;
+        }
+        body.dark-mode .contribution-area button.loading::after {
+            --bg-secondary-rgb: 42, 42, 42;
+            border-top-color: var(--bg-secondary);
+        }
+
+        .next-button {
+            display: block;
+            padding: 10px 22px;
+            font-size: 1rem;
+            font-weight: 500;
+            background-color: transparent;
+            color: var(--accent-blue);
+            border: 1px solid var(--accent-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: center;
+            margin-top: 15px;
+        }
+        .next-button:hover {
+            background-color: var(--accent-blue);
+            color: var(--bg-secondary);
+            border-color: var(--accent-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(var(--accent-blue-rgb, 109, 138, 150), 0.2);
+        }
+        body.dark-mode .next-button:hover {
+            --accent-blue-rgb: 122, 160, 178;
+        }
+        .next-button:active {
+            transform: scale(0.97);
+            box-shadow: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInModal 0.4s ease forwards;
+            transition: background-color 0.4s ease;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            width: 90%;
+            max-width: 650px;
+            max-height: 85%;
+            overflow-y: auto;
+            background-color: var(--modal-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px var(--shadow-color);
+            position: relative;
+            transform: scale(0.95);
+            animation: scaleUpModal 0.4s ease forwards;
+            transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            border: 1px solid var(--border-primary);
+        }
+        #imageModal .modal-content {
+            overflow: visible !important;
+            scrollbar-width: none;
+        }
+        #imageModal .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+        .nav-button {
+            all: unset;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            pointer-events: auto;
+            color: var(--text-primary);
+            font-size: 2rem;
+            line-height: 1;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            opacity: 0.6;
+            transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+        }
+        .nav-left { left: -80px; }
+        .nav-right { right: -80px; }
+           @keyframes scaleUpModal {
+            from { transform: scale(0.95); opacity: 0;}
+            to { transform: scale(1); opacity: 1;}
+           }
+        .close {
+            position: absolute;
+            top: 13px;
+            right: 20px;
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .close:hover {
+            color: var(--accent-blue-hover);
+            transform: rotate(90deg);
+        }
+        .modal-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--heading-color);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-primary);
+            padding-bottom: 10px;
+            transition: color 0.4s ease, border-color 0.4s ease;
+        }
+        .modal-content p {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            transition: color 0.4s ease;
+        }
+        .modal-content ol {
+            padding-left: 25px;
+            margin-bottom: 16px;
+        }
+        .modal-content li {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-primary);
+            list-style-type: decimal;
+            transition: border-color 0.4s ease;
+        }
+        .modal-content li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .modal-content li p {
+            margin-bottom: 8px;
+        }
+        .modal-content li p strong {
+            color: var(--text-primary);
+        }
+        .modal-content li em {
+            color: var(--text-secondary);
+        }
+        .modal-content img {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-primary);
+            display: block;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            background-color: var(--bg-secondary);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        .answer-input-container[style*="hidden"],
+        .bottom-buttons[style*="hidden"],
+        .your-answer-label[style*="hidden"] {
+            opacity: 0;
+            visibility: hidden;
+            transition: visibility 0s linear 0.3s, opacity 0.3s ease;
+        }
+
+        .player-input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            margin-bottom: 24px;
+        }
+        .player-input input {
+            width: 100%;
+            padding: 10px 16px;
+            font-size: 1rem;
+            border: 1px solid var(--border-secondary);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: border-color .3s ease, box-shadow .3s ease;
+        }
+        .player-input input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--focus-ring);
+            outline: none;
+        }
+
+        .leaderboard {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 0 20px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            box-shadow: 0 2px 6px var(--shadow-color);
+            padding: 20px 20px 0;
+            max-height: 250px;
+            overflow: hidden;
+            transition: max-height 0.5s ease 0.5s;
+            cursor: pointer;
+            position: relative;
+        }
+        .leaderboard::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            pointer-events: none;
+            background: linear-gradient(transparent, var(--bg-secondary));
+            opacity: 1;
+            transition: opacity 0.3s ease 0.5s;
+        }
+        .leaderboard h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--heading-color);
+        }
+        .leaderboard ol {
+            padding-left: 0;
+            margin: 0;
+        }
+        .leaderboard li {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-primary);
+        }
+        .leaderboard-rank {
+            width: 30px;
+            text-align: left;
+        }
+        .leaderboard-name {
+            flex: 1;
+            text-align: center;
+        }
+        .leaderboard-score {
+            width: 50px;
+            text-align: right;
+        }
+        .leaderboard li:last-child {
+            border-bottom: none;
+        }
+        .leaderboard li.current-user {
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+           .leaderboard.expanded {
+               max-height: 500px;
+           }
+           .leaderboard.expanded::after {
+               opacity: 0;
+               transition-delay: 0s;
+           }
+        .leaderboard:hover {
+            max-height: 500px;
+            transition-delay: 0s;
+        }
+        .leaderboard:hover::after {
+            opacity: 0;
+            transition-delay: 0s;
+        }
+        .tooltip {
+            position: absolute;
+            bottom: calc(100% + 6px);
+            left: 50%;
+            transform: translateX(-22%);
+            background-color: #000;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 3000;
+        }
+        .tooltip-arrow {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-22%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #000;
+        }
+        #no-explanation-message .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        #no-explanation-message:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .alert-modal {
+            display: none;
+            background-color: var(--modal-bg);
+            color: var(--text-primary);
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            translate: -50%;
+        }
+        .nav-button {
+            background-color: transparent;
+            width: auto;
+            height: auto;
+            color: var(--text-primary);
+            font-size: 2rem;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            pointer-events: auto;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 3010;
+            border: none;
+            outline: none;
+            opacity: 0.6;
+            appearance: none;
+            padding: 0;
+        }
+
+        .nav-left { left: -80px; }
+        .nav-right { right: -80px; }
+
+        .nav-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            opacity: 0;
+            transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+            pointer-events: none;
+        }
+        .nav-button:hover {
+            color: var(--accent-blue);
+        }
+        .nav-button:hover::before {
+            width: 80px;
+            height: 80px;
+            opacity: 0.4;
+            filter: blur(10px);
+        }
+        @media screen and (max-width: 768px) {
+            .progress {
+                gap: 0;
+            }
+            .dropdown-menu.active .dropdown-content {
+                display: block;
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(0) scaleY(1);
+                animation: elegantDropdownAppear 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            }
+            #wrongArea span:not(.progress-number-orange),
+            #correctArea span:not(.progress-number-green) {
+                display: none;
+            }
+            .progress-number-green {
+                margin-left: 0;
+            }
+            .progress-number-orange {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body onload="init();">
+
+    <div class="start-screen">
+        <button id="dayNightToggle" class="day-night-toggle" aria-label="切換到夜晚模式">
+            <svg id="dayNightIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="toggle-icon day">
+            </svg>
+        </button>
+
+        <div class="start-title">Parasitology</div>
+          <div class="leaderboard">
+            <ol id="boardList" style="list-style:decimal inside; padding:0;"></ol>
+          </div>
+          <div class="player-input" style="text-align:center;">
+            <input type="text" id="playerName" placeholder="輸入玩家名稱">
+          </div>
+    <div class="start-buttons">
+      <button id="startAllGame" class="start-button">全部</button>
+      <div class="dropdown-menu">
+          <button class="dropdown-toggle start-button">單元</button>
+          <div class="dropdown-content">
+              <button class="dropdown-item" data-json="egg.json">蟲卵</button>
+              <button class="dropdown-item" data-json="線蟲.json">線蟲</button>
+              <button class="dropdown-item" data-json="吸蟲.json">吸蟲</button>
+              <button class="dropdown-item" data-json="絛蟲.json">絛蟲</button>
+              <button class="dropdown-item" data-json="原蟲.json">原蟲</button>
+              <button class="dropdown-item" data-json="舌蟲、蛭類、節肢動物.json">舌蟲、蛭類、節肢動物</button>
+              <button class="dropdown-item" data-json="eng.json">English</button>
+          </div>
+      </div>
+      <button id="openDoc" class="start-button">題庫</button>
+    </div>
+    <div class="progress-actions" style="text-align:center; margin-top:10px; display:none;">
+      <button id="resumeButton" class="start-button" style="background-color: var(--accent-green); display:none;">接續上次</button>
+      <div style="margin-top:8px;">
+        <span id="restartProgress" style="color:#999;text-decoration:underline;cursor:pointer;">重新開始</span>
+      </div>
+    </div>
+        <div class="footer">
+          <a href="https://christmaskid.github.io/parasite_game/" target="_blank">前往舊版</a> ｜
+          <a href="https://chromewebstore.google.com/detail/%E5%8F%B0%E5%A4%A7%E9%86%AB%E5%A1%AB%E5%95%8F%E5%8D%B7/ciioeecbkbnmnedkgmkfaicngidogdkj?authuser=0&hl=en" target="_blank">問卷外掛</a> ｜
+          <span id="download-block">
+            <a href="profile.mobileconfig" download="Parasite.mobileconfig">蘋果下載</a> ｜
+          </span>
+          <a href="https://line.me/ti/p/~jedieason" target="_blank">問題回報</a>
+        </div>
+    </div>
+
+    <div class="flashcard-container">
+         <div class="progress">
+            <div class="progress-item" id="wrongArea">
+                <span class="progress-number-orange" id="wrong">0</span>
+                <span>錯誤</span>
+            </div>
+            <div class="progress-item" style="border:none; cursor:default;">
+                <span>分數：</span>
+                <span id="score-display">0</span>
+                <span style="margin: 0 5px;">｜</span>
+                <span>排名：</span>
+                <span id="rank-display">N/A</span>
+            </div>
+            <div class="progress-item" id="correctArea">
+                <span>正確</span>
+                <span class="progress-number-green" id="correct">0</span>
+            </div>
+        </div>
+
+        <div class="card-content">
+            <div class="loading-screen">
+                <div class="spinner"></div>
+            </div>
+            <img id="image" onload="this.classList.add('loaded'); document.querySelector('.loading-screen').style.display='none'; preloadNextImage();" src="" alt="Parasite Image">
+        </div>
+
+        <div class="card-answer">
+            <div id="showAnswer"></div>
+            <div id="showExplanation">
+            </div>
+            <button id="next" class="next-button">下一個</button>
+        </div>
+
+        <div class="your-answer-label">這是什麼？</div>
+        <div class="answer-input-container">
+            <input id="answer" type="text" placeholder="把答案打在這" class="answer-input">
+        </div>
+
+        <div class="bottom-buttons">
+            <button id="dontKnow" class="dont-know-button">母災</button>
+            <button id="submitAnswer" class="answer-button">確定</button>
+        </div>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close">×</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    <div id="alertModal" class="alert-modal" style="display: none;">
+        <span class="close" onclick="closeAlertModal()">×</span>
+        <div id="alertModalBody"></div>
+    </div>
+    <div id="docContainer" class="doc-container" style="display:none;">
+      <div class="doc-page">
+        <span id="closeDoc" class="close">&times;</span>
+        <div id="docContent"></div>
+      </div>
+    </div>
+
+    <div id="imageModal" class="modal" style="z-index:3000;">
+      <div class="modal-content">
+        <span id="closeImageModal" class="close" style="top: 4px; right: 10px;">&times;</span>
+        <button id="prevImageButton" class="nav-button nav-left" aria-label="上一題">‹</button>
+        <button id="nextImageButton" class="nav-button nav-right" aria-label="下一題">›</button>
+        <img id="modalImage" src="" alt="Image preview" style="max-width: 100%; height: auto; border-radius:6px;">
+        <div id="modalInfo" style="text-align:center;">
+          <p id="modalAnswer" style="font-weight:600;"></p>
+          <p id="modalExplanation" style="color:var(--text-secondary); margin-bottom: 0;"></p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+        let isComposing = false;
+        document.addEventListener('compositionstart', () => { isComposing = true; });
+        document.addEventListener('compositionend', () => { isComposing = false; });
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjvO8nSRkKXUp7gopj-X7QsOGRBHTxj1s",
+            authDomain: "jedieason-trivia.firebaseapp.com",
+            databaseURL: "https://jedieason-trivia-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "jedieason-trivia",
+            storageBucket: "jedieason-trivia.firebasestorage.app",
+            messagingSenderId: "379460583179",
+            appId: "1:379460583179:web:c9d36892128bb0ac066c0e",
+            measurementId: "G-5NK671LL2Z"
+        };
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAnalytics }  from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
+        import {
+            getDatabase,
+            ref,
+            query,
+            orderByChild,
+            limitToLast,
+            get,
+            set
+        } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+        import {
+            getAuth,
+            signInAnonymously,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+        const app       = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db        = getDatabase(app);
+        const auth = getAuth(app);
+        signInAnonymously(auth).catch(err => console.error("匿名登入失敗：", err));
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                window.currentUserUid = user.uid;
+            } else {
+                window.currentUserUid = null;
+            }
+        });
+        const savedProg = localStorage.getItem('gameProgress');
+        if (savedProg) {
+          const prog = JSON.parse(savedProg);
+          document.getElementById('resumeButton').style.display = 'inline-block';
+          document.querySelector('.progress-actions').style.display = 'block';
+          document.querySelector('.start-buttons').style.display = 'none';
+        }
+        var TIME = 31;
+        var numOfProbs;
+        var tm;
+        var data;
+        var x;
+        var state = 0;
+        var correct = 0;
+        var wrong = 0;
+        var total = 0;
+        var viewing = false;
+        var done;
+        var score = 0;
+        var correctList = [];
+        var wrongList = [];
+        const lowerCaseSwearWords = [
+            "幹", "靠", "操", "媽的", "他媽的", "幹你娘", "機掰", "雞掰", "哭邀", "靠北", "靠腰",
+            "操你媽", "王八蛋", "他媽", "賤人", "婊子", "俗辣", "垃圾", "智障", "白痴", "腦殘",
+            "低能", "肏", "淦", "靠杯", "三小", "啥小", "死", "屁", "幹您娘", "操機掰", "娘砲", "破麻",
+            "操你妈", "干", "他妈", "傻逼", "脑残", "屌",
+            "fuck", "fucking", "shit", "bitch", "damn", "asshole", "cunt", "fucker", "motherfucker",
+            "dick", "pussy", "wank", "slut", "whore"
+        ].map(word => word.toLowerCase());
+
+        const dayNightToggle = document.getElementById('dayNightToggle');
+        const dayNightIcon = document.getElementById('dayNightIcon');
+        let isDay = true;
+        window.gameplayActive = false;
+
+        function renderSun() {
+            dayNightIcon.innerHTML = `
+                <circle cx="50" cy="50" r="20" class="icon-shape" />
+                <g class="sun-rays">
+                    ${[...Array(8)].map((_, i) => {
+                        const angle = (i * 45) * (Math.PI / 180);
+                        const x1 = 50 + Math.cos(angle) * 30;
+                        const y1 = 50 + Math.sin(angle) * 30;
+                        const x2 = 50 + Math.cos(angle) * 38;
+                        const y2 = 50 + Math.sin(angle) * 38;
+                        return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="sun-ray" />`;
+                    }).join('')}
+                </g>
+                <g class="moon-group" style="opacity: 0;">
+                    <circle cx="50" cy="50" r="20" class="icon-shape" />
+                    <circle cx="58" cy="50" r="18" class="moon-mask" />
+                </g>
+            `;
+            dayNightIcon.classList.remove('night');
+            dayNightIcon.classList.add('day');
+            dayNightIcon.classList.remove('rotate');
+        }
+        window.init = init;
+
+        function renderMoon() {
+            dayNightIcon.innerHTML = `
+                 <circle cx="50" cy="50" r="20" class="icon-shape" style="fill: none;"/>
+                 <g class="sun-rays" style="opacity: 0;">
+                     ${[...Array(8)].map((_, i) => {
+                         const angle = (i * 45) * (Math.PI / 180);
+                         const x1 = 50 + Math.cos(angle) * 30;
+                         const y1 = 50 + Math.sin(angle) * 30;
+                         const x2 = 50 + Math.cos(angle) * 38;
+                         const y2 = 50 + Math.sin(angle) * 38;
+                         return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="sun-ray" />`;
+                     }).join('')}
+                 </g>
+                 <g class="moon-group">
+                     <circle cx="50" cy="50" r="20" class="icon-shape" />
+                     <circle cx="58" cy="50" r="18" class="moon-mask" />
+                 </g>
+            `;
+            dayNightIcon.classList.remove('day');
+            dayNightIcon.classList.add('night');
+            dayNightIcon.classList.add('rotate');
+        }
+
+        let availableVoices = [];
+        function populateVoices() {
+            availableVoices = speechSynthesis.getVoices();
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = () => {
+                    availableVoices = speechSynthesis.getVoices();
+                };
+            }
+        }
+
+        function addOrUpdateSpeakButton(answerToSpeak, answerDisplayElement) {
+            let existingSpeakButton = answerDisplayElement.querySelector('.speak-answer-icon-button');
+            if (existingSpeakButton) {
+                existingSpeakButton.remove();
+            }
+
+            const speakButton = document.createElement('button');
+            speakButton.className = 'speak-answer-icon-button';
+            speakButton.setAttribute('aria-label', 'Play answer');
+            speakButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgb(102, 102, 102)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle;">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+            `;
+            speakButton.style.background = 'none';
+            speakButton.style.border = 'none';
+            speakButton.style.padding = '0 0 0 8px';
+            speakButton.style.cursor = 'pointer';
+            speakButton.style.display = 'inline-flex';
+            speakButton.style.alignItems = 'center';
+            speakButton.style.verticalAlign = 'middle';
+
+
+            speakButton.onclick = (event) => {
+                event.stopPropagation();
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                }
+                const utterance = new SpeechSynthesisUtterance(answerToSpeak);
+                let targetVoice = availableVoices.find(voice => voice.lang.startsWith('en') && (voice.name.toLowerCase().includes('google') || voice.name.toLowerCase().includes('natural')));
+                if (!targetVoice) {
+                    targetVoice = availableVoices.find(voice => voice.lang.startsWith('en'));
+                }
+                if (targetVoice) {
+                    utterance.voice = targetVoice;
+                }
+                speechSynthesis.speak(utterance);
+            };
+
+            answerDisplayElement.appendChild(speakButton);
+        }
+
+        function toggleTheme() {
+            isDay = !isDay;
+            if (isDay) {
+                document.body.classList.remove('dark-mode');
+                renderSun();
+                dayNightToggle.setAttribute('aria-label', '切換到夜晚模式');
+            } else {
+                document.body.classList.add('dark-mode');
+                renderMoon();
+                dayNightToggle.setAttribute('aria-label', '切換到白天模式');
+            }
+            const bodyStyles = window.getComputedStyle(document.body);
+            document.documentElement.style.setProperty('--toggle-moon-mask', bodyStyles.getPropertyValue('--bg-primary'));
+        }
+
+        function initDayNightToggle() {
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            isDay = !prefersDark;
+
+            if (isDay) {
+                renderSun();
+                document.body.classList.remove('dark-mode');
+                dayNightToggle.setAttribute('aria-label', '切換到夜晚模式');
+            } else {
+                renderMoon();
+                document.body.classList.add('dark-mode');
+                dayNightToggle.setAttribute('aria-label', '切換到白天模式');
+            }
+            const bodyStyles = window.getComputedStyle(document.body);
+            document.documentElement.style.setProperty('--toggle-moon-mask', bodyStyles.getPropertyValue('--bg-primary'));
+
+            dayNightToggle.addEventListener('click', toggleTheme);
+
+             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                isDay = !event.matches;
+                 if (isDay) {
+                     document.body.classList.remove('dark-mode');
+                     renderSun();
+                     dayNightToggle.setAttribute('aria-label', '切換到夜晚模式');
+                 } else {
+                     document.body.classList.add('dark-mode');
+                     renderMoon();
+                     dayNightToggle.setAttribute('aria-label', '切換到白天模式');
+                 }
+                 const bodyStyles = window.getComputedStyle(document.body);
+                 document.documentElement.style.setProperty('--toggle-moon-mask', bodyStyles.getPropertyValue('--bg-primary'));
+             });
+        }
+        async function writeScore(finalScore) {
+            const uid = window.currentUserUid;
+            if (!uid) throw new Error("使用者尚未登入");
+            const scoreRef = ref(db, `leaderboard/${uid}`);
+            try {
+                const snap = await get(scoreRef);
+                const prev = snap.val();
+                const prevScore = prev && typeof prev.score === 'number' ? prev.score : 0;
+                const newScore = prevScore + finalScore;
+                await set(scoreRef, {
+                    name: window.currentPlayer,
+                    score: newScore,
+                    timestamp: Date.now()
+                });
+                return newScore;
+            } catch (err) {
+                console.error("寫入分數失敗：", err);
+                throw err;
+            }
+        }
+
+        async function fetchLeaderboard() {
+            const listEl = document.getElementById("boardList");
+            listEl.innerHTML = '<li>載入中…</li>';
+
+            try {
+                const snap = await get(ref(db, 'leaderboard'));
+                const dataObj = snap.val() || {};
+                const entries = Object.entries(dataObj).map(([uid, item]) => ({ uid, ...item }));
+                const sorted = entries.sort((a, b) => b.score - a.score);
+
+                listEl.innerHTML = '';
+                let inTop = false;
+                let prevScore = null;
+                let prevRank = 0;
+                sorted.forEach((item, index) => {
+                    if (index < 10) {
+                        const li = document.createElement('li');
+                        if (item.uid === window.currentUserUid) li.classList.add('current-user');
+                        const rankSpan = document.createElement('span');
+                        rankSpan.className = 'leaderboard-rank';
+                        let rank;
+                        if (item.score === prevScore) {
+                            rank = prevRank;
+                        } else {
+                            rank = index + 1;
+                            prevScore = item.score;
+                            prevRank = rank;
+                        }
+                        rankSpan.textContent = rank;
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'leaderboard-name';
+                        nameSpan.textContent = item.name;
+                        const scoreSpan = document.createElement('span');
+                        scoreSpan.className = 'leaderboard-score';
+                        scoreSpan.textContent = item.score;
+                        li.append(rankSpan, nameSpan, scoreSpan);
+                        listEl.appendChild(li);
+                        if (item.uid === window.currentUserUid) inTop = true;
+                    }
+                });
+                if (!inTop) {
+                    const userIndex = sorted.findIndex(item => item.uid === window.currentUserUid);
+                    if (userIndex !== -1) {
+                        const item = sorted[userIndex];
+                        const li = document.createElement('li');
+                        li.classList.add('current-user');
+                        const rankSpan = document.createElement('span');
+                        rankSpan.className = 'leaderboard-rank';
+                        let userActualRank = 0;
+                        let scoreForPrevRank = null;
+                        let runningRankForUser = 0;
+                        for(let i=0; i < sorted.length; i++) {
+                            if (sorted[i].score !== scoreForPrevRank) {
+                                runningRankForUser = i + 1;
+                                scoreForPrevRank = sorted[i].score;
+                            }
+                            if (sorted[i].uid === window.currentUserUid) {
+                                userActualRank = runningRankForUser;
+                                break;
+                            }
+                        }
+                        rankSpan.textContent = userActualRank || (sorted.filter(it => it.score > item.score).length + 1);
+                        const nameSpan = document.createElement('span');
+                        nameSpan.className = 'leaderboard-name';
+                        nameSpan.textContent = item.name;
+                        const scoreSpan = document.createElement('span');
+                        scoreSpan.className = 'leaderboard-score';
+                        scoreSpan.textContent = item.score;
+                        li.append(rankSpan, nameSpan, scoreSpan);
+                        listEl.appendChild(li);
+                    }
+                }
+                const playerData = sorted.find(item => item.uid === window.currentUserUid);
+                const playerScore = playerData ? playerData.score : 0;
+                document.getElementById("score-display").textContent = playerScore;
+                score = playerScore; // Initialize global score with Firebase score
+
+                const rankDisplay = document.getElementById("rank-display");
+                if (rankDisplay) {
+                    if (playerData) {
+                        let userDisplayRank = "N/A";
+                        let currentOverallRank = 0;
+                        let scoreForLastOverallRank = null;
+                        for (let i = 0; i < sorted.length; i++) {
+                            const entry = sorted[i];
+                            if (entry.score !== scoreForLastOverallRank) {
+                                currentOverallRank = i + 1;
+                                scoreForLastOverallRank = entry.score;
+                            }
+                            if (entry.uid === window.currentUserUid) {
+                                userDisplayRank = currentOverallRank;
+                                break;
+                            }
+                        }
+                        rankDisplay.textContent = userDisplayRank;
+                    } else {
+                        rankDisplay.textContent = "N/A";
+                    }
+                }
+            } catch (err) {
+                console.error("讀排行榜失敗：", err);
+                listEl.innerHTML = '<li>讀取失敗</li>';
+                const rankDisplay = document.getElementById("rank-display");
+                if (rankDisplay) rankDisplay.textContent = "N/A";
+            }
+        }
+
+        function updateCorrect() {
+            correct++;
+            document.getElementById("correct").innerText = correct;
+            const pointsEarned = 2;
+            score += pointsEarned; // Local score variable for Firebase update
+            if (data && data[x]) {
+                correctList.push(data[x]);
+            }
+            updateScoreDisplay(); // Update UI score
+            writeScore(pointsEarned) // Update Firebase score
+                .then(() => fetchLeaderboard()) // Refresh leaderboard after score update
+                .catch(err => console.error("寫入分數或更新排名失敗：", err));
+        }
+        function updateWrong() {
+            wrong++;
+            document.getElementById("wrong").innerText = wrong;
+            const pointsLost = -2;
+            score += pointsLost;
+            if (data && data[x]) {
+                wrongList.push(data[x]);
+            }
+            updateScoreDisplay();
+            writeScore(pointsLost)
+                .then(() => fetchLeaderboard())
+                .catch(err => console.error("寫入分數或更新排名失敗：", err));
+        }
+        function updateUnknown(){
+            wrong++;
+            document.getElementById("wrong").innerText = wrong;
+            const pointsLost = -1;
+            score += pointsLost;
+            if (data && data[x]) {
+                wrongList.push(data[x]);
+            }
+            updateScoreDisplay();
+            writeScore(pointsLost)
+                .then(() => fetchLeaderboard())
+                .catch(err => console.error("寫入分數或更新排名失敗：", err));
+        }
+
+        function handleEndOfRound() {
+            const nextBtn = document.getElementById('next');
+            const cardAnswerDiv = document.querySelector(".card-answer");
+
+            cardAnswerDiv.style.display = "flex"; // Show answer area for the button
+            document.querySelector('.answer-input-container').style.visibility = 'hidden';
+            document.querySelector('.bottom-buttons').style.visibility = 'hidden';
+            document.querySelector('.your-answer-label').style.visibility = 'hidden';
+            nextBtn.style.display = 'block'; // Ensure next button is visible
+
+            if (wrongList.length > 0) {
+                nextBtn.innerText = "重玩錯誤";
+                nextBtn.removeEventListener('click', nextProb);
+                nextBtn.addEventListener('click', startReviewWrong);
+                showAlertModal(`本回合錯誤 ${wrongList.length} 題。點擊「重玩錯誤」再次挑戰！`);
+            } else {
+                showAlertModal(`恭喜你全部答對！最終分數：${score} 🎉`);
+                nextBtn.style.display = 'none';
+                localStorage.removeItem('gameProgress');
+                window.gameplayActive = false;
+
+                // Clean up game event listeners
+                document.removeEventListener("keydown", enterKeyEvent);
+                const submitBtnEl = document.getElementById("submitAnswer");
+                if (submitBtnEl) submitBtnEl.removeEventListener("click", submitUserAnswer);
+                const dontKnowBtnEl = document.getElementById("dontKnow");
+                if (dontKnowBtnEl) dontKnowBtnEl.removeEventListener("click", showAnswer);
+                const correctAreaEl = document.getElementById("correctArea");
+                if (correctAreaEl) correctAreaEl.removeEventListener("click", showCorrectList);
+                const wrongAreaEl = document.getElementById("wrongArea");
+                if (wrongAreaEl) wrongAreaEl.removeEventListener("click", showWrongList);
+                if (nextBtn) nextBtn.removeEventListener('click', nextProb); // Might have been set
+
+                setTimeout(() => {
+                    document.querySelector('.flashcard-container').style.display = 'none';
+                    document.querySelector('.start-screen').style.display = 'flex';
+                    const resumeButtonEl = document.getElementById('resumeButton');
+                    const progressActionsEl = document.querySelector('.progress-actions');
+                    const startButtonsEl = document.querySelector('.start-buttons');
+                    if(resumeButtonEl) resumeButtonEl.style.display = 'none';
+                    if(progressActionsEl) progressActionsEl.style.display = 'none';
+                    if(startButtonsEl) startButtonsEl.style.display = 'flex';
+                    fetchLeaderboard();
+                }, 3000);
+            }
+        }
+
+        function startReviewWrong() {
+            console.log("[startReviewWrong] Starting review of wrong answers.");
+            if (wrongList.length === 0) {
+                console.warn("[startReviewWrong] No wrong answers to review.");
+                // This case should ideally not be reached if button logic is correct
+                handleEndOfRound(); // Or show a final completion message
+                return;
+            }
+
+            data = [...wrongList]; // Use a copy of wrongList for the new round
+            numOfProbs = data.length;
+
+            // Reset for the new round of wrong questions
+            wrongList = [];
+            correctList = []; // Also reset correctList for the new round's calculation
+            correct = 0;
+            wrong = 0;
+            // score variable (total score) is not reset here, only current round's correct/wrong
+
+            document.getElementById("correct").innerText = correct;
+            document.getElementById("wrong").innerText = wrong;
+            // updateScoreDisplay(); // UI score display will reflect total score
+
+            done = new Array(numOfProbs).fill(false);
+            x = -1; // To pick the first question in nextProb
+
+            const nextBtn = document.getElementById('next');
+            nextBtn.innerText = "下一個";
+            nextBtn.removeEventListener('click', startReviewWrong);
+            nextBtn.addEventListener('click', nextProb);
+
+            // Reset UI to question state
+            document.querySelector('.card-answer').style.display = 'none';
+            document.querySelector('.answer-input-container').style.visibility = 'visible';
+            document.querySelector('.bottom-buttons').style.visibility = 'visible';
+            document.querySelector('.your-answer-label').style.visibility = 'visible';
+            viewing = false;
+
+            nextProb(); // Start the review round
+        }
+
+            function init() {
+    console.log("[init] 應用程式初始化中... 🚀");
+    initDayNightToggle(); // 初始化日夜模式切換
+    populateVoices();     // 初始化語音功能 (如果有的話)
+
+    // --- 處理玩家名稱的核心修改 ---
+    const nameField = document.getElementById("playerName");
+    const savedPlayerName = localStorage.getItem("parasite_player_name");
+
+    if (savedPlayerName) {
+        if (nameField) nameField.value = savedPlayerName; // 設定輸入框的值
+        window.currentPlayer = savedPlayerName;           // 設定關鍵的 window.currentPlayer 變數
+        console.log("[init] 玩家名稱已從 localStorage 恢復:", window.currentPlayer);
+    } else {
+        // 如果 localStorage 沒存名字，window.currentPlayer 會是 undefined
+        // 開始新遊戲時 (createStartHandler) 會強制玩家輸入
+        if (nameField) nameField.value = ""; // 清空輸入框
+        window.currentPlayer = undefined;    // 明確設為 undefined
+        console.log("[init] localStorage 中沒有玩家名稱，window.currentPlayer 目前是 undefined。");
+    }
+    // --- 核心修改結束 ---
+
+    fetchLeaderboard(); // 載入並顯示排行榜，同時會從 Firebase 設定全域的 'score' 變數
+
+    const leaderboardEl = document.querySelector('.leaderboard');
+    if (leaderboardEl) {
+        leaderboardEl.addEventListener('click', function() {
+            this.classList.toggle('expanded'); // 點擊排行榜可以展開/收合
+        });
+    }
+
+    // 使用 '/' 快速聚焦到輸入框
+    document.addEventListener("keydown", function(e) {
+        if (window.isComposing) return; // 輸入法組字中，先不管
+
+        if (e.key === "/") {
+            const answerInput = document.getElementById("answer");
+            const playerNameInput = document.getElementById("playerName");
+            const explanationContribInput = document.getElementById('explanation-input'); // 詳解輸入框
+
+            const flashcardContainer = document.querySelector('.flashcard-container');
+            const isGameActive = flashcardContainer && getComputedStyle(flashcardContainer).display !== 'none';
+
+            let focused = false;
+            if (isGameActive) { // 如果在遊戲畫面
+                if (answerInput && document.activeElement !== answerInput &&
+                    (!explanationContribInput || document.activeElement !== explanationContribInput)) {
+                    answerInput.focus(); // 聚焦到答案輸入框
+                    focused = true;
+                }
+            } else { // 如果在開始畫面
+                const startScreen = document.querySelector('.start-screen');
+                const isStartScreenActive = startScreen && getComputedStyle(startScreen).display !== 'none';
+                if (isStartScreenActive && playerNameInput && document.activeElement !== playerNameInput) {
+                    playerNameInput.focus(); // 聚焦到玩家名稱輸入框
+                    focused = true;
+                }
+            }
+
+            if (focused) {
+                e.preventDefault(); // 阻止預設的 '/' 輸入行為
+            }
+        }
+    });
+
+    // 設定開始遊戲按鈕的事件監聽 (假設 createStartHandler 是全域可用的)
+    document.getElementById("startAllGame").addEventListener("click", createStartHandler("./all.json"));
+
+    const dropdownItems = document.querySelectorAll(".dropdown-item");
+    dropdownItems.forEach(item => {
+        item.addEventListener("click", function() {
+            const jsonPath = this.dataset.json;
+            createStartHandler(`./${jsonPath}`)(); // 呼叫 createStartHandler 開始對應單元的遊戲
+            const dropdownMenuElement = this.closest('.dropdown-menu');
+            if (dropdownMenuElement && dropdownMenuElement.classList.contains('active')) {
+                dropdownMenuElement.classList.remove('active'); // 關閉下拉選單
+            }
+        });
+    });
+
+    const dropdownMenuToggle = document.querySelector('.dropdown-toggle');
+    const dropdownMenuElement = document.querySelector('.dropdown-menu');
+
+    if (dropdownMenuToggle && dropdownMenuElement) {
+        dropdownMenuToggle.addEventListener('click', function(event) {
+            if (window.matchMedia("(pointer: coarse)").matches) { // 觸控螢幕的處理
+                dropdownMenuElement.classList.toggle('active');
+                event.stopPropagation();
+            }
+        });
+
+        document.addEventListener('click', function(event) { // 點擊選單外部關閉
+            if (dropdownMenuElement.classList.contains('active') &&
+                !dropdownMenuElement.contains(event.target)) {
+                dropdownMenuElement.classList.remove('active');
+            }
+        });
+    }
+
+    // 在開始畫面按 Enter 開始遊戲 (假設 window.globalEnterPressStart 是全域可用的)
+    // 注意：globalEnterPressStart 應該在 init 外部定義，或者作為 init 的一部分傳入/綁定
+    if (typeof window.globalEnterPressStart === 'function') {
+        document.addEventListener("keypress", window.globalEnterPressStart);
+        console.log("[init] 已為開始畫面的 Enter 鍵加入 'globalEnterPressStart' 事件監聽器。");
+    } else {
+        console.warn("[init] window.globalEnterPressStart 函數未定義，Enter 開始遊戲功能可能無法運作。");
+    }
+
+
+    adjustPlaceholder(); // 根據螢幕寬度調整輸入框的 placeholder
+    window.addEventListener('resize', adjustPlaceholder);
+
+    // 「題庫」按鈕的事件監聽
+    document.getElementById("openDoc").addEventListener("click", function() {
+        const container = document.getElementById("docContainer");
+        const content = document.getElementById("docContent");
+        content.innerHTML = ''; // 清除舊內容
+        fetch('./all.json')     // 載入所有題目資料
+            .then(res => res.json())
+            .then(dataArr => {
+                window.docData = dataArr; // 儲存起來供圖片 modal 導覽用
+                dataArr.forEach(item => {
+                    const entry = document.createElement('div');
+                    entry.className = 'doc-entry';
+                    if (item.path) {
+                        const img = document.createElement('img');
+                        img.src = item.path;
+                        img.alt = item.answer[0] || '題庫圖片';
+                        img.loading = 'lazy'; // 圖片延遲載入，提升效能
+                        entry.appendChild(img);
+                        img.style.cursor = 'pointer';
+                        img.addEventListener('click', () => { // 點擊圖片放大顯示
+                            document.getElementById('modalImage').src = item.path;
+                            document.getElementById('modalAnswer').textContent = item.answer.join(' / ');
+                            const expl = item.explanation ? item.explanation : '';
+                            document.getElementById('modalExplanation').textContent = expl;
+                            document.getElementById('imageModal').style.display = 'flex';
+                            window.modalIndex = dataArr.indexOf(item); // 記錄目前是第幾張，方便前後切換
+                        });
+                    }
+                    const textWrapper = document.createElement('div');
+                    textWrapper.className = 'doc-text';
+                    const ans = document.createElement('p');
+                    ans.innerHTML = `<strong>${item.answer.join(' / ')}</strong>`;
+                    textWrapper.appendChild(ans);
+                    if (item.explanation) {
+                        const pre = document.createElement('pre');
+                        pre.textContent = item.explanation;
+                        textWrapper.appendChild(pre);
+                    }
+                    entry.appendChild(textWrapper);
+                    content.appendChild(entry);
+                });
+                container.style.display = 'block'; // 顯示題庫容器
+            })
+            .catch(err => {
+                console.error("讀取題庫資料失敗:", err);
+                content.innerHTML = '<p>讀取題庫資料失敗 😭</p>';
+                container.style.display = 'block';
+            });
+    });
+
+    // 關閉圖片放大 Modal
+    document.getElementById('closeImageModal').addEventListener('click', () => {
+        document.getElementById('imageModal').style.display = 'none';
+    });
+
+    // 圖片 Modal 的上一張/下一張按鈕
+    const prevBtnModal = document.getElementById('prevImageButton');
+    const nextBtnModal = document.getElementById('nextImageButton');
+
+    if(prevBtnModal) prevBtnModal.addEventListener('click', () => {
+        if (window.docData && typeof window.modalIndex === 'number') {
+            window.modalIndex = (window.modalIndex - 1 + window.docData.length) % window.docData.length;
+            const it = window.docData[window.modalIndex];
+            document.getElementById('modalImage').src = it.path;
+            document.getElementById('modalAnswer').textContent = it.answer.join(' / ');
+            document.getElementById('modalExplanation').textContent = it.explanation || '';
+        }
+    });
+
+    if(nextBtnModal) nextBtnModal.addEventListener('click', () => {
+        if (window.docData && typeof window.modalIndex === 'number') {
+            window.modalIndex = (window.modalIndex + 1) % window.docData.length;
+            const it = window.docData[window.modalIndex];
+            document.getElementById('modalImage').src = it.path;
+            document.getElementById('modalAnswer').textContent = it.answer.join(' / ');
+            document.getElementById('modalExplanation').textContent = it.explanation || '';
+        }
+    });
+
+    // 關閉題庫頁面
+    document.getElementById("closeDoc").addEventListener("click", function() {
+        document.getElementById("docContainer").style.display = 'none';
+    });
+
+    // 「接續上次」和「重新開始（進度）」按鈕的事件監聽
+    const resumeBtn = document.getElementById('resumeButton');
+    const restartProgress = document.getElementById('restartProgress');
+
+    if (resumeBtn) {
+        resumeBtn.addEventListener('click', () => {
+            console.log("[resumeButton] 點擊「接續上次」。");
+
+            // --- 強化「接續上次」時的玩家名稱檢查 ---
+            if (!window.currentPlayer || typeof window.currentPlayer !== 'string' || window.currentPlayer.trim() === "") {
+                const nameFromInput = document.getElementById("playerName").value.trim();
+                if (nameFromInput) {
+                    window.currentPlayer = nameFromInput;
+                    localStorage.setItem("parasite_player_name", nameFromInput); // 如果是從輸入框拿到的，順便存回localStorage
+                    console.log("[resumeButton] 從輸入框設定了 window.currentPlayer:", window.currentPlayer);
+                }
+            }
+
+            // 如果到這裡 window.currentPlayer 還是沒有一個有效的名字，就停止接續進度，並提示玩家
+            if (!window.currentPlayer || typeof window.currentPlayer !== 'string' || window.currentPlayer.trim() === "") {
+                showAlertModal("請先在開始畫面的輸入框中設定有效的玩家名稱才能接續進度！不然玩個毛？😠");
+                document.getElementById("playerName").focus();
+                
+                // 重設UI，讓玩家知道無法接續
+                document.getElementById('resumeButton').style.display = 'none';
+                document.querySelector('.progress-actions').style.display = 'none';
+                document.querySelector('.start-buttons').style.display = 'flex'; // 顯示開始按鈕群
+                document.querySelector('.flashcard-container').style.display = 'none'; // 隱藏遊戲畫面
+                document.querySelector('.start-screen').style.display = 'flex';    // 顯示開始畫面
+                window.gameplayActive = false; // 確保遊戲狀態不是活躍
+                return; // 中止接續流程
+            }
+            // --- 強化檢查結束 ---
+            
+            console.log("[resumeButton] window.currentPlayer 確認為:", window.currentPlayer, "，準備繼續載入進度。");
+            window.gameplayActive = true; 
+
+            document.querySelector('.start-screen').style.display = 'none'; // 隱藏開始畫面
+
+            const progString = localStorage.getItem('gameProgress');
+            if (!progString) {
+                console.warn("[resumeButton] localStorage 中找不到遊戲進度。");
+                window.gameplayActive = false;
+                // 重設相關UI元件的顯示狀態
+                document.getElementById('resumeButton').style.display = 'none';
+                document.querySelector('.progress-actions').style.display = 'none';
+                document.querySelector('.start-buttons').style.display = 'flex';
+                document.querySelector('.start-screen').style.display = 'flex'; // 確保開始畫面可見
+                return;
+            }
+
+            let prog;
+            try {
+                prog = JSON.parse(progString);
+                if (!prog) throw new Error("解析後的進度是 null 或 undefined。");
+                 console.log("[resumeButton] 從 localStorage 解析出的進度:", JSON.parse(JSON.stringify(prog)));
+            } catch (e) {
+                console.error("從 localStorage 解析 gameProgress 失敗或格式無效:", e);
+                localStorage.removeItem('gameProgress'); // 移除損壞的進度
+                showAlertModal('進度讀取失敗，已清除損壞的進度，請重新開始。');
+                window.gameplayActive = false;
+                // 重設UI
+                document.getElementById('resumeButton').style.display = 'none';
+                document.querySelector('.progress-actions').style.display = 'none';
+                document.querySelector('.start-buttons').style.display = 'flex';
+                document.querySelector('.flashcard-container').style.display = 'none';
+                document.querySelector('.start-screen').style.display = 'flex';
+                return;
+            }
+
+            data = Array.isArray(prog.data) ? prog.data : [];
+            console.log("[resumeButton] 從進度載入的題目資料長度:", data.length);
+            if (data.length === 0) { // 避免載入空的題目資料
+                console.error("恢復的題目資料是空的，清除進度。");
+                localStorage.removeItem('gameProgress');
+                window.gameplayActive = false;
+                document.getElementById('resumeButton').style.display = 'none';
+                document.querySelector('.progress-actions').style.display = 'none';
+                document.querySelector('.start-buttons').style.display = 'flex';
+                document.querySelector('.flashcard-container').style.display = 'none';
+                document.querySelector('.start-screen').style.display = 'flex';
+                showAlertModal('進度讀取錯誤（無題目資料），已清除舊進度，請重新開始。');
+                return;
+            }
+            numOfProbs = data.length;
+
+            x = Number(prog.x) || 0; // 目前題目索引
+            if (x < 0 || x >= numOfProbs) { // 索引保護
+                console.warn(`[resumeButton] 恢復的題目索引 ${prog.x} 超出範圍 (${numOfProbs} 題)，重設為 0。`);
+                x = 0;
+            }
+            console.log("[resumeButton] 目前題目索引 x:", x);
+
+            done = (Array.isArray(prog.done) && prog.done.length === numOfProbs) ? prog.done : new Array(numOfProbs).fill(false); // 已答題目狀態
+            console.log("[resumeButton] 載入 'done' 陣列:", JSON.parse(JSON.stringify(done)));
+
+            correct = Number(prog.correct) || 0; // 本回合正確題數
+            wrong = Number(prog.wrong) || 0;   // 本回合錯誤題數
+            correctList = Array.isArray(prog.correctList) ? prog.correctList : [];
+            wrongList = Array.isArray(prog.wrongList) ? prog.wrongList : [];
+            console.log("[resumeButton] 載入回合統計。正確:", correct, "錯誤:", wrong);
+
+            updateScoreDisplay(); // 更新UI上的回合正確/錯誤數
+            fetchLeaderboard().catch(err => console.error("[resumeButton] 接續遊戲時讀取排行榜失敗:", err)); // 更新總分和排名
+
+            document.querySelector('.flashcard-container').style.display = 'flex'; // 顯示遊戲主畫面
+
+            console.log("[resumeButton] 為遊戲互動相關元素加入事件監聽器。");
+            document.addEventListener("keydown", enterKeyEvent); // Enter鍵提交答案或下一題
+            document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
+            document.getElementById("dontKnow").addEventListener("click", showAnswer);
+            document.getElementById("correctArea").addEventListener("click", showCorrectList); // 查看答對列表
+            document.getElementById("wrongArea").addEventListener("click", showWrongList);   // 查看答錯列表
+            
+            const nextButton = document.getElementById("next");
+            nextButton.removeEventListener('click', startReviewWrong); // 清除可能存在的舊監聽器
+            nextButton.addEventListener("click", nextProb); // 設定為「下一題」的預設行為
+
+            document.getElementById('closeModal').addEventListener('click', function() { // 關閉通用Modal
+                document.getElementById('modal').style.display = "none";
+            });
+
+            updateImage(true); // 載入圖片，true 表示是「接續上次」狀態，使用已儲存的 x 索引
+
+            if (done.every(d => d)) { // 如果這一輪的題目其實都答完了
+                handleEndOfRound(); // 觸發回合結束邏輯
+            } else {
+                // 如果遊戲中斷時是正在看答案的狀態，就恢復那個狀態
+                viewing = true; 
+                console.log("[resumeButton] 設定 viewing 為 true。作答 UI 將隱藏，顯示答案。");
+                document.querySelector('.answer-input-container').style.visibility = 'hidden';
+                document.querySelector('.bottom-buttons').style.visibility = 'hidden';
+                document.querySelector('.your-answer-label').style.visibility = 'hidden';
+
+                const cardAnswerDiv = document.querySelector(".card-answer");
+                cardAnswerDiv.style.display = "flex"; // 顯示答案區塊
+                nextButton.style.display = 'block';   // 確保「下一題」按鈕可見
+
+                const showAnsDiv = document.getElementById("showAnswer");
+                if (data[x] && data[x].answer) {
+                    showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
+                    console.log("[resumeButton] 顯示恢復題目的答案:", data[x].answer.join(' / '));
+                    if (data[x].answer.length > 0 && data[x].answer[0]) { // 為答案加上朗讀按鈕
+                        addOrUpdateSpeakButton(data[x].answer[0], showAnsDiv);
+                    }
+                } else {
+                    showAnsDiv.innerHTML = "答案資訊錯誤";
+                    console.warn(`[resumeButton] 恢復的題目索引 ${x} 找不到答案。 data[x]:`, data[x]);
+                }
+                showExplanation(); // 顯示詳解 (如果有的話)
+
+                const answerInput = document.getElementById("answer");
+                const desc = data[x]?.description; // 題目描述/提示
+                if (desc && desc.trim() !== "") {
+                    answerInput.placeholder = desc;
+                } else {
+                    adjustPlaceholder(); // 用預設的 placeholder
+                }
+            }
+            window.preloadNextImage(); // 預先載入下一張圖片
+            console.log("[resumeButton] 接續上次進度流程完成。👌");
+        });
+    }
+
+    if (restartProgress) {
+        restartProgress.addEventListener('click', () => {
+            console.log("[restartProgress] 點擊「重新開始（進度）」。清除 localStorage 中的遊戲進度。");
+            window.gameplayActive = false; 
+
+            localStorage.removeItem('gameProgress');
+            showAlertModal('進度已清除，可以開始新的挑戰了！💪');
+
+            // UI 重設回初始開始畫面狀態
+            document.querySelector('.flashcard-container').style.display = 'none';
+            document.querySelector('.start-screen').style.display = 'flex';
+
+            document.getElementById('resumeButton').style.display = 'none';
+            document.querySelector('.progress-actions').style.display = 'none';
+            document.querySelector('.start-buttons').style.display = 'flex';
+
+            console.log("[restartProgress] 重設記憶體中的回合統計數據。");
+            correct = 0;
+            wrong = 0;
+            correctList = [];
+            wrongList = [];
+
+            document.getElementById("correct").innerText = correct;
+            document.getElementById("wrong").innerText = wrong;
+            // 總分 score 會在開始新遊戲時透過 fetchLeaderboard() 重新整理
+
+            // 重設遊戲畫面中的元素
+            const imageElement = document.getElementById("image");
+            if (imageElement) {
+                imageElement.src = "";
+                imageElement.alt = "Parasite Image"; // 預設 alt
+                imageElement.classList.remove('loaded');
+            }
+            const loadingScreen = document.querySelector('.loading-screen');
+            if (loadingScreen) {
+                loadingScreen.style.display = 'none'; // 返回開始畫面時應隱藏
+            }
+            const answerInput = document.getElementById("answer");
+            if (answerInput) {
+                answerInput.value = "";
+            }
+            const showAnswerDiv = document.getElementById("showAnswer");
+            if (showAnswerDiv) {
+                showAnswerDiv.innerHTML = "";
+            }
+            const showExplanationDiv = document.getElementById("showExplanation");
+            if (showExplanationDiv) {
+                showExplanationDiv.innerHTML = "";
+                showExplanationDiv.style.display = "none";
+            }
+            const cardAnswerOverlay = document.querySelector(".card-answer");
+            if (cardAnswerOverlay) {
+                cardAnswerOverlay.style.display = "none";
+            }
+            adjustPlaceholder(); // 重設 placeholder
+            console.log("[restartProgress] UI 重設完成。準備好重新開始！");
+        });
+    }
+    console.log("[init] 應用程式初始化完成。🎉");
+}
+
+            function createStartHandler(jsonPath) {
+                return async function () {
+                    console.log(`[createStartHandler] Starting game with ${jsonPath}`);
+                    window.gameplayActive = true;
+                    console.log("[createStartHandler] Set window.gameplayActive to true");
+                    const nameInput = document.getElementById("playerName").value.trim();
+                    if (!nameInput) {
+                        showAlertModal("請先輸入玩家名稱！");
+                        document.getElementById("playerName").focus();
+                        window.gameplayActive = false;
+                        return;
+                    }
+                    window.currentPlayer = nameInput;
+                    localStorage.setItem("parasite_player_name", nameInput);
+                    document.querySelector('.start-screen').style.display = 'none'; // Hide start screen
+                    document.querySelector('.flashcard-container').style.display = 'flex';
+                    fetchLeaderboard();
+
+                    state = 1;
+                    correct = 0; wrong = 0; total = 0; 
+                    // score is initialized/updated from Firebase in fetchLeaderboard or writeScore
+                    console.log("[createStartHandler] Resetting scores and lists. Correct:", correct, "Wrong:", wrong);
+                    document.getElementById("correct").innerHTML = correct;
+                    document.getElementById("wrong").innerHTML = wrong;
+                    correctList = []; wrongList = [];
+                    console.log("[createStartHandler] Cleared correctList:", JSON.parse(JSON.stringify(correctList)), "wrongList:", JSON.parse(JSON.stringify(wrongList)));
+
+                    // Ensure "Next" button is in its default state
+                    const nextBtn = document.getElementById('next');
+                    nextBtn.innerText = "下一個";
+                    nextBtn.removeEventListener('click', startReviewWrong); // Remove if it was set
+                    nextBtn.addEventListener('click', nextProb); // Add default
+
+
+                    $.getJSON(jsonPath)
+                        .done(function (jsonData) {
+                            try {
+                                data = jsonData;
+                                numOfProbs = data.length;
+                                if (numOfProbs === 0) throw new Error("No data loaded from JSON.");
+                                data = parseMultiAns(data);
+                                done = new Array(numOfProbs).fill(false);
+                                console.log("[createStartHandler] Data loaded. numOfProbs:", numOfProbs, "Initial done array:", JSON.parse(JSON.stringify(done)));
+                                startGame();
+                            } catch (error) {
+                                console.error("Error processing JSON data:", error);
+                                showAlertModal("Failed to load or process game data.");
+                                window.gameplayActive = false;
+                            }
+                        })
+                        .fail(function (jqXHR, textStatus, errorThrown) {
+                            console.error("Failed to load JSON:", textStatus, errorThrown);
+                            showAlertModal("無法讀取遊戲資料");
+                            window.gameplayActive = false;
+                        });
+                };
+            }
+
+            document.getElementById("startAllGame").addEventListener("click", createStartHandler("./all.json"));
+
+            const dropdownItems = document.querySelectorAll(".dropdown-item");
+            dropdownItems.forEach(item => {
+                item.addEventListener("click", function() {
+                    const jsonPath = this.dataset.json;
+                    createStartHandler(`./${jsonPath}`)();
+                    const dropdownMenuElement = this.closest('.dropdown-menu');
+                    if (dropdownMenuElement && dropdownMenuElement.classList.contains('active')) {
+                        dropdownMenuElement.classList.remove('active');
+                    }
+                });
+            });
+
+            const dropdownMenuToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenuElement = document.querySelector('.dropdown-menu');
+
+            if (dropdownMenuToggle && dropdownMenuElement) {
+                dropdownMenuToggle.addEventListener('click', function(event) {
+                    if (window.matchMedia("(pointer: coarse)").matches) {
+                        dropdownMenuElement.classList.toggle('active');
+                        event.stopPropagation();
+                    }
+                });
+
+                document.addEventListener('click', function(event) {
+                    if (dropdownMenuElement.classList.contains('active') &&
+                        !dropdownMenuElement.contains(event.target)) {
+                        dropdownMenuElement.classList.remove('active');
+                    }
+                });
+            }
+
+
+            window.globalEnterPressStart = function (event) {
+                if (event.key === 'Enter') {
+                    console.log("[globalEnterPressStart] Enter key pressed.");
+                    if (window.gameplayActive) {
+                        console.log("[globalEnterPressStart] Gameplay is active, ignoring Enter for starting a new game.");
+                        return;
+                    }
+                    console.log("[globalEnterPressStart] Gameplay not active, proceeding to check for new game start.");
+                    const nameInput = document.getElementById("playerName").value.trim();
+                    if (!nameInput) {
+                        showAlertModal("請先輸入玩家名稱！");
+                        document.getElementById("playerName").focus();
+                        console.log("[globalEnterPressStart] Player name missing.");
+                        return;
+                    }
+                    const startScreen = document.querySelector('.start-screen');
+                    if (startScreen) {
+                        const displayStyle = getComputedStyle(startScreen).display;
+                        console.log("[globalEnterPressStart] start-screen display style:", displayStyle);
+                        if (displayStyle !== 'none') {
+                            console.log("[globalEnterPressStart] Start screen is visible, calling startAllGame.click().");
+                            document.getElementById("startAllGame").click();
+                        } else {
+                            console.log("[globalEnterPressStart] Start screen is NOT visible, not starting new game.");
+                        }
+                    } else {
+                        console.warn("[globalEnterPressStart] start-screen element not found.");
+                    }
+                }
+            };
+            document.addEventListener("keypress", window.globalEnterPressStart);
+            console.log("[init] Added 'globalEnterPressStart' listener.");
+
+            adjustPlaceholder();
+            window.addEventListener('resize', adjustPlaceholder);
+
+            document.getElementById("openDoc").addEventListener("click", function() {
+                const container = document.getElementById("docContainer");
+                const content = document.getElementById("docContent");
+                content.innerHTML = '';
+                fetch('./all.json')
+                  .then(res => res.json())
+                  .then(dataArr => {
+                    window.docData = dataArr;
+                    dataArr.forEach(item => {
+                      const entry = document.createElement('div');
+                      entry.className = 'doc-entry';
+                      if (item.path) {
+                        const img = document.createElement('img');
+                        img.src = item.path;
+                        img.alt = item.answer[0] || '';
+                        entry.appendChild(img);
+                        img.style.cursor = 'pointer';
+                        img.addEventListener('click', () => {
+                          document.getElementById('modalImage').src = item.path;
+                          document.getElementById('modalAnswer').textContent = item.answer.join(' / ');
+                          const expl = item.explanation ? item.explanation : '';
+                          document.getElementById('modalExplanation').textContent = expl;
+                          document.getElementById('imageModal').style.display = 'flex';
+                          document.getElementById('imageModal').style.opacity = '1';
+                          window.modalIndex = dataArr.indexOf(item);
+                        });
+                      }
+                      const textWrapper = document.createElement('div');
+                      textWrapper.className = 'doc-text';
+                      const ans = document.createElement('p');
+                      ans.innerHTML = `<strong>${item.answer.join(' / ')}</strong>`;
+                      textWrapper.appendChild(ans);
+                      if (item.explanation) {
+                        const pre = document.createElement('pre');
+                        pre.textContent = item.explanation;
+                        textWrapper.appendChild(pre);
+                      }
+                      entry.appendChild(textWrapper);
+                      content.appendChild(entry);
+                    });
+                    container.style.display = 'block';
+                  })
+                  .catch(err => {
+                    content.innerHTML = '<p>讀取資料失敗</p>';
+                    container.style.display = 'block';
+                  });
+            });
+            document.getElementById('closeImageModal').addEventListener('click', () => {
+              document.getElementById('imageModal').style.display = 'none';
+            });
+            const prevBtn = document.getElementById('prevImageButton');
+            const nextBtn = document.getElementById('nextImageButton');
+            prevBtn.addEventListener('click', () => {
+                if (window.docData) {
+                    window.modalIndex = (window.modalIndex - 1 + window.docData.length) % window.docData.length;
+                    const it = window.docData[window.modalIndex];
+                    document.getElementById('modalImage').src = it.path;
+                    document.getElementById('modalAnswer').textContent = it.answer.join(' / ');
+                    document.getElementById('modalExplanation').textContent = it.explanation || '';
+                }
+            });
+            nextBtn.addEventListener('click', () => {
+                if (window.docData) {
+                    window.modalIndex = (window.modalIndex + 1) % window.docData.length;
+                    const it = window.docData[window.modalIndex];
+                    document.getElementById('modalImage').src = it.path;
+                    document.getElementById('modalAnswer').textContent = it.answer.join(' / ');
+                    document.getElementById('modalExplanation').textContent = it.explanation || '';
+                }
+            });
+            document.getElementById("closeDoc").addEventListener("click", function() {
+                document.getElementById("docContainer").style.display = 'none';
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                const link = document.querySelector('a[href="profile.mobileconfig"]');
+                const downloadBlock = document.getElementById("download-block");
+
+                if (/android/i.test(userAgent)) {
+                    link.textContent = "安卓下載";
+                    link.setAttribute("href", "parasite_game_v1.apk");
+                    link.setAttribute("download", "Parasite.apk");
+                } else if (/iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+                    link.textContent = "蘋果下載";
+                    link.setAttribute("href", "profile.mobileconfig");
+                    link.setAttribute("download", "Parasite.mobileconfig");
+                } else {
+                    if (downloadBlock) downloadBlock.style.display = "none";
+                }
+            });
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const link = document.querySelector('a[href="profile.mobileconfig"]');
+            const downloadBlock = document.getElementById("download-block");
+
+            if (/android/i.test(userAgent)) {
+                if(link) {
+                    link.textContent = "安卓下載";
+                    link.setAttribute("href", "parasite_game_v1.apk");
+                    link.setAttribute("download", "Parasite.apk");
+                }
+            } else if (/iPad|iPhone|iPod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+                if(link) {
+                    link.textContent = "蘋果下載";
+                    link.setAttribute("href", "profile.mobileconfig");
+                    link.setAttribute("download", "Parasite.mobileconfig");
+                }
+            } else {
+                if (downloadBlock) downloadBlock.style.display = "none";
+            }
+
+            const resumeBtn = document.getElementById('resumeButton');
+            const restartProgress = document.getElementById('restartProgress');
+            if (resumeBtn) {
+              resumeBtn.addEventListener('click', () => {
+                console.log("[resumeButton] Clicked. Attempting to resume progress.");
+                window.gameplayActive = true;
+                console.log("[resumeButton] Set window.gameplayActive to true");
+
+                document.querySelector('.start-screen').style.display = 'none';
+                console.log("[resumeButton] Set start-screen display to 'none'.");
+                document.querySelector('.progress-actions').style.display = 'block';
+                document.querySelector('.start-buttons').style.display = 'none';
+
+                const progString = localStorage.getItem('gameProgress');
+                if (!progString) {
+                    console.warn("[resumeButton] No progress found in localStorage.");
+                    window.gameplayActive = false;
+                    document.getElementById('resumeButton').style.display = 'none';
+                    document.querySelector('.progress-actions').style.display = 'none';
+                    document.querySelector('.start-buttons').style.display = 'flex';
+                    document.querySelector('.start-screen').style.display = 'flex';
+                    return;
+                }
+
+                let prog;
+                try {
+                    prog = JSON.parse(progString);
+                    if (!prog) throw new Error("Parsed progress is null or undefined.");
+                     console.log("[resumeButton] Parsed progress from localStorage:", JSON.parse(JSON.stringify(prog)));
+                } catch (e) {
+                    console.error("Failed to parse gameProgress from localStorage or it's invalid:", e);
+                    localStorage.removeItem('gameProgress');
+                    showAlertModal('進度讀取失敗，已清除損壞的進度，請重新開始。');
+                    window.gameplayActive = false;
+                    document.getElementById('resumeButton').style.display = 'none';
+                    document.querySelector('.progress-actions').style.display = 'none';
+                    document.querySelector('.start-buttons').style.display = 'flex';
+                    document.querySelector('.flashcard-container').style.display = 'none';
+                    document.querySelector('.start-screen').style.display = 'flex';
+                    return;
+                }
+
+                data = Array.isArray(prog.data) ? prog.data : [];
+                 console.log("[resumeButton] Loaded data from progress. Length:", data.length);
+                if (data.length === 0) {
+                    console.error("Resumed data is empty. Clearing progress.");
+                    localStorage.removeItem('gameProgress');
+                    window.gameplayActive = false;
+                    document.getElementById('resumeButton').style.display = 'none';
+                    document.querySelector('.progress-actions').style.display = 'none';
+                    document.querySelector('.start-buttons').style.display = 'flex';
+                    document.querySelector('.flashcard-container').style.display = 'none';
+                    document.querySelector('.start-screen').style.display = 'flex';
+                    showAlertModal('進度讀取錯誤（無題目資料），已清除舊進度，請重新開始。');
+                    return;
+                }
+                numOfProbs = data.length;
+
+                x = Number(prog.x) || 0;
+                if (x < 0 || x >= numOfProbs) {
+                    console.warn(`[resumeButton] Resumed question index ${prog.x} is out of bounds for ${numOfProbs} questions. Resetting to 0.`);
+                    x = 0;
+                }
+                 console.log("[resumeButton] Current question index x:", x);
+
+                done = (Array.isArray(prog.done) && prog.done.length === numOfProbs) ? prog.done : new Array(numOfProbs).fill(false);
+                 console.log("[resumeButton] Loaded 'done' array:", JSON.parse(JSON.stringify(done)));
+
+                correct = Number(prog.correct) || 0;
+                wrong = Number(prog.wrong) || 0;
+                // score is loaded from Firebase via fetchLeaderboard
+                correctList = Array.isArray(prog.correctList) ? prog.correctList : [];
+                wrongList = Array.isArray(prog.wrongList) ? prog.wrongList : [];
+                 console.log("[resumeButton] Loaded scores and lists. Correct:", correct, "Wrong:", wrong);
+                 console.log("[resumeButton] correctList:", JSON.parse(JSON.stringify(correctList)));
+                 console.log("[resumeButton] wrongList:", JSON.parse(JSON.stringify(wrongList)));
+
+
+                updateScoreDisplay(); // Update UI for correct/wrong counts
+                fetchLeaderboard().catch(err => console.error("[resumeButton] Failed to fetch leaderboard on resume:", err)); // This will set global score
+
+                document.querySelector('.start-screen').style.display = 'none';
+                document.querySelector('.flashcard-container').style.display = 'flex';
+
+                console.log("[resumeButton] Adding event listeners for game interactions.");
+                document.addEventListener("keydown", enterKeyEvent);
+                document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
+                document.getElementById("dontKnow").addEventListener("click", showAnswer);
+                document.getElementById("correctArea").addEventListener("click", showCorrectList);
+                document.getElementById("wrongArea").addEventListener("click", showWrongList);
+                
+                const nextButton = document.getElementById("next");
+                nextButton.removeEventListener('click', startReviewWrong); // Clean up potential old listener
+                nextButton.addEventListener("click", nextProb); // Set default listener
+
+                document.getElementById('closeModal').addEventListener('click', function() {
+                    document.getElementById('modal').style.display = "none";
+                });
+
+                updateImage(true); // isResuming = true, uses prog.x
+
+                if (done.every(d => d)) {
+                    // All questions in the loaded set were done, trigger end of round logic
+                    handleEndOfRound();
+                } else {
+                    // Game was in progress, show the answer for the current question
+                    viewing = true;
+                    console.log("[resumeButton] Setting viewing to true. UI elements for answering will be hidden.");
+                    document.querySelector('.answer-input-container').style.visibility = 'hidden';
+                    document.querySelector('.bottom-buttons').style.visibility = 'hidden';
+                    document.querySelector('.your-answer-label').style.visibility = 'hidden';
+
+                    const cardAnswerDiv = document.querySelector(".card-answer");
+                    cardAnswerDiv.style.display = "flex";
+                    nextButton.style.display = 'block'; // Ensure next button is visible
+
+                    const showAnsDiv = document.getElementById("showAnswer");
+                    if (data[x] && data[x].answer) {
+                         showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
+                         console.log("[resumeButton] Displaying answer for resumed question:", data[x].answer.join(' / '));
+                         if (data[x].answer.length > 0 && data[x].answer[0]) {
+                            addOrUpdateSpeakButton(data[x].answer[0], showAnsDiv);
+                         }
+                    } else {
+                        showAnsDiv.innerHTML = "答案資訊錯誤";
+                        console.warn(`[resumeButton] No answer found for restored question index ${x}. data[x]:`, data[x]);
+                    }
+                    showExplanation(); // Show explanation if available
+
+                    const answerInput = document.getElementById("answer");
+                    const desc = data[x]?.description;
+                    if (desc && desc.trim() !== "") {
+                        answerInput.placeholder = desc;
+                    } else {
+                        adjustPlaceholder();
+                    }
+                }
+                window.preloadNextImage();
+                console.log("[resumeButton] Resume process finished.");
+              });
+            }
+            if (restartProgress) {
+              restartProgress.addEventListener('click', () => {
+                console.log("[restartProgress] Clicked. Clearing game progress from localStorage.");
+                window.gameplayActive = false;
+                console.log("[restartProgress] Set window.gameplayActive to false");
+                localStorage.removeItem('gameProgress');
+                showAlertModal('進度已清除');
+
+                document.querySelector('.flashcard-container').style.display = 'none';
+                document.querySelector('.start-screen').style.display = 'flex';
+
+                document.getElementById('resumeButton').style.display = 'none';
+                document.querySelector('.progress-actions').style.display = 'none';
+                document.querySelector('.start-buttons').style.display = 'flex';
+
+                console.log("[restartProgress] Resetting in-memory scores and lists before restart.");
+                correct = 0;
+                wrong = 0;
+                correctList = [];
+                wrongList = [];
+                console.log("[restartProgress] Cleared correctList:", JSON.parse(JSON.stringify(correctList)), "wrongList:", JSON.parse(JSON.stringify(wrongList)));
+
+                document.getElementById("correct").innerText = correct;
+                document.getElementById("wrong").innerText = wrong;
+                // score will be re-fetched or reset when a new game starts
+
+                const imageElement = document.getElementById("image");
+                if (imageElement) {
+                    imageElement.src = "";
+                    imageElement.alt = "Parasite Image";
+                    imageElement.classList.remove('loaded');
+                }
+                const loadingScreen = document.querySelector('.loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.style.display = 'none'; // Or 'flex' if you want spinner initially
+                }
+                const answerInput = document.getElementById("answer");
+                if (answerInput) {
+                    answerInput.value = "";
+                }
+                const showAnswerDiv = document.getElementById("showAnswer");
+                if (showAnswerDiv) {
+                    showAnswerDiv.innerHTML = "";
+                }
+                const showExplanationDiv = document.getElementById("showExplanation");
+                if (showExplanationDiv) {
+                    showExplanationDiv.innerHTML = "";
+                    showExplanationDiv.style.display = "none";
+                }
+                const cardAnswerOverlay = document.querySelector(".card-answer");
+                if (cardAnswerOverlay) {
+                    cardAnswerOverlay.style.display = "none";
+                }
+                adjustPlaceholder();
+                console.log("[restartProgress] UI reset complete.");
+              });
+            }
+        }
+
+        function sendToGoogleDocs(content) {
+            const url = 'https://script.google.com/macros/s/AKfycbzWbgs69CkM1nsQKCdtSp26b0LKmCqpzqlAnuetqzgqfd3KVkcZSjWB19vmNhcvlXeO/exec';
+            const submitButton = document.getElementById('submit-explanation-button');
+
+            fetch(url, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', },
+                body: new URLSearchParams({ content: content })
+            })
+            .then(() => { console.log("Data likely sent successfully (no-cors mode)."); })
+            .catch(error => {
+                console.error('Error sending data:', error);
+                showAlertModal('送出詳解時發生錯誤，請稍後再試。');
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('loading');
+                }
+                return;
+            })
+            setTimeout(hideContributionInput, 300);
+        }
+
+        function parseMultiAns(data) {
+            if (!data) return [];
+            Object.values(data).forEach(item => {
+                if (item && typeof item.answer === 'string') {
+                    item.answer = item.answer.split(" / ").map(s => s.trim()).filter(s => s);
+                } else if (!item || typeof item.answer === 'undefined') {
+                    item.answer = [];
+                }
+            });
+            return data;
+        }
+        function enterKeyEvent(event) {
+            if (isComposing) return;
+            if (event.key === 'Enter') {
+                const explanationInput = document.getElementById('explanation-input');
+                if (explanationInput && document.activeElement === explanationInput && explanationInput.offsetParent !== null) {
+                    event.preventDefault();
+                    submitContribution();
+                } else if (!viewing && document.getElementById("answer").value.trim() !== "") {
+                    submitUserAnswer();
+                } else if (viewing && document.querySelector('.card-answer').style.display === 'flex') {
+                    const nextBtn = document.getElementById('next');
+                    if (nextBtn && nextBtn.style.display !== 'none') {
+                         nextBtn.click(); // This will trigger either nextProb or startReviewWrong
+                    }
+                }
+            }
+        }
+        function startGame() {
+            console.log("[startGame] Called. Setting up game event listeners.");
+            document.addEventListener("keydown", enterKeyEvent);
+            document.getElementById("submitAnswer").addEventListener("click", submitUserAnswer);
+            document.getElementById("dontKnow").addEventListener("click", showAnswer);
+            document.getElementById("correctArea").addEventListener("click", showCorrectList);
+            document.getElementById("wrongArea").addEventListener("click", showWrongList);
+            // document.getElementById("next").addEventListener("click", nextProb); // Already set in createStartHandler
+            document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('modal').style.display = "none";
+            });
+
+            window.addEventListener('click', function(event) {
+                let regularModal = document.getElementById('modal');
+                if (event.target === regularModal) {
+                    regularModal.style.display = "none";
+                }
+            });
+
+            nextProb();
+            console.log("[startGame] Finished. Called nextProb().");
+        }
+        function checkAns(input, ansArr) {
+            if (!Array.isArray(ansArr)) return false;
+            const normalizedInput = input.trim().toLowerCase();
+            return ansArr.some(ans => ans.trim().toLowerCase() === normalizedInput);
+        }
+        function submitUserAnswer() {
+            console.log("[submitUserAnswer] Called. viewing:", viewing, "isComposing:", isComposing);
+            if (isComposing) {
+                console.log("[submitUserAnswer] Bailed: isComposing is true.");
+                return;
+            }
+            var userAnswerRaw = document.getElementById("answer").value;
+            var lowerUserAnswer = userAnswerRaw.trim().toLowerCase();
+            console.log("[submitUserAnswer] User answer (raw):", userAnswerRaw, "(lower):", lowerUserAnswer);
+
+
+            if (lowerUserAnswer && lowerCaseSwearWords.some(swearWord => lowerUserAnswer.includes(swearWord))) {
+                window.open('https://youtu.be/HmIMmFAV4BY', '_blank');
+                document.getElementById("answer").value = "";
+                console.log("[submitUserAnswer] Swear word detected. Bailing.");
+                return;
+            }
+
+            if (viewing) {
+                 console.log("[submitUserAnswer] Bailed: viewing is true.");
+                return;
+            }
+            clearTimeout(tm);
+
+            var userAnswer = userAnswerRaw;
+            if (userAnswer.trim() === "") return;
+
+            viewing = true;
+            document.querySelector('.answer-input-container').style.visibility = 'hidden';
+            document.querySelector('.bottom-buttons').style.visibility = 'hidden';
+            document.querySelector('.your-answer-label').style.visibility = 'hidden';
+
+            var showAnsDiv = document.getElementById("showAnswer");
+            var cardAnswerDiv = document.querySelector(".card-answer");
+            cardAnswerDiv.style.display = "flex";
+
+            if (checkAns(userAnswer, data[x].answer)) {
+                showAnsDiv.innerHTML = `<strong style="color: #10B981;">對了欸！！🥹</strong> 答案是：${data[x].answer.join(' / ')}`;
+                if (data[x].answer && data[x].answer.length > 0) {
+                    const primaryAnswerToSpeak = data[x].answer[0];
+                    if (primaryAnswerToSpeak) {
+                        addOrUpdateSpeakButton(primaryAnswerToSpeak, showAnsDiv);
+                    }
+                }
+                showExplanation();
+                updateCorrect();
+            } else {
+                showAnsDiv.innerHTML = `<strong style="color: #EF4444;">錯了錯了😭</strong> 正確答案是：${data[x].answer.join(' / ')}`;
+                if (data[x].answer && data[x].answer.length > 0) {
+                    const primaryAnswerToSpeak = data[x].answer[0];
+                    if (primaryAnswerToSpeak) {
+                        addOrUpdateSpeakButton(primaryAnswerToSpeak, showAnsDiv);
+                    }
+                }
+                showExplanation();
+                updateWrong();
+            }
+
+            total++;
+            // checkCompletion(); // This is handled by nextProb -> handleEndOfRound
+        }
+        function hideExplanation() {
+            const expDiv = document.getElementById("showExplanation");
+            expDiv.innerHTML = "";
+            expDiv.style.display = "none";
+        }
+        function showAnswer() {
+            console.log("[showAnswer] Called (Don't Know). viewing:", viewing);
+            if (viewing) {
+                console.log("[showAnswer] Bailed: viewing is true.");
+                return;
+            }
+            clearTimeout(tm);
+            console.log("[showAnswer] Current question item (data[x]):", JSON.parse(JSON.stringify(data[x])));
+            console.log("[showAnswer] correctList before update:", JSON.parse(JSON.stringify(correctList)));
+            console.log("[showAnswer] wrongList before update:", JSON.parse(JSON.stringify(wrongList)));
+
+            viewing = true;
+            document.querySelector('.answer-input-container').style.visibility = 'hidden';
+            document.querySelector('.bottom-buttons').style.visibility = 'hidden';
+            document.querySelector('.your-answer-label').style.visibility = 'hidden';
+
+            var showAnsDiv = document.getElementById("showAnswer");
+            var cardAnswerDiv = document.querySelector(".card-answer");
+            cardAnswerDiv.style.display = "flex";
+
+            showAnsDiv.innerHTML = `<strong style="color: #F59E0B;">答案：</strong>${data[x].answer.join(' / ')}`;
+            if (data[x].answer && data[x].answer.length > 0) {
+                const primaryAnswerToSpeak = data[x].answer[0];
+                 if (primaryAnswerToSpeak) {
+                    addOrUpdateSpeakButton(primaryAnswerToSpeak, showAnsDiv);
+                }
+            }
+            showExplanation();
+            updateUnknown();
+            console.log("[showAnswer] correctList after update:", JSON.parse(JSON.stringify(correctList)));
+            console.log("[showAnswer] wrongList after update:", JSON.parse(JSON.stringify(wrongList)));
+
+            total++;
+            // checkCompletion(); // This is handled by nextProb -> handleEndOfRound
+             console.log("[showAnswer] Exiting. total:", total, "viewing:", viewing);
+        }
+        function showExplanation() {
+             var expDiv = document.getElementById("showExplanation");
+            expDiv.innerHTML = '';
+            const explanationText = data[x]?.explanation?.trim();
+            const hasExplanation = explanationText && explanationText !== "\"\"" && explanationText !== "\"\"";
+
+            if (hasExplanation) {
+                const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
+                expDiv.innerHTML = `<strong>偷偷告訴你為什麼：</strong>${sanitizedExplanation}`;
+            } else {
+                expDiv.innerHTML = `
+                    <div id="no-explanation-message" style="position: relative; display: inline-block;">
+                        <i>這題還沒有詳解⋯不過你可以</i>
+                        <span class="contribute-link" onclick="showContributionInput()">貢獻一下！</span>
+                        <div class="tooltip">
+                            提交詳解可獲得 10分，但亂填會被清除所有分數
+                            <div class="tooltip-arrow"></div>
+                        </div>
+                    </div>
+                    <div class="contribution-area" id="contribution-area" style="display: none;">
+                        <input id="explanation-input" placeholder="請輸入你的詳解⋯"></input>
+                        <button id="submit-explanation-button" onclick="submitContribution()">送出</button>
+                    </div>
+                `;
+            }
+            expDiv.style.display = "block";
+        }
+        window.showContributionInput = function showContributionInput() {
+             const contribArea = document.getElementById('contribution-area');
+            const noExplanationMsg = document.getElementById('no-explanation-message');
+            if (contribArea) {
+                contribArea.style.display = 'flex';
+                if(noExplanationMsg) noExplanationMsg.style.display = 'none';
+                const textarea = document.getElementById('explanation-input');
+                if(textarea) textarea.focus();
+            }
+        }
+        function hideContributionInput() {
+             const contribArea = document.getElementById('contribution-area');
+            const noExplanationMsg = document.getElementById('no-explanation-message');
+             const textarea = document.getElementById('explanation-input');
+             const submitButton = document.getElementById('submit-explanation-button');
+
+            if (contribArea) {
+                contribArea.style.display = 'none';
+                if (textarea) textarea.value = '';
+                 if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('loading');
+                 }
+            }
+             if (noExplanationMsg) {
+                noExplanationMsg.style.display = 'inline';
+                noExplanationMsg.innerHTML = '<i>感謝你的貢獻！</i>';
+            }
+        }
+        function updateScoreDisplay() {
+            // This updates the global score display from Firebase
+            // Individual round correct/wrong are updated directly by updateCorrect/updateWrong
+            const scoreDisplay = document.getElementById("score-display");
+            if (scoreDisplay) scoreDisplay.textContent = score; // score is the global accumulated score
+            
+            const correctEl = document.getElementById("correct");
+            if (correctEl) correctEl.textContent = correct; // correct is for the current round
+            const wrongEl = document.getElementById("wrong");
+            if (wrongEl) wrongEl.textContent = wrong; // wrong is for the current round
+        }
+        async function submitContribution() {
+            let ip = 'unknown';
+            try {
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                ip = ipData.ip;
+            } catch (err) {
+                console.error('取得 IP 失敗：', err);
+            }
+            const os = navigator.platform || 'Unknown OS';
+            const ua = navigator.userAgent || '';
+            let browser = 'Unknown Browser';
+            if (ua.includes('Firefox')) {
+                browser = 'Firefox';
+            } else if (ua.includes('Safari') && !ua.includes('Chrome')) {
+                browser = 'Safari';
+            } else if (ua.includes('Chrome')) {
+                browser = 'Chrome';
+            }
+            const now = new Date();
+            const hours12 = now.getHours() % 12 || 12;
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const period = now.getHours() >= 12 ? 'PM' : 'AM';
+            const formattedDate = `${now.getMonth()+1}月${now.getDate()}日${hours12}:${minutes}${period}`;
+            const contributorInfo = `${window.currentPlayer}[IP: ${ip}, ${os}, ${browser}]（${formattedDate}）：\n`;
+
+            const explanationInput = document.getElementById('explanation-input');
+            const explanation = explanationInput.value.trim();
+            const submitButton = document.getElementById('submit-explanation-button');
+
+            if (!explanation) {
+                showAlertModal("請輸入詳解內容！");
+                explanationInput.focus();
+                return;
+            }
+
+            if (!data || data[x] === undefined) {
+                showAlertModal("無法獲取當前問題資料，無法送出。");
+                return;
+            }
+
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.classList.add('loading');
+            }
+
+            const currentItem = data[x];
+            const num = currentItem.num || '';
+            const path = currentItem.path || '';
+            const answer = Array.isArray(currentItem.answer) ? currentItem.answer.join(' / ') : (currentItem.answer || '');
+            const description = currentItem.description || '';
+            const content = `${num},${path},${answer},${description},${explanation}`;
+
+            console.log("Sending content:", content);
+            const fullContent = contributorInfo + content;
+            sendToGoogleDocs(fullContent);
+            writeScore(10) // Give 10 points for contribution
+              .then(newTotalScore => { // writeScore returns the new total score from Firebase
+                score = newTotalScore; // Update local total score
+                updateScoreDisplay(); // Update UI
+                showAlertModal(`賺了10分！目前總分數：${newTotalScore}`);
+              })
+              .catch(err => console.error("寫入分數失敗：", err));
+        }
+        window.submitContribution = submitContribution;
+
+        function nextProb() {
+            console.log("[nextProb] Called. done:", JSON.parse(JSON.stringify(done)));
+            if (done.every(d => d)) {
+                console.log("[nextProb] All questions in current set are done. Handling end of round.");
+                handleEndOfRound();
+                return;
+            }
+
+            const showAnsDiv = document.getElementById("showAnswer");
+            const existingSpeakButton = showAnsDiv.querySelector('.speak-answer-icon-button');
+            if (existingSpeakButton) {
+                existingSpeakButton.remove();
+            }
+
+            // Reset UI to question state
+            viewing = false;
+            document.querySelector('.card-answer').style.display = 'none';
+            document.querySelector('.answer-input-container').style.visibility = 'visible';
+            document.querySelector('.bottom-buttons').style.visibility = 'visible';
+            document.querySelector('.your-answer-label').style.visibility = 'visible';
+
+            resetTime();
+            countdown();
+            
+            const imageUpdated = updateImage();
+            if (!imageUpdated && !done.every(d=>d)) { // Should not happen if done.every is checked first
+                console.error("[nextProb] Image not updated, but not all questions are done. This state should not be reached.");
+                handleEndOfRound(); // Force end of round to prevent issues
+                return;
+            }
+
+            document.getElementById("answer").value = "";
+            document.getElementById("answer").focus();
+            const answerInput = document.getElementById("answer");
+            const desc = data[x]?.description;
+            if (desc && desc.trim() !== "") {
+                answerInput.placeholder = desc;
+            } else {
+                adjustPlaceholder();
+            }
+            document.getElementById("showAnswer").innerHTML = "";
+            document.getElementById("showExplanation").innerHTML = "";
+            document.getElementById("showExplanation").style.display = "none";
+
+            const savedCorrectList = JSON.parse(JSON.stringify(correctList));
+            const savedWrongList = JSON.parse(JSON.stringify(wrongList));
+
+            localStorage.setItem('gameProgress', JSON.stringify({ data, x, done, correct, wrong, score, correctList: savedCorrectList, wrongList: savedWrongList }));
+            console.log("[nextProb] Saved progress to localStorage. x:", x, "correct (round):", correct, "wrong (round):", wrong, "score (total):", score);
+            console.log("[nextProb] Saved correctList:", JSON.parse(JSON.stringify(savedCorrectList)));
+            console.log("[nextProb] Saved wrongList:", JSON.parse(JSON.stringify(savedWrongList)));
+            console.log("[nextProb] Exiting.");
+        }
+        function pickNewImage() {
+            console.log("[pickNewImage] Called. Current 'done' array:", JSON.parse(JSON.stringify(done)));
+             const availableIndices = [];
+            for (let i = 0; i < numOfProbs; i++) {
+                if (!done[i]) availableIndices.push(i);
+            }
+            console.log("[pickNewImage] Available indices:", JSON.parse(JSON.stringify(availableIndices)));
+
+
+            if (availableIndices.length === 0) {
+                // This means all questions in the current set (data) have been shown
+                // The calling function (nextProb) will handle this by calling handleEndOfRound
+                return -1; 
+            }
+
+            const randomIndex = Math.floor(Math.random() * availableIndices.length);
+            const selectedIndex = availableIndices[randomIndex];
+            done[selectedIndex] = true; // Mark as shown for this round
+            console.log(`[pickNewImage] Selected index: ${selectedIndex}. Updated 'done' array:`, JSON.parse(JSON.stringify(done)));
+            return selectedIndex;
+        }
+        function updateImage(isResuming = false) {
+            console.log(`[updateImage] Called. isResuming: ${isResuming}. Current x: ${x}`);
+             document.querySelector('.loading-screen').style.display = 'flex';
+            var imageElement = document.getElementById("image");
+            imageElement.classList.remove('loaded');
+            imageElement.src = "";
+
+            if (!isResuming) {
+                const newX = pickNewImage();
+                if (newX === -1) { // All questions in current set are done
+                    console.log("[updateImage] pickNewImage returned -1, no more images in this set.");
+                    document.querySelector('.loading-screen').style.display = 'none';
+                    return false; // Indicate failure to update, nextProb will handleEndOfRound
+                }
+                x = newX;
+            }
+
+             if (x === -1 || data[x] === undefined) { // x could be -1 if newX was -1 and somehow not caught
+                console.error(`[updateImage] Invalid question index or data. x: ${x}, data[x]:`, data[x]);
+                document.querySelector('.loading-screen').style.display = 'none';
+                return false; // Indicate failure
+            }
+            console.log(`[updateImage] Updating image for index x: ${x}. Item:`, JSON.parse(JSON.stringify(data[x])));
+
+            const picref = data[x]?.path;
+
+            if (picref) {
+                 imageElement.setAttribute('src', picref);
+                 const altText = data[x]?.answer?.[0] || `Parasite image ${x + 1}`;
+                 imageElement.setAttribute('alt', `Image for: ${altText}`);
+                 console.log(`[updateImage] Set image src to: ${picref}, alt: Image for: ${altText}`);
+            } else {
+                 console.warn(`[updateImage] No image path found for index ${x}.`);
+                 imageElement.alt = "Image not available";
+                 document.querySelector('.loading-screen').style.display = 'none';
+            }
+            console.log("[updateImage] Exiting.");
+            return true; // Indicate success
+        }
+        function countdown() { }
+        function resetTime() { clearTimeout(tm); }
+        function showWrongList() { displayListInModal(wrongList, "你答錯的"); }
+        function showCorrectList() { displayListInModal(correctList, "你答對的"); }
+        function displayListInModal(list, title) {
+            let modal = document.getElementById('modal');
+            let modalBody = document.getElementById('modalBody');
+            let content = `<h2>${title} (${list.length})</h2>`;
+
+            if (list.length === 0) {
+                content += `<p>你還沒有${title === "你答對的" ? "答對的" : "答錯的"}欸⋯</p>`;
+            } else {
+                content += '<ol>';
+                list.forEach(item => {
+                    if (!item) return;
+                    content += '<li>';
+                    if (item.path) {
+                        content += `<img src="${item.path}" alt="Image for ${item.answer?.[0] || 'item'}" style="max-width: 200px; margin-bottom: 8px; border-radius: 4px;">`;
+                    } else { content += '<p><i>（沒跑出圖片）</i></p>'; }
+                    const answerText = Array.isArray(item.answer) ? item.answer.join(' / ') : 'N/A';
+                    content += `<p><strong>答案：</strong>${answerText}</p>`;
+                    const explanationText = item.explanation?.trim();
+                     if (explanationText && explanationText !== "\"\"" && explanationText !== "\"\"") {
+                        const sanitizedExplanation = explanationText.replace(/<script.*?>.*?<\/script>/gi, '');
+                        content += `<p style="font-size: 0.9rem; color: #4B5563;"><em>解釋：</em>${sanitizedExplanation}</p>`;
+                     }
+                    content += '</li>';
+                });
+                content += '</ol>';
+            }
+            modalBody.innerHTML = content;
+            modal.style.display = "flex";
+        }
+        function adjustPlaceholder() {
+            const inputElement = document.getElementById('answer');
+            if (!inputElement) return;
+            const desktopBreakpoint = 1024;
+            if (window.innerWidth >= desktopBreakpoint) {
+                inputElement.placeholder = '把答案打在這，你可以偷按按看 / 看看';
+            } else {
+                inputElement.placeholder = '把答案打在這';
+            }
+        }
+        function showAlertModal(message) {
+            const modal = document.getElementById('alertModal');
+            const body = document.getElementById('alertModalBody');
+            body.textContent = message;
+            modal.style.display = 'flex';
+            modal.style.opacity = '1';
+            modal.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 500);
+            }, 3000);
+        }
+        window.showAlertModal = showAlertModal;
+
+        function closeAlertModal() {
+            document.getElementById('alertModal').style.display = 'none';
+        }
+        window.closeAlertModal = closeAlertModal;
+
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('alertModal');
+            if (event.target === modal) {
+                closeAlertModal();
+            }
+        });
+
+        window.preloadNextImage = function preloadNextImage() {
+            if (!data || numOfProbs === 0) return; // Ensure data is loaded
+            const nextIndex = (x + 1) % numOfProbs; // x might be -1 initially
+            if (nextIndex < 0 || nextIndex >= data.length || !data[nextIndex]) return;
+
+            const nextPath = data[nextIndex]?.path;
+            if (nextPath) {
+                const img = new Image();
+                img.src = nextPath;
+            }
+        }
+    </script>
+</body>
+</html>
