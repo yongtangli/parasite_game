@@ -1376,7 +1376,7 @@
           document.querySelector('.progress-actions').style.display = 'block';
           document.querySelector('.start-buttons').style.display = 'none';
         }
-        window.currentPlayer = "匿名";
+        window.currentPlayer = null; // MODIFIED: No default "匿名"
         var TIME = 31;
         var numOfProbs;
         var tm;
@@ -1556,6 +1556,15 @@
         async function writeScore(finalScore) {
             const uid = window.currentUserUid;
             if (!uid) throw new Error("使用者尚未登入");
+            
+            // Ensure window.currentPlayer is valid before writing
+            if (!window.currentPlayer || window.currentPlayer.trim() === "") {
+                console.error("Player name is not set. Cannot write score to leaderboard.");
+                // This should ideally be caught by game start/resume logic
+                showAlertModal("玩家名稱未設定，無法記錄分數。請重新開始並輸入名稱。");
+                return score; // Return current score without updating Firebase
+            }
+
             const scoreRef = ref(db, `leaderboard/${uid}`);
             try {
                 const snap = await get(scoreRef);
@@ -1614,7 +1623,7 @@
                         if (item.uid === window.currentUserUid) inTop = true;
                     }
                 });
-                if (!inTop) {
+                if (!inTop && window.currentUserUid) { // Check if currentUserUid is defined
                     const userIndex = sorted.findIndex(item => item.uid === window.currentUserUid);
                     if (userIndex !== -1) {
                         const item = sorted[userIndex];
@@ -1646,7 +1655,7 @@
                         listEl.appendChild(li);
                     }
                 }
-                const playerData = sorted.find(item => item.uid === window.currentUserUid);
+                const playerData = window.currentUserUid ? sorted.find(item => item.uid === window.currentUserUid) : null;
                 const playerScore = playerData ? playerData.score : 0;
                 document.getElementById("score-display").textContent = playerScore;
                 score = playerScore; // Initialize global score with Firebase score
@@ -1685,39 +1694,51 @@
             correct++;
             document.getElementById("correct").innerText = correct;
             const pointsEarned = 2;
-            score += pointsEarned; // Local score variable for Firebase update
+            // score += pointsEarned; // Local score variable is for Firebase update, not total sum here
             if (data && data[x]) {
                 correctList.push(data[x]);
             }
-            updateScoreDisplay(); // Update UI score
-            writeScore(pointsEarned) // Update Firebase score
-                .then(() => fetchLeaderboard()) // Refresh leaderboard after score update
+            // updateScoreDisplay(); // UI score is updated after Firebase write
+            writeScore(pointsEarned)
+                .then((newTotalScore) => {
+                    if (typeof newTotalScore === 'number') score = newTotalScore; // Update global score from Firebase
+                    fetchLeaderboard(); // Refresh leaderboard after score update
+                    updateScoreDisplay(); // Update UI display
+                })
                 .catch(err => console.error("寫入分數或更新排名失敗：", err));
         }
         function updateWrong() {
             wrong++;
             document.getElementById("wrong").innerText = wrong;
             const pointsLost = -2;
-            score += pointsLost;
+            // score += pointsLost;
             if (data && data[x]) {
                 wrongList.push(data[x]);
             }
-            updateScoreDisplay();
+            // updateScoreDisplay();
             writeScore(pointsLost)
-                .then(() => fetchLeaderboard())
+                .then((newTotalScore) => {
+                    if (typeof newTotalScore === 'number') score = newTotalScore;
+                    fetchLeaderboard();
+                    updateScoreDisplay();
+                })
                 .catch(err => console.error("寫入分數或更新排名失敗：", err));
         }
         function updateUnknown(){
             wrong++;
             document.getElementById("wrong").innerText = wrong;
             const pointsLost = -1;
-            score += pointsLost;
+            // score += pointsLost;
             if (data && data[x]) {
                 wrongList.push(data[x]);
             }
-            updateScoreDisplay();
+            // updateScoreDisplay();
             writeScore(pointsLost)
-                .then(() => fetchLeaderboard())
+                .then((newTotalScore) => {
+                    if (typeof newTotalScore === 'number') score = newTotalScore;
+                    fetchLeaderboard();
+                    updateScoreDisplay();
+                })
                 .catch(err => console.error("寫入分數或更新排名失敗：", err));
         }
 
@@ -1772,41 +1793,37 @@
             console.log("[startReviewWrong] Starting review of wrong answers.");
             if (wrongList.length === 0) {
                 console.warn("[startReviewWrong] No wrong answers to review.");
-                // This case should ideally not be reached if button logic is correct
-                handleEndOfRound(); // Or show a final completion message
+                handleEndOfRound(); 
                 return;
             }
 
-            data = [...wrongList]; // Use a copy of wrongList for the new round
+            data = [...wrongList]; 
             numOfProbs = data.length;
 
-            // Reset for the new round of wrong questions
             wrongList = [];
-            correctList = []; // Also reset correctList for the new round's calculation
+            correctList = []; 
             correct = 0;
             wrong = 0;
-            // score variable (total score) is not reset here, only current round's correct/wrong
-
+            
             document.getElementById("correct").innerText = correct;
             document.getElementById("wrong").innerText = wrong;
-            // updateScoreDisplay(); // UI score display will reflect total score
+            // updateScoreDisplay(); // Score is cumulative, round correct/wrong reset
 
             done = new Array(numOfProbs).fill(false);
-            x = -1; // To pick the first question in nextProb
+            x = -1; 
 
             const nextBtn = document.getElementById('next');
             nextBtn.innerText = "下一個";
             nextBtn.removeEventListener('click', startReviewWrong);
             nextBtn.addEventListener('click', nextProb);
 
-            // Reset UI to question state
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
             document.querySelector('.bottom-buttons').style.visibility = 'visible';
             document.querySelector('.your-answer-label').style.visibility = 'visible';
             viewing = false;
 
-            nextProb(); // Start the review round
+            nextProb(); 
         }
 
 
@@ -1816,10 +1833,15 @@
             populateVoices();
 
             const savedName = localStorage.getItem("parasite_player_name");
+            const nameField = document.getElementById("playerName");
             if (savedName) {
-                const nameField = document.getElementById("playerName");
                 if (nameField) nameField.value = savedName;
+                window.currentPlayer = savedName; // MODIFIED: Set currentPlayer if name is found
+            } else {
+                // window.currentPlayer remains null
+                if (nameField) nameField.placeholder = "輸入玩家名稱"; 
             }
+
             fetchLeaderboard();
             const leaderboardEl = document.querySelector('.leaderboard');
             if (leaderboardEl) {
@@ -1864,35 +1886,36 @@
             function createStartHandler(jsonPath) {
                 return async function () {
                     console.log(`[createStartHandler] Starting game with ${jsonPath}`);
-                    window.gameplayActive = true;
-                    console.log("[createStartHandler] Set window.gameplayActive to true");
-                    const nameInput = document.getElementById("playerName").value.trim();
-                    if (!nameInput) {
+                    
+                    const nameInputVal = document.getElementById("playerName").value.trim(); // MODIFIED var name
+                    if (!nameInputVal) {
                         showAlertModal("請先輸入玩家名稱！");
                         document.getElementById("playerName").focus();
-                        window.gameplayActive = false;
+                        window.gameplayActive = false; 
                         return;
                     }
-                    window.currentPlayer = nameInput;
-                    localStorage.setItem("parasite_player_name", nameInput);
-                    document.querySelector('.start-screen').style.display = 'none'; // Hide start screen
+                    window.currentPlayer = nameInputVal; // MODIFIED: Set from input
+                    localStorage.setItem("parasite_player_name", nameInputVal);
+                    window.gameplayActive = true;
+                    console.log("[createStartHandler] Set window.gameplayActive to true");
+
+                    document.querySelector('.start-screen').style.display = 'none'; 
                     document.querySelector('.flashcard-container').style.display = 'flex';
-                    fetchLeaderboard();
+                    // fetchLeaderboard(); // Already called in init and after score updates
 
                     state = 1;
                     correct = 0; wrong = 0; total = 0; 
-                    // score is initialized/updated from Firebase in fetchLeaderboard or writeScore
                     console.log("[createStartHandler] Resetting scores and lists. Correct:", correct, "Wrong:", wrong);
                     document.getElementById("correct").innerHTML = correct;
                     document.getElementById("wrong").innerHTML = wrong;
+                    updateScoreDisplay(); // Update overall score display as well from current 'score'
                     correctList = []; wrongList = [];
                     console.log("[createStartHandler] Cleared correctList:", JSON.parse(JSON.stringify(correctList)), "wrongList:", JSON.parse(JSON.stringify(wrongList)));
 
-                    // Ensure "Next" button is in its default state
                     const nextBtn = document.getElementById('next');
                     nextBtn.innerText = "下一個";
-                    nextBtn.removeEventListener('click', startReviewWrong); // Remove if it was set
-                    nextBtn.addEventListener('click', nextProb); // Add default
+                    nextBtn.removeEventListener('click', startReviewWrong); 
+                    nextBtn.addEventListener('click', nextProb); 
 
 
                     $.getJSON(jsonPath)
@@ -1961,8 +1984,8 @@
                         return;
                     }
                     console.log("[globalEnterPressStart] Gameplay not active, proceeding to check for new game start.");
-                    const nameInput = document.getElementById("playerName").value.trim();
-                    if (!nameInput) {
+                    const nameInputVal = document.getElementById("playerName").value.trim();
+                    if (!nameInputVal) {
                         showAlertModal("請先輸入玩家名稱！");
                         document.getElementById("playerName").focus();
                         console.log("[globalEnterPressStart] Player name missing.");
@@ -2105,6 +2128,16 @@
             if (resumeBtn) {
               resumeBtn.addEventListener('click', () => {
                 console.log("[resumeButton] Clicked. Attempting to resume progress.");
+                
+                const nameFromInput = document.getElementById("playerName").value.trim();
+                if (!nameFromInput) {
+                    showAlertModal("請先輸入玩家名稱才能接續遊戲！");
+                    document.getElementById("playerName").focus();
+                    return; // Do not proceed if name is not entered
+                }
+                window.currentPlayer = nameFromInput; // Ensure currentPlayer is set from input
+                localStorage.setItem("parasite_player_name", nameFromInput); // Re-save, in case it was edited
+
                 window.gameplayActive = true;
                 console.log("[resumeButton] Set window.gameplayActive to true");
 
@@ -2170,7 +2203,13 @@
 
                 correct = Number(prog.correct) || 0;
                 wrong = Number(prog.wrong) || 0;
-                // score is loaded from Firebase via fetchLeaderboard
+                // score is loaded from Firebase via fetchLeaderboard, or from prog if available (though Firebase is master)
+                // If prog.score exists and is a number, could use it as a base before fetchLeaderboard,
+                // but fetchLeaderboard should be the source of truth for total score.
+                if (typeof prog.score === 'number') {
+                    score = prog.score; // Temporary set from local, will be overwritten by Firebase
+                }
+
                 correctList = Array.isArray(prog.correctList) ? prog.correctList : [];
                 wrongList = Array.isArray(prog.wrongList) ? prog.wrongList : [];
                  console.log("[resumeButton] Loaded scores and lists. Correct:", correct, "Wrong:", wrong);
@@ -2178,8 +2217,8 @@
                  console.log("[resumeButton] wrongList:", JSON.parse(JSON.stringify(wrongList)));
 
 
-                updateScoreDisplay(); // Update UI for correct/wrong counts
-                fetchLeaderboard().catch(err => console.error("[resumeButton] Failed to fetch leaderboard on resume:", err)); // This will set global score
+                updateScoreDisplay(); 
+                fetchLeaderboard().catch(err => console.error("[resumeButton] Failed to fetch leaderboard on resume:", err)); 
 
                 document.querySelector('.start-screen').style.display = 'none';
                 document.querySelector('.flashcard-container').style.display = 'flex';
@@ -2192,20 +2231,18 @@
                 document.getElementById("wrongArea").addEventListener("click", showWrongList);
                 
                 const nextButton = document.getElementById("next");
-                nextButton.removeEventListener('click', startReviewWrong); // Clean up potential old listener
-                nextButton.addEventListener("click", nextProb); // Set default listener
+                nextButton.removeEventListener('click', startReviewWrong); 
+                nextButton.addEventListener("click", nextProb); 
 
                 document.getElementById('closeModal').addEventListener('click', function() {
                     document.getElementById('modal').style.display = "none";
                 });
 
-                updateImage(true); // isResuming = true, uses prog.x
+                updateImage(true); 
 
                 if (done.every(d => d)) {
-                    // All questions in the loaded set were done, trigger end of round logic
                     handleEndOfRound();
                 } else {
-                    // Game was in progress, show the answer for the current question
                     viewing = true;
                     console.log("[resumeButton] Setting viewing to true. UI elements for answering will be hidden.");
                     document.querySelector('.answer-input-container').style.visibility = 'hidden';
@@ -2214,7 +2251,7 @@
 
                     const cardAnswerDiv = document.querySelector(".card-answer");
                     cardAnswerDiv.style.display = "flex";
-                    nextButton.style.display = 'block'; // Ensure next button is visible
+                    nextButton.style.display = 'block'; 
 
                     const showAnsDiv = document.getElementById("showAnswer");
                     if (data[x] && data[x].answer) {
@@ -2227,7 +2264,7 @@
                         showAnsDiv.innerHTML = "答案資訊錯誤";
                         console.warn(`[resumeButton] No answer found for restored question index ${x}. data[x]:`, data[x]);
                     }
-                    showExplanation(); // Show explanation if available
+                    showExplanation(); 
 
                     const answerInput = document.getElementById("answer");
                     const desc = data[x]?.description;
@@ -2261,11 +2298,14 @@
                 wrong = 0;
                 correctList = [];
                 wrongList = [];
+                // Score will be fetched from Firebase by fetchLeaderboard on next init/game start
+                // For display purposes, reset local score value that updateScoreDisplay uses
+                // score = 0; // Reset local score value; Firebase score is the master
                 console.log("[restartProgress] Cleared correctList:", JSON.parse(JSON.stringify(correctList)), "wrongList:", JSON.parse(JSON.stringify(wrongList)));
 
                 document.getElementById("correct").innerText = correct;
                 document.getElementById("wrong").innerText = wrong;
-                // score will be re-fetched or reset when a new game starts
+                updateScoreDisplay(); // Update display with reset round scores and current Firebase score
 
                 const imageElement = document.getElementById("image");
                 if (imageElement) {
@@ -2275,7 +2315,7 @@
                 }
                 const loadingScreen = document.querySelector('.loading-screen');
                 if (loadingScreen) {
-                    loadingScreen.style.display = 'none'; // Or 'flex' if you want spinner initially
+                    loadingScreen.style.display = 'none'; 
                 }
                 const answerInput = document.getElementById("answer");
                 if (answerInput) {
@@ -2346,7 +2386,7 @@
                 } else if (viewing && document.querySelector('.card-answer').style.display === 'flex') {
                     const nextBtn = document.getElementById('next');
                     if (nextBtn && nextBtn.style.display !== 'none') {
-                         nextBtn.click(); // This will trigger either nextProb or startReviewWrong
+                         nextBtn.click(); 
                     }
                 }
             }
@@ -2358,7 +2398,6 @@
             document.getElementById("dontKnow").addEventListener("click", showAnswer);
             document.getElementById("correctArea").addEventListener("click", showCorrectList);
             document.getElementById("wrongArea").addEventListener("click", showWrongList);
-            // document.getElementById("next").addEventListener("click", nextProb); // Already set in createStartHandler
             document.getElementById('closeModal').addEventListener('click', function() {
                 document.getElementById('modal').style.display = "none";
             });
@@ -2437,7 +2476,6 @@
             }
 
             total++;
-            // checkCompletion(); // This is handled by nextProb -> handleEndOfRound
         }
         function hideExplanation() {
             const expDiv = document.getElementById("showExplanation");
@@ -2477,7 +2515,6 @@
             console.log("[showAnswer] wrongList after update:", JSON.parse(JSON.stringify(wrongList)));
 
             total++;
-            // checkCompletion(); // This is handled by nextProb -> handleEndOfRound
              console.log("[showAnswer] Exiting. total:", total, "viewing:", viewing);
         }
         function showExplanation() {
@@ -2537,15 +2574,13 @@
             }
         }
         function updateScoreDisplay() {
-            // This updates the global score display from Firebase
-            // Individual round correct/wrong are updated directly by updateCorrect/updateWrong
             const scoreDisplay = document.getElementById("score-display");
-            if (scoreDisplay) scoreDisplay.textContent = score; // score is the global accumulated score
+            if (scoreDisplay) scoreDisplay.textContent = score; // Global accumulated score from Firebase
             
             const correctEl = document.getElementById("correct");
-            if (correctEl) correctEl.textContent = correct; // correct is for the current round
+            if (correctEl) correctEl.textContent = correct; // Current round correct
             const wrongEl = document.getElementById("wrong");
-            if (wrongEl) wrongEl.textContent = wrong; // wrong is for the current round
+            if (wrongEl) wrongEl.textContent = wrong; // Current round wrong
         }
         async function submitContribution() {
             let ip = 'unknown';
@@ -2571,7 +2606,11 @@
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const period = now.getHours() >= 12 ? 'PM' : 'AM';
             const formattedDate = `${now.getMonth()+1}月${now.getDate()}日${hours12}:${minutes}${period}`;
-            const contributorInfo = `${window.currentPlayer}[IP: ${ip}, ${os}, ${browser}]（${formattedDate}）：\n`;
+            
+            // Ensure currentPlayer is valid for contributorInfo
+            const playerNameForContrib = (window.currentPlayer && window.currentPlayer.trim() !== "") ? window.currentPlayer : "未設定名稱玩家";
+            const contributorInfo = `${playerNameForContrib}[IP: ${ip}, ${os}, ${browser}]（${formattedDate}）：\n`;
+
 
             const explanationInput = document.getElementById('explanation-input');
             const explanation = explanationInput.value.trim();
@@ -2603,10 +2642,10 @@
             console.log("Sending content:", content);
             const fullContent = contributorInfo + content;
             sendToGoogleDocs(fullContent);
-            writeScore(10) // Give 10 points for contribution
-              .then(newTotalScore => { // writeScore returns the new total score from Firebase
-                score = newTotalScore; // Update local total score
-                updateScoreDisplay(); // Update UI
+            writeScore(10)
+              .then(newTotalScore => { 
+                if (typeof newTotalScore === 'number') score = newTotalScore;
+                updateScoreDisplay(); 
                 showAlertModal(`賺了10分！目前總分數：${newTotalScore}`);
               })
               .catch(err => console.error("寫入分數失敗：", err));
@@ -2627,7 +2666,6 @@
                 existingSpeakButton.remove();
             }
 
-            // Reset UI to question state
             viewing = false;
             document.querySelector('.card-answer').style.display = 'none';
             document.querySelector('.answer-input-container').style.visibility = 'visible';
@@ -2638,9 +2676,9 @@
             countdown();
             
             const imageUpdated = updateImage();
-            if (!imageUpdated && !done.every(d=>d)) { // Should not happen if done.every is checked first
+            if (!imageUpdated && !done.every(d=>d)) { 
                 console.error("[nextProb] Image not updated, but not all questions are done. This state should not be reached.");
-                handleEndOfRound(); // Force end of round to prevent issues
+                handleEndOfRound(); 
                 return;
             }
 
@@ -2660,8 +2698,11 @@
             const savedCorrectList = JSON.parse(JSON.stringify(correctList));
             const savedWrongList = JSON.parse(JSON.stringify(wrongList));
 
+            // score (total score) is now primarily managed by Firebase, so saving it to gameProgress
+            // might be redundant if fetchLeaderboard is always the source of truth on resume.
+            // However, keeping it for potential offline resume or faster UI update before Firebase sync.
             localStorage.setItem('gameProgress', JSON.stringify({ data, x, done, correct, wrong, score, correctList: savedCorrectList, wrongList: savedWrongList }));
-            console.log("[nextProb] Saved progress to localStorage. x:", x, "correct (round):", correct, "wrong (round):", wrong, "score (total):", score);
+            console.log("[nextProb] Saved progress to localStorage. x:", x, "correct (round):", correct, "wrong (round):", wrong, "score (total from local/Firebase):", score);
             console.log("[nextProb] Saved correctList:", JSON.parse(JSON.stringify(savedCorrectList)));
             console.log("[nextProb] Saved wrongList:", JSON.parse(JSON.stringify(savedWrongList)));
             console.log("[nextProb] Exiting.");
@@ -2676,14 +2717,12 @@
 
 
             if (availableIndices.length === 0) {
-                // This means all questions in the current set (data) have been shown
-                // The calling function (nextProb) will handle this by calling handleEndOfRound
                 return -1; 
             }
 
             const randomIndex = Math.floor(Math.random() * availableIndices.length);
             const selectedIndex = availableIndices[randomIndex];
-            done[selectedIndex] = true; // Mark as shown for this round
+            done[selectedIndex] = true; 
             console.log(`[pickNewImage] Selected index: ${selectedIndex}. Updated 'done' array:`, JSON.parse(JSON.stringify(done)));
             return selectedIndex;
         }
@@ -2696,18 +2735,18 @@
 
             if (!isResuming) {
                 const newX = pickNewImage();
-                if (newX === -1) { // All questions in current set are done
+                if (newX === -1) { 
                     console.log("[updateImage] pickNewImage returned -1, no more images in this set.");
                     document.querySelector('.loading-screen').style.display = 'none';
-                    return false; // Indicate failure to update, nextProb will handleEndOfRound
+                    return false; 
                 }
                 x = newX;
             }
 
-             if (x === -1 || data[x] === undefined) { // x could be -1 if newX was -1 and somehow not caught
+             if (x === -1 || data[x] === undefined) { 
                 console.error(`[updateImage] Invalid question index or data. x: ${x}, data[x]:`, data[x]);
                 document.querySelector('.loading-screen').style.display = 'none';
-                return false; // Indicate failure
+                return false; 
             }
             console.log(`[updateImage] Updating image for index x: ${x}. Item:`, JSON.parse(JSON.stringify(data[x])));
 
@@ -2724,7 +2763,7 @@
                  document.querySelector('.loading-screen').style.display = 'none';
             }
             console.log("[updateImage] Exiting.");
-            return true; // Indicate success
+            return true; 
         }
         function countdown() { }
         function resetTime() { clearTimeout(tm); }
@@ -2798,8 +2837,8 @@
         });
 
         window.preloadNextImage = function preloadNextImage() {
-            if (!data || numOfProbs === 0) return; // Ensure data is loaded
-            const nextIndex = (x + 1) % numOfProbs; // x might be -1 initially
+            if (!data || numOfProbs === 0) return; 
+            const nextIndex = (x + 1) % numOfProbs; 
             if (nextIndex < 0 || nextIndex >= data.length || !data[nextIndex]) return;
 
             const nextPath = data[nextIndex]?.path;
