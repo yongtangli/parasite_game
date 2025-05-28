@@ -1,0 +1,2604 @@
+[
+    {
+      "num": "1",
+      "path": "images/IMG_5719.jpg",
+      "answer": [
+        "Echinostoma malayanum",
+        "Echinostoma revolutum"
+      ],
+      "explanation": "Large egg, operculated (it is the second largest operculated egg), transparent. Contents include one ovum and multiple vitelline cells. Pay special attention to whether there is thickening on the side opposite the operculum. If the eggshell opposite the operculum is slightly thickened, it is Echinostoma spp. (distinguishing it from Fasciola hepatica/Fasciolopsis buski, which have no thickening and a smooth shell opposite the operculum). Eggs of Echinostoma malayanum and Echinostoma revolutum are indistinguishable.",
+      "description": ""
+    },
+    {
+      "num": "2",
+      "path": "images/IMG_5720.jpg",
+      "answer": [
+        "Angiostrongylus cantonensis"
+      ],
+      "explanation": "This is a female adult Angiostrongylus cantonensis, characterized by the 'barber's pole pattern,' which is formed by a black intestine intertwined with a pair of white uteri. The female worm is about 2-3 cm long. This worm does not develop into an adult in the human body.",
+      "description": ""
+    },
+    {
+      "num": "3",
+      "path": "images/IMG_5721.jpg",
+      "answer": [
+        "Schistosoma mansoni"
+      ],
+      "explanation": "Schistosoma mansoni egg. Large egg, elongated oval shape, non-operculated, with a prominent lateral spine. Contains a miracidium.",
+      "description": ""
+    },
+    {
+      "num": "4",
+      "path": "images/IMG_5722.jpg",
+      "answer": [
+        "Giardia lamblia",
+        "Giardia lamblia cyst"
+      ],
+      "explanation": "Giardia lamblia cyst. Mature cyst has 4 nuclei. Fragments of the sucking disc and axonemes are visible. Differentiate from Endolimax nana cyst: In Giardia lamblia cyst, the 4 nuclei are usually located to one side, and the cyst is more elongated oval-shaped; in E. nana cyst, the nuclei are more randomly distributed, the cyst is more rounded, and the nuclei appear as small dots under the microscope.",
+      "description": ""
+    },
+    {
+      "num": "5",
+      "path": "images/IMG_5723.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "Mature proglottid of Diphyllobothrium latum. The genital pore is in the middle of the proglottid, with a uterine pore. The uterus is rosette-shaped. Testes and vitelline glands are follicular and scattered on both sides of the proglottid. The ovary is lumpy and located behind the uterus (appearing as a transverse rectangle). It is the largest tapeworm parasitizing humans, about 3-10 meters long.",
+      "description": ""
+    },
+    {
+      "num": "6",
+      "path": "images/IMG_5724.jpg",
+      "answer": [
+        "Spirometra mansoni"
+      ],
+      "explanation": "Spirometra mansoni egg. The egg is asymmetrical, D-shaped (one end pointed, one end blunt). It is operculated. Contents include one ovum and multiple vitelline cells. The ends of the eggshell are relatively pointed. Needs to be distinguished from Diphyllobothrium latum egg, where the eggshell ends are more rounded and the operculum is somewhat triangular.",
+      "description": ""
+    },
+    {
+      "num": "7",
+      "path": "images/IMG_5725.jpg",
+      "answer": [
+        "Entamoeba coli"
+      ],
+      "explanation": "Entamoeba coli trophozoite. Has only one nucleus. Its karyosome is eccentrically located within the nucleus (bullseye is off-center). It ingests bacteria but not RBCs. Size: greater than 20 μm. Peripheral chromatin is unevenly distributed around the nucleus.",
+      "description": ""
+    },
+    {
+      "num": "8",
+      "path": "images/IMG_5726.jpg",
+      "answer": [
+        "Taenia saginata"
+      ],
+      "explanation": "Gravid proglottid of Taenia saginata (beef tapeworm/unarmed tapeworm). The proglottid is rectangular. The number of unilateral uterine branches is greater than 15 (usually 15-30 pairs). In contrast, Taenia solium has fewer than 13 unilateral uterine branches.",
+      "description": ""
+    },
+    {
+      "num": "9",
+      "path": "images/IMG_5727.jpg",
+      "answer": [
+        "Schistosoma japonicum"
+      ],
+      "explanation": "Schistosoma japonicum egg. Large egg, round or oval. Non-operculated. Host tissue cells are often attached to the eggshell, giving it a dirty appearance. There may be a small, inconspicuous lateral knob or spine on the shell. Contains a miracidium.",
+      "description": ""
+    },
+    {
+      "num": "10",
+      "path": "images/IMG_5728.jpg",
+      "answer": [
+        "Toxocara canis",
+        "Toxocara cati"
+      ],
+      "explanation": "Toxocara canis or Toxocara cati egg. Round, medium-sized. The outer shell has a pitted surface, similar to a golf ball. Contents may be an ovum or a further differentiated larva. This egg is not typically found in human feces; if detected, it indicates contamination of the specimen with dog or cat feces. Eggs of Toxocara canis and Toxocara cati are generally not differentiated.",
+      "description": ""
+    },
+    {
+      "num": "11",
+      "path": "images/IMG_5729.jpg",
+      "answer": [
+        "Fasciola hepatica"
+      ],
+      "explanation": "Fasciola hepatica adult. The worm is flat and leaf-shaped, with a distinct cephalic cone at the anterior end. The oral and ventral suckers are approximately the same size. The intestine, testes, ovary, and vitelline glands are all highly branched. It is about 3 cm in size when preserved in a jar.",
+      "description": ""
+    },
+    {
+      "num": "12",
+      "path": "images/IMG_5730.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "Hookworm egg. Oval, small to medium-sized. The eggshell is thin, consisting of a single layer. Contents are an ovum (usually already cleaved into several cells) or a larva. Both ends of the egg are relatively rounded. Eggs of Necator americanus and Ancylostoma duodenale are indistinguishable. Needs to be distinguished from Trichostrongylus orientalis egg, which has one end more pointed.",
+      "description": ""
+    },
+    {
+      "num": "13",
+      "path": "images/IMG_5731.jpg",
+      "answer": [
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "Ancylostoma duodenale male worm. It has a copulatory bursa, which contains two separate spicules.",
+      "description": ""
+    },
+    {
+      "num": "14",
+      "path": "images/IMG_5732.jpg",
+      "answer": [
+        "假葉目",
+        "擬葉目",
+        "Pseudophyllidea"
+      ],
+      "explanation": "Proglottid of a Pseudophyllidean tapeworm. The genital pore is located in the middle of the proglottid. In Cyclophyllidean tapeworms, the genital pore is on the side of the proglottid.",
+      "description": ""
+    },
+    {
+      "num": "15",
+      "path": "images/IMG_5733.jpg",
+      "answer": [
+        "Enterobius vermicularis"
+      ],
+      "explanation": "Enterobius vermicularis egg. Semi-oval, with one side flat and the other curved, appearing D-shaped (like a persimmon seed). Small to medium-sized (slightly smaller than Ascaris egg). The eggshell is asymmetrical. When freshly laid, it contains an ovum; after some time in the air, it develops into a tadpole-shaped larva. Eggs found on cellophane tape often contain a larva.",
+      "description": ""
+    },
+    {
+      "num": "16",
+      "path": "images/IMG_5734.jpg",
+      "answer": [
+        "Trypanosoma cruzi"
+      ],
+      "explanation": "Trypanosoma cruzi trypomastigote. In the blood, its kinetoplast appears as a large dot (compared to the small dot kinetoplast of Trypanosoma brucei gambiense/rhodesiense). It has an undulating membrane. Often C-shaped or S-shaped.",
+      "description": ""
+    },
+    {
+      "num": "17",
+      "path": "images/IMG_5735.jpg",
+      "answer": [
+        "Capillaria philippinensis"
+      ],
+      "explanation": "Capillaria philippinensis egg. Elongated oval, resembling a peanut shape. A key feature is a transparent mucoid plug at each end. The eggshell surface has fine striations. A slight constriction (waist) may be visible in side view.",
+      "description": ""
+    },
+    {
+      "num": "18",
+      "path": "images/IMG_5736.jpg",
+      "answer": [
+        "Entamoeba coli"
+      ],
+      "explanation": "Entamoeba coli cyst. Mature cysts typically have 8 nuclei (mature Entamoeba histolytica cysts have 4 nuclei). Fine adjustment of the microscope is needed to see all nuclei clearly. In immature cysts, the chromatoidal bodies have splintered or broom-like ends.",
+      "description": "有大於四個核"
+    },
+    {
+      "num": "19",
+      "path": "images/IMG_5737.jpg",
+      "answer": [
+        "Hymenolepis nana",
+        "Hymenolepis diminuta"
+      ],
+      "explanation": "Mature proglottid of Hymenolepis nana or Hymenolepis diminuta. The proglottid is a transverse rectangle. It has three testes, typically two on the right side and one on the left side of the proglottid. The genital pore is always on the left side of the proglottid.",
+      "description": ""
+    },
+    {
+      "num": "20",
+      "path": "images/IMG_5738.jpg",
+      "answer": [
+        "Acanthamoeba culbertsoni",
+        "Acanthamoeba castellanii"
+      ],
+      "explanation": "Acanthamoeba trophozoite. It has transparent, spine-like pseudopods (acanthopodia). There is one nucleus with a large karyosome.",
+      "description": "（08考古給的學名和09不一樣，但現在更新了09給的學名）"
+    },
+    {
+      "num": "21",
+      "path": "images/IMG_5739.jpg",
+      "answer": [
+        "bed bug",
+        "臭蟲"
+      ],
+      "explanation": "Bed bug. The body is flat and oval-shaped, wingless. It has piercing-sucking mouthparts. It has six legs, without special claws. The anterior margin of the pronotum is concave, with the head partially inserted into it.",
+      "description": ""
+    },
+    {
+      "num": "22",
+      "path": "images/IMG_5740.jpg",
+      "answer": [
+        "Ancylostoma caninum"
+      ],
+      "explanation": "Ancylostoma caninum adult. The buccal capsule has three pairs of ventral teeth on the ventral side.",
+      "description": ""
+    },
+    {
+      "num": "23",
+      "path": "images/IMG_5741.jpg",
+      "answer": [
+        "Enterobius vermicularis"
+      ],
+      "explanation": "Enterobius vermicularis adult. Length is about 1 cm. It has cephalic alae and an esophageal bulb. The male's tail is curved and has only one spicule. The female's tail is straight, and the genital opening is in the anterior third of the body.",
+      "description": ""
+    },
+    {
+      "num": "24",
+      "path": "images/IMG_5742.jpg",
+      "answer": [
+        "Clonorchis sinensis"
+      ],
+      "explanation": "This is the first intermediate host of Clonorchis sinensis: a snail (Parafossarulus manchouricus or Bithynia spp.). A characteristic feature is an operculum at the opening of the shell.",
+      "description": ""
+    },
+    {
+      "num": "25",
+      "path": "images/IMG_5743.jpg",
+      "answer": [
+        "Dipylidium caninum"
+      ],
+      "explanation": "Mature or gravid proglottid of Dipylidium caninum. Each proglottid has two sets of reproductive systems and two genital pores, one on each lateral margin.",
+      "description": ""
+    },
+    {
+      "num": "26",
+      "path": "images/IMG_5744.jpg",
+      "answer": [
+        "Trichinella spiralis"
+      ],
+      "explanation": "Trichinella spiralis encysted larva, found in muscle tissue. The larva is spirally coiled within the cyst.",
+      "description": ""
+    },
+    {
+      "num": "27",
+      "path": "images/IMG_5745.jpg",
+      "answer": [
+        "Schistosoma haematobium"
+      ],
+      "explanation": "Schistosoma haematobium egg. Large egg. Non-operculated. It has a small terminal spine. Contains a miracidium.",
+      "description": ""
+    },
+    {
+      "num": "28",
+      "path": "images/IMG_5746.jpg",
+      "answer": [
+        "Heterophyes heterophyes"
+      ],
+      "explanation": "Heterophyes heterophyes adult. The worm is small and pear-shaped. It has three suckers: an oral sucker, a ventral sucker, and a genital sucker (located posterior to the ventral sucker). There are two obliquely arranged, round testes at the posterior end of the body. The body surface is covered with small spines.",
+      "description": ""
+    },
+    {
+      "num": "29",
+      "path": "images/IMG_5747.jpg",
+      "answer": [
+        "tick",
+        "蜱"
+      ],
+      "explanation": "Tick. The body is divided into the capitulum (or gnathosoma) and the idiosoma. Adults and nymphs have eight legs; larvae have six legs. It has a hypostome used for blood-sucking. The back may have a scutum. Differentiate from mites: ticks are larger, with an exposed hypostome that has recurved teeth; mites are smaller. Differentiate from lice: lice are insects and have six legs.",
+      "description": ""
+    },
+    {
+      "num": "30",
+      "path": "images/IMG_5748.jpg",
+      "answer": [
+        "Trichomonas vaginalis",
+        "Trichomonas vaginalis trophozoite"
+      ],
+      "explanation": "Trichomonas vaginalis trophozoite. The organism is pear-shaped. It has a prominent axostyle that runs through the body and protrudes from the posterior end. It has an undulating membrane, about one-third the length of the body. There is one nucleus. There are four anterior flagella, and another flagellum extends posteriorly, forming the edge of the undulating membrane.",
+      "description": ""
+    },
+    {
+      "num": "31",
+      "path": "images/IMG_5749.jpg",
+      "answer": [
+        "Echinostoma malayanum",
+        "Echinostoma revolutum"
+      ],
+      "explanation": "The image shows a clam (Corbicula spp.), which is the second intermediate host for echinostomes (such as Echinostoma malayanum, Echinostoma revolutum).",
+      "description": ""
+    },
+    {
+      "num": "32",
+      "path": "images/IMG_5750.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "Diphyllobothrium latum egg. Medium-sized (about the size of a hookworm egg). Short oval or ovoid shape. It has an operculum, and sometimes there is a small knob on the shell opposite the operculum, resembling a button. The ends of the eggshell are relatively rounded. Contents include one ovum and multiple vitelline cells.",
+      "description": ""
+    },
+    {
+      "num": "33",
+      "path": "images/IMG_5751.jpg",
+      "answer": [
+        "Dirofilaria immitis"
+      ],
+      "explanation": "The intermediate host of Dirofilaria immitis (dog heartworm) is the mosquito. Humans are not the final host (FH); human infection is accidental. Larvae may migrate in the human body but usually cannot develop into adults.",
+      "description": "寫出人不是FH的線蟲"
+    },
+    {
+      "num": "34",
+      "path": "images/IMG_5752.jpg",
+      "answer": [
+        "Iodamoeba butschlii",
+        "Iodamoeba buetschlii"
+      ],
+      "explanation": "Iodamoeba buetschlii cyst. A mature cyst has only 1 nucleus. The karyosome within the nucleus is large, often eccentric, and irregularly shaped (sometimes fibers connecting the nuclear membrane and karyosome are visible, resembling a 'basket nucleus'). The cytoplasm contains a large glycogen vacuole, which stains brown with iodine in fresh specimens. The nucleus has no peripheral chromatin.",
+      "description": ""
+    },
+    {
+      "num": "35",
+      "path": "images/IMG_5753.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "Fertilized Ascaris lumbricoides egg. Medium-sized, short oval or round. A characteristic feature is the outer shell, which is usually covered with a bumpy, mammillated albuminous coat, making its edge appear wavy. If the albuminous coat is present, the egg is often bile-stained, appearing light yellow or golden. The eggshell itself is thick. Contents are an ovum or a developed larva, and there is a space between the contents and the ends of the eggshell.",
+      "description": ""
+    },
+    {
+      "num": "36",
+      "path": "images/IMG_5754.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "Paragonimus westermani adult. The worm is short oval, plump, resembling a coffee bean or a boiled peanut. The body surface is covered with small spines. It has oral and ventral suckers. Both the ovary and testes are irregularly branched (the ovary branches are sometimes described as resembling a many-fingered hand). It is about one centimeter in size when preserved in a jar.",
+      "description": ""
+    },
+    {
+      "num": "37",
+      "path": "images/IMG_5755.jpg",
+      "answer": [
+        "Plasmodium malariae"
+      ],
+      "explanation": "Red blood cells (RBCs) infected with Plasmodium malariae do not enlarge. Its late trophozoite stage often shows a characteristic band form, where the parasite stretches across the RBC. Schüffner's dots are absent. Malarial pigment is relatively coarse.",
+      "description": ""
+    },
+    {
+      "num": "38",
+      "path": "images/IMG_5756.jpg",
+      "answer": [
+        "Ancylostoma ceylanicum"
+      ],
+      "explanation": "Ancylostoma ceylanicum adult. The buccal capsule has two pairs of ventral teeth on the ventral side; one pair is larger, and one pair is smaller.",
+      "description": ""
+    },
+    {
+      "num": "39",
+      "path": "images/IMG_5757.jpg",
+      "answer": [
+        "蟎",
+        "mite"
+      ],
+      "explanation": "Mite. Very small in size. Adults and nymphs have eight legs, which are relatively short. Differentiate from ticks: ticks are larger, with an exposed and well-developed hypostome; mites have relatively smaller mouthparts (gnathosoma). Differentiate from lice: lice are insects and have six legs. The image may show a scabies mite (Sarcoptes scabiei), with claws or suckers at the ends of its legs, and some legs having long hairs.",
+      "description": ""
+    },
+    {
+      "num": "40",
+      "path": "images/IMG_5758.jpg",
+      "answer": [
+        "Trypanosoma cruzi",
+        "Leishmania donovani",
+        "Trypanosoma cruzi amastigote",
+        "Leishmania donovani amastigote"
+      ],
+      "explanation": "Amastigote. Found within host cells, the organism is round or oval. A larger nucleus (large dot) and a smaller kinetoplast (small dot) are visible. Amastigotes of Trypanosoma cruzi and Leishmania spp. are morphologically indistinguishable.",
+      "description": "寫出生物學名"
+    },
+    {
+      "num": "41",
+      "path": "images/IMG_5759.jpg",
+      "answer": [
+        "Fasciolopsis buski"
+      ],
+      "explanation": "Fasciolopsis buski adult. The worm is large, fleshy, and elongated oval, resembling a slice of ginger. It lacks a cephalic cone (distinguishing it from Fasciola hepatica, which has one). The ventral sucker is significantly larger than the oral sucker (about four times its size). The testes, ovary, and vitelline glands are all highly branched. The intestine is unbranched (unlike Fasciola hepatica, whose intestine is also highly branched). It is the largest fluke parasitizing humans, about 2-7 cm long.",
+      "description": ""
+    },
+    {
+      "num": "42",
+      "path": "images/IMG_5760.jpg",
+      "answer": [
+        "Brugia malayi",
+        "Brugia malayi microfilaria"
+      ],
+      "explanation": "Brugia malayi microfilaria. The organism is sheathed. A key characteristic is the presence of two distinct terminal nuclei at the tail end, which are not continuous with the main column of body nuclei. The body nuclei stain relatively darkly and are more closely packed. Commonly found in nocturnal peripheral blood.",
+      "description": ""
+    },
+    {
+      "num": "43",
+      "path": "images/IMG_5761.jpg",
+      "answer": [
+        "Dracunculus medinensis"
+      ],
+      "explanation": "Dracunculus medinensis. Humans are its only final host (F.H.). Its intermediate host is a copepod (Cyclops). Adult worms parasitize subcutaneous tissues.",
+      "description": "請寫出<b>人是FH</b>的<b>線蟲</b>"
+    },
+    {
+      "num": "44",
+      "path": "images/IMG_5762.jpg",
+      "answer": [
+        "Hymenolepis diminuta"
+      ],
+      "explanation": "Hymenolepis diminuta egg. The eggshell is slightly thick, with visible radial or irregular striations on its surface. There is a gelatinous or hyaline substance between the inner and outer membranes of the shell. It contains an oncosphere (hexacanth embryo). The embryophore has projections at both ends but lacks polar filaments (distinguishing it from Hymenolepis nana egg, which has polar filaments).",
+      "description": "殼有橫紋"
+    },
+    {
+      "num": "45",
+      "path": "images/IMG_5763.jpg",
+      "answer": [
+        "Dipylidium caninum"
+      ],
+      "explanation": "Egg packet (or egg capsule) of Dipylidium caninum. Each packet contains multiple (2-40) eggs. Each egg within the packet contains an oncosphere (hexacanth embryo).",
+      "description": ""
+    },
+    {
+      "num": "46",
+      "path": "images/IMG_5764.jpg",
+      "answer": [
+        "Taenia saginata"
+      ],
+      "explanation": "Scolex of Taenia saginata (beef tapeworm/unarmed tapeworm). It has four suckers. It lacks a rostellum and hooks (unlike the scolex of Taenia solium, which has a rostellum and two rows of hooks).",
+      "description": ""
+    },
+    {
+      "num": "47",
+      "path": "images/IMG_5765.jpg",
+      "answer": [
+        "Trichuris trichiura"
+      ],
+      "explanation": "Trichuris trichiura egg. Shaped like a barrel or a hand grenade (lemon-shaped). Medium-sized. There is a transparent mucoid plug at each end. The eggshell is relatively thick and smooth, with no striations. If bile-stained, the shell appears yellowish-brown. Contains an ovum or larva.",
+      "description": ""
+    },
+    {
+      "num": "48",
+      "path": "images/IMG_5766.jpg",
+      "answer": [
+        "陰蝨"
+      ],
+      "explanation": "Phthirus pubis (crab louse). The body is short and wide, somewhat crab-shaped. It has six legs; the first pair is slender, while the middle and hind pairs are stout, ending in strong claws adapted for grasping pubic or coarse hair. Abdominal segments are indistinctly fused.",
+      "description": ""
+    },
+    {
+      "num": "49",
+      "path": "images/IMG_5767.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "Paragonimus westermani egg. Elongated oval, asymmetrical. Medium to large in size. There is an operculum at one end, and the shell wall opposite the operculum is often unevenly thickened or has a shoulder-like protrusion. The egg is often golden-brown. Contents include one ovum and multiple vitelline cells.",
+      "description": ""
+    },
+    {
+      "num": "50",
+      "path": "images/IMG_5768.jpg",
+      "answer": [
+        "Necator americanus"
+      ],
+      "explanation": "Necator americanus adult. The buccal capsule has a pair of semilunar cutting plates on both the dorsal and ventral sides. The male has a copulatory bursa, and its two spicules are fused at their tips to form a small barb.",
+      "description": ""
+    },
+    {
+      "num": "51",
+      "path": "images/IMG_5769.jpg",
+      "answer": [
+        "跳蚤",
+        "flea"
+      ],
+      "explanation": "Flea. The body is laterally compressed. Wingless. It has piercing-sucking mouthparts. It has six legs; the hind legs are strong and powerful, adapted for jumping. Some species have combs (ctenidia) on the head or pronotum.",
+      "description": ""
+    },
+    {
+      "num": "52",
+      "path": "images/IMG_5770.jpg",
+      "answer": [
+        "Fasciolopsis buski"
+      ],
+      "explanation": "The image shows a planorbid snail (Hippeutis spp. or Segmentina spp.), which is the first intermediate host of Fasciolopsis buski. The shell is flat and coiled.",
+      "description": ""
+    },
+    {
+      "num": "53",
+      "path": "images/IMG_5771.jpg",
+      "answer": [
+        "Blastocystis hominis"
+      ],
+      "explanation": "Blastocystis hominis. The common form is the vacuolar form, where a large central vacuole occupies the center of the organism, pushing the cytoplasm and nuclei to the periphery. Multiple nuclei can be seen around the periphery.",
+      "description": ""
+    },
+    {
+      "num": "54",
+      "path": "images/IMG_5772.jpg",
+      "answer": [
+        "Schistosoma japonicum"
+      ],
+      "explanation": "The image shows an Oncomelania hupensis snail, which is the sole intermediate host of Schistosoma japonicum. The snail shell is small, conical, and often has longitudinal ribs. It is very small, resembling a tiny nail.",
+      "description": ""
+    },
+    {
+      "num": "55",
+      "path": "images/IMG_5773.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata"
+      ],
+      "explanation": "Cysticercus of Taenia solium or Taenia saginata. It is a milky-white, translucent bladder containing an invaginated scolex. It is about 0.5-1 cm in size. It parasitizes the muscles and other tissues of the intermediate host.",
+      "description": ""
+    },
+    {
+      "num": "56",
+      "path": "images/IMG_5774.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata"
+      ],
+      "explanation": "Taenia spp. egg. Round or slightly oval. The eggshell is thick, with radial striations on its surface (resembling tire treads). It contains an oncosphere (or hexacanth embryo). Eggs of Taenia solium and Taenia saginata are morphologically indistinguishable.",
+      "description": ""
+    },
+    {
+      "num": "57",
+      "path": "images/IMG_5775.jpg",
+      "answer": [
+        "Endolimax nana"
+      ],
+      "explanation": "Endolimax nana cyst. Size: less than 10 μm. Shape: short oval. Mature cysts typically have 4 nuclei. The nuclei lack peripheral chromatin. Under the microscope, the nuclei appear as 4 small dots.",
+      "description": "四個核"
+    },
+    {
+      "num": "58",
+      "path": "images/IMG_5776.jpg",
+      "answer": [
+        "Raillietina celebensis"
+      ],
+      "explanation": "Gravid proglottid of Raillietina celebensis, resembling a grain of rice.",
+      "description": ""
+    },
+    {
+      "num": "59",
+      "path": "images/IMG_5777.jpg",
+      "answer": [
+        "Trichuris trichiura"
+      ],
+      "explanation": "Trichuris trichiura adult. The anterior 3/5 of the body is slender and whip-like (head), while the posterior 2/5 is thicker (tail). The male's tail is coiled and has a single spicule. The female's tail is bluntly rounded and straight.",
+      "description": ""
+    },
+    {
+      "num": "60",
+      "path": "images/IMG_5778.jpg",
+      "answer": [
+        "Schistosoma haematobium"
+      ],
+      "explanation": "The image shows a Bulinus spp. snail, which is the first intermediate host of Schistosoma haematobium. A characteristic feature is that the shell is sinistral (coils to the left when the apex is pointing upwards).",
+      "description": ""
+    },
+    {
+      "num": "61",
+      "path": "images/IMG_5779.jpg",
+      "answer": [
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "Ancylostoma duodenale adult. The buccal capsule has two pairs of similarly sized ventral teeth and one pair of accessory teeth on the ventral side.",
+      "description": ""
+    },
+    {
+      "num": "62",
+      "path": "images/IMG_5780.jpg",
+      "answer": [
+        "Dicrocoelium dendriticum"
+      ],
+      "explanation": "Dicrocoelium dendriticum adult. It is the only fluke with testes located in the anterior part of the body. The worm is flat, lancet-shaped or spearhead-shaped. It has two testes, obliquely or tandemly arranged, located between the ventral sucker and the ovary. The uterus is in the posterior half of the body, coiled and filled with eggs, appearing dark brown.",
+      "description": ""
+    },
+    {
+      "num": "63",
+      "path": "images/IMG_5781.jpg",
+      "answer": [
+        "Strongyloides stercoralis"
+      ],
+      "explanation": "Strongyloides stercoralis rhabditiform larva (R-form larva). The esophagus is rhabditiform, with an esophageal bulb. The buccal cavity is short. It has a prominent genital primordium. Buccal cavity depth to body width ratio is approximately 1:3.",
+      "description": ""
+    },
+    {
+      "num": "64",
+      "path": "images/IMG_5782.jpg",
+      "answer": [
+        "Angiostrongylus cantonensis"
+      ],
+      "explanation": "The image shows a slug, which is one of the intermediate hosts of Angiostrongylus cantonensis.",
+      "description": "這是哪隻寄生蟲的IH？"
+    },
+    {
+      "num": "65",
+      "path": "images/IMG_5783.jpg",
+      "answer": [
+        "Hymenolepis nana"
+      ],
+      "explanation": "Hymenolepis nana egg. Short oval. Medium-sized (similar to hookworm egg size). The eggshell is very thin and transparent. It contains an oncosphere (hexacanth embryo). The embryophore has projections at both ends, from which 6-8 polar filaments extend into the space between the inner and outer membranes of the shell.",
+      "description": ""
+    },
+    {
+      "num": "66",
+      "path": "images/IMG_5784.jpg",
+      "answer": [
+        "Plasmodium falciparum"
+      ],
+      "explanation": "Gametocyte of Plasmodium falciparum. Both macrogametocytes and microgametocytes are characteristically banana-shaped or sausage-shaped. The macrogametocyte (female) has a more compact nucleus, while the microgametocyte (male) has a more diffuse nucleus. Both contain malarial pigment.",
+      "description": ""
+    },
+    {
+      "num": "67",
+      "path": "images/IMG_5785.jpg",
+      "answer": [
+        "Clonorchis sinensis"
+      ],
+      "explanation": "Clonorchis sinensis egg. One of the smaller fluke eggs. Shaped like a light bulb or a vase with shoulders. There is an operculum at one end, and the junction with the eggshell often forms distinct shoulders. There is often a small protrusion (abopercular knob/small comma) opposite the operculum. The eggshell surface has reticulated or granular markings (like melon seed patterns). Contains a developed miracidium.",
+      "description": ""
+    },
+    {
+      "num": "68",
+      "path": "images/IMG_5786.jpg",
+      "answer": [
+        "Entamoeba histolytica"
+      ],
+      "explanation": "Entamoeba histolytica trophozoite. Has only one nucleus. Its karyosome is centrally located within the nucleus (bullseye in the center). Peripheral chromatin is finely and evenly distributed along the inner edge of the nuclear membrane. An important characteristic is the frequent presence of ingested red blood cells (RBCs) in the cytoplasm (appearing as dark dots). Size: greater than 20 μm, highly motile, with finger-like pseudopods extending rapidly.",
+      "description": ""
+    },
+    {
+      "num": "69",
+      "path": "images/IMG_5787.jpg",
+      "answer": [
+        "Toxoplasma gondii",
+        "Toxoplasma gondii tachyzoite"
+      ],
+      "explanation": "Toxoplasma gondii tachyzoite. The organism is bow-shaped, crescent-shaped, or banana-shaped, with one end more pointed and the other more bluntly rounded. It has one nucleus, located centrally or slightly posteriorly. Commonly found in peritoneal exudate or tissue smears, either free or within host cells.",
+      "description": ""
+    },
+    {
+      "num": "70",
+      "path": "images/IMG_5788.jpg",
+      "answer": [
+        "Taenia solium"
+      ],
+      "explanation": "Scolex of Taenia solium (pork tapeworm/armed tapeworm). It has four suckers. At the apex, there is a retractable rostellum, which is armed with two rows of chitinous hooks.",
+      "description": ""
+    },
+    {
+      "num": "71",
+      "path": "images/IMG_5789.jpg",
+      "answer": [
+        "Isospora belli",
+        "Cystoisospora belli"
+      ],
+      "explanation": "Isospora belli (or Cystoisospora belli) mature oocyst. The oocyst is oval. It contains 2 sporocysts. Each sporocyst, in turn, contains 4 sickle-shaped sporozoites.",
+      "description": ""
+    },
+    {
+      "num": "72",
+      "path": "images/IMG_5790.jpg",
+      "answer": [
+        "Heterophyes heterophyes",
+        "Metagonimus yokogawai"
+      ],
+      "explanation": "Egg of Metagonimus yokogawai or Heterophyes heterophyes. One of the smallest fluke eggs. It has an operculum, but there are no distinct shoulders or protrusions between the operculum and the eggshell. The eggshell has no markings. Needs to be distinguished from Clonorchis sinensis egg, which has shoulders and markings.",
+      "description": ""
+    },
+    {
+      "num": "73",
+      "path": "images/IMG_5791.jpg",
+      "answer": [
+        "Balantidium coli",
+        "Balantidium coli trophozoite"
+      ],
+      "explanation": "Balantidium coli trophozoite. The largest protozoan parasite of humans. The entire body is covered with cilia. It has a cytostome at the anterior end. It has two nuclei: a large, bean-shaped or kidney-shaped macronucleus and a small micronucleus located in the concavity of the macronucleus.",
+      "description": ""
+    },
+    {
+      "num": "74",
+      "path": "images/IMG_5792.jpg",
+      "answer": [
+        "Capillaria hepatica"
+      ],
+      "explanation": "Capillaria hepatica egg. Elongated oval. Medium-sized. There is a transparent plug at each end. The eggshell has striations. The organism appears somewhat plump, unlike the Capillaria philippinensis egg which has a distinct waist. If this egg is found in human stool, it is usually a spurious infection (caused by ingesting the liver of an infected animal).",
+      "description": ""
+    },
+    {
+      "num": "75",
+      "path": "images/IMG_5793.jpg",
+      "answer": [
+        "Trichostrongylus orientalis"
+      ],
+      "explanation": "Trichostrongylus orientalis egg. Elongated oval, with one end more pointed and the other more bluntly rounded. Larger than hookworm eggs (about 3/2 times the size of a hookworm egg). The eggshell is thin and transparent. If the contents are an ovum, it is often seen cleaved into a morula stage.",
+      "description": ""
+    },
+    {
+      "num": "76",
+      "path": "images/IMG_5794.jpg",
+      "answer": [
+        "Armillifer agkistrodontis"
+      ],
+      "explanation": "Armillifer agkistrodontis (snake tongue worm). The female adult body is bead-like or rosary-like, with distinct annulations. The male adult is smaller, with less distinct annulations.",
+      "description": ""
+    },
+    {
+      "num": "77",
+      "path": "images/IMG_5795.jpg",
+      "answer": [
+        "Gnathostoma spinigerum"
+      ],
+      "explanation": "Gnathostoma spinigerum adult. Length is about 1-5 cm; the tails of both males and females are curved. It has a headbulb, which has 4 or more rows of hooks. The body surface has spines. Humans are not its final host (F.H.).",
+      "description": ""
+    },
+    {
+      "num": "78",
+      "path": "images/IMG_5796.jpg",
+      "answer": [
+        "Plasmodium ovale"
+      ],
+      "explanation": "Red blood cells (RBCs) infected with Plasmodium ovale enlarge and often become oval-shaped, with irregular, fimbriated edges. Schüffner's dots are present and are relatively coarse and prominent. The image shows a trophozoite.",
+      "description": ""
+    },
+    {
+      "num": "79",
+      "path": "images/IMG_5797.jpg",
+      "answer": [
+        "Giardia lamblia"
+      ],
+      "explanation": "Giardia lamblia trophozoite. The organism is pear-shaped and bilaterally symmetrical. It has 2 nuclei. It has 4 pairs of flagella. There is a large sucking disc on the ventral surface. Overall, it resembles a smiling face. It has median bodies and axonemes. Live trophozoites exhibit a falling leaf-like motility.",
+      "description": ""
+    },
+    {
+      "num": "80",
+      "path": "images/IMG_5798.jpg",
+      "answer": [
+        "Trypanosoma brucei gambiense",
+        "Trypanosoma brucei rhodesiense",
+        "Trypanosoma brucei gambiense trypomastigote",
+        "Trypanosoma brucei rhodesiense trypomastigote",
+        "Trypanosoma gambiense",
+        "Trypanosoma rhodesiense",
+        "Trypanosoma gambiense trypomastigote",
+        "Trypanosoma rhodesiense trypomastigote"
+      ],
+      "explanation": "Trypomastigote of Trypanosoma brucei gambiense or Trypanosoma brucei rhodesiense. In human blood, its kinetoplast appears as a small dot (distinguishing it from the large dot of Trypanosoma cruzi). It has an undulating membrane. The organism is slender, S-shaped or willow leaf-shaped. Trypomastigotes of T. b. gambiense and T. b. rhodesiense are morphologically indistinguishable.",
+      "description": ""
+    },
+    {
+      "num": "81",
+      "path": "images/Diphyllobothrium latum-2.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "Diphyllobothrium latum egg. Medium-sized. Short oval or ovoid shape. It has an operculum, and sometimes there is a small knob opposite the operculum (like a button). The ends of the eggshell are relatively rounded. Contents include one ovum and multiple vitelline cells.",
+      "description": ""
+    },
+    {
+      "num": "82",
+      "path": "images/Paragonimus westermani-2.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "Paragonimus westermani egg. Elongated oval, asymmetrical. Medium to large in size. There is an operculum at one end, and the shell wall opposite the operculum is often unevenly thickened, giving the egg a golden-brown color. Contains one ovum and multiple vitelline cells.",
+      "description": ""
+    },
+    {
+      "num": "83",
+      "path": "images/Hookworm-2.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "Hookworm egg. Oval, small to medium-sized. The eggshell is thin and transparent. Contents are usually an ovum cleaved into 2-8 cells. Both ends of the egg are relatively rounded.",
+      "description": ""
+    },
+    {
+      "num": "84",
+      "path": "images/Echinostoma malayanum-1.jpg",
+      "answer": [
+        "Echinostoma malayanum",
+        "Echinostoma revolutum"
+      ],
+      "explanation": "Echinostoma spp. egg. Large egg, operculated. A characteristic feature is that the eggshell opposite the operculum is slightly thickened. Contains one ovum and multiple vitelline cells. Eggs of Echinostoma malayanum and Echinostoma revolutum are indistinguishable.",
+      "description": ""
+    },
+    {
+      "num": "85",
+      "path": "images/Fasciolopsis buski-1.jpg",
+      "answer": [
+        "Fasciola hepatica",
+        "Fasciolopsis buski"
+      ],
+      "explanation": "Egg of Fasciola hepatica or Fasciolopsis buski. One of the largest fluke eggs. It has an operculum. The eggshell is thin and transparent. The shell opposite the operculum is smooth and not thickened (distinguishing it from Echinostoma eggs). Contains one ovum and multiple vitelline cells. Eggs of these two species are morphologically similar and difficult to distinguish, often referred to collectively as Fasciola/Fasciolopsis egg.",
+      "description": ""
+    },
+    {
+      "num": "86",
+      "path": "images/heterophyes.jpg",
+      "answer": [
+        "Heterophyes heterophyes"
+      ],
+      "explanation": "Heterophyes heterophyes adult. The worm is small and pear-shaped. It has three suckers: an oral sucker, a ventral sucker, and a genital sucker. There are two obliquely arranged, round testes at the posterior end of the body. The body surface is covered with small spines.",
+      "description": ""
+    },
+    {
+      "num": "87",
+      "path": "images/trichruis_adult.jpg",
+      "answer": [
+        "Trichuris trichiura",
+        "Trichuris trichiura adult"
+      ],
+      "explanation": "Trichuris trichiura adult. The anterior 3/5 of the body is slender and whip-like, while the posterior 2/5 is thicker. The male's tail is coiled; the female's tail is straight.",
+      "description": ""
+    },
+    {
+      "num": "88",
+      "path": "images/cysticercus.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata",
+        "Taenia solium cysticercus",
+        "Taenia saginata cysticercus"
+      ],
+      "explanation": "Cysticercus of Taenia solium or Taenia saginata. It is a milky-white, translucent bladder (about 0.5-1 cm), resembling a sago pearl, containing an invaginated scolex.",
+      "description": ""
+    },
+    {
+      "num": "89",
+      "path": "images/c_sinensis.jpg",
+      "answer": [
+        "Clonorchis sinensis"
+      ],
+      "explanation": "Clonorchis sinensis adult. The worm is narrow, elongated, flat, and transparent. Size is about 1-3 cm. There are two tandemly arranged, branched testes in the posterior part, with branches extending beyond the intestinal ceca. The intestinal ceca are unbranched. Lacks a cirrus and cirrus sac.",
+      "description": ""
+    },
+    {
+      "num": "90",
+      "path": "images/s_haematobium.jpg",
+      "answer": [
+        "Schistosoma haematobium"
+      ],
+      "explanation": "Schistosoma haematobium male worm. The body is short and stout. Body surface has fine tubercles. Intestinal ceca unite in the middle of the body. There are 4-5 testes, clustered or in a short row.",
+      "description": ""
+    },
+    {
+      "num": "91",
+      "path": "images/ancylostoma_caninum.jpg",
+      "answer": [
+        "Ancylostoma caninum"
+      ],
+      "explanation": "Ancylostoma caninum adult. The buccal capsule has three pairs of ventral teeth on the ventral side.",
+      "description": ""
+    },
+    {
+      "num": "92",
+      "path": "images/ss_f-form.jpg",
+      "answer": [
+        "Strongyloides stercoralis"
+      ],
+      "explanation": "Strongyloides stercoralis filariform larva (F-form larva). The body is slender. It is unsheathed (distinguishing it from the sheathed F-form larva of hookworms). The esophagus is about half the body length. The tail end is notched (inverted V-shape).",
+      "description": ""
+    },
+    {
+      "num": "93",
+      "path": "images/brugia-malayi.jpg",
+      "answer": [
+        "Brugia malayi"
+      ],
+      "explanation": "Brugia malayi microfilaria. The organism is sheathed. There are two distinct, separated terminal nuclei at the tail end. The body nuclei stain relatively darkly and are more closely packed, unlike Wuchereria bancrofti where nuclei are more loosely arranged and the tail tip is anuclear.",
+      "description": ""
+    },
+    {
+      "num": "94",
+      "path": "./images/IM-0000.jpg",
+      "answer": [
+        "Gnathostoma spinigerum"
+      ],
+      "explanation": "Gnathostoma spinigerum adult. It has a headbulb, which has 4 or more rows of hooks (larvae have fewer than 4 rows). The body surface has spines. Length is about 1-5 cm; the tails of both males and females are curved.",
+      "description": ""
+    },
+    {
+      "num": "95",
+      "path": "./images/IM-0001.jpg",
+      "answer": [
+        "Echinococcus granulosus"
+      ],
+      "explanation": "Echinococcus granulosus adult. The worm is minute, consisting only of a scolex, neck, and 2-3 proglottids (usually one immature, one mature, and one gravid proglottid). The scolex has four suckers and two rows of hooks.",
+      "description": ""
+    },
+    {
+      "num": "96",
+      "path": "./images/IM-0002.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "Ascaris lumbricoides adult. Large nematode, females can be 20-35 cm long, males 15-30 cm. The worm is creamy white or light pink, resembling an earthworm. The anterior end has three lips. The male's tail is ventrally curved.",
+      "description": ""
+    },
+    {
+      "num": "97",
+      "path": "./images/IM-0003.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "Mature proglottid of Diphyllobothrium latum. The proglottid is wider than it is long. The genital pore is located on the ventral midline. The uterus is rosette-shaped or knob-like, located in the center of the proglottid. Testes and vitelline glands are follicular and scattered on both sides of the proglottid.",
+      "description": ""
+    },
+    {
+      "num": "98",
+      "path": "./images/IM-0004.jpg",
+      "answer": [
+        "Metagonimus yokogawai"
+      ],
+      "explanation": "Metagonimus yokogawai adult. The worm is small and pear-shaped. It has an oral sucker, a ventral sucker, and a characteristic acetabulo-genital apparatus (genital sucker). There are two obliquely arranged, round testes at the posterior end of the body.",
+      "description": ""
+    },
+    {
+      "num": "99",
+      "path": "./images/IM-0005.jpg",
+      "answer": [
+        "Schistosoma japonicum"
+      ],
+      "explanation": "Schistosoma japonicum male worm. The body is short and stout, with a gynecophoral canal. The body surface is smooth, without tubercles. Intestinal ceca unite in the posterior part of the body. There are 7 testes, arranged in a single row.",
+      "description": ""
+    },
+    {
+      "num": "100",
+      "path": "./images/IM-0006.jpg",
+      "answer": [
+        "Taenia saginata"
+      ],
+      "explanation": "Gravid proglottid of Taenia saginata (beef tapeworm/unarmed tapeworm). The proglottid is rectangular (longer than wide). The main uterine stem is central, with branches extending to both sides; the number of unilateral branches is more than 15 (usually 15-30).",
+      "description": ""
+    },
+    {
+      "num": "101",
+      "path": "./images/IM-0007.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "Paragonimus westermani adult. The worm is short oval and plump. The ovary is irregularly and highly branched (resembling a many-fingered hand). The testes are also highly branched. The oral and ventral suckers are similar in size.",
+      "description": ""
+    },
+    {
+      "num": "102",
+      "path": "./images/IM-0008.jpg",
+      "answer": [
+        "Necator americanus"
+      ],
+      "explanation": "Necator americanus adult. The buccal capsule has a pair of semilunar cutting plates on both the dorsal and ventral sides.",
+      "description": ""
+    },
+    {
+      "num": "103",
+      "path": "./images/IM-0009.jpg",
+      "answer": [
+        "圓葉目絛蟲",
+        "圓葉目"
+      ],
+      "explanation": "Proglottid of a Cyclophyllidean tapeworm. The genital pore is located on the lateral margin of the proglottid. The image shows a chain of proglottids, with genital pores visible alternating or unilaterally on the edge.",
+      "description": "這是圓葉目絛蟲還是擬葉目絛蟲？"
+    },
+    {
+      "num": "104",
+      "path": "./images/IM-0010.jpg",
+      "answer": [
+        "Fasciola hepatica"
+      ],
+      "explanation": "Fasciola hepatica adult. The worm is flat and leaf-shaped, with a distinct cephalic cone at the anterior end. The intestine, testes, ovary, and vitelline glands are all highly branched.",
+      "description": ""
+    },
+    {
+      "num": "105",
+      "path": "./images/IM-0011.jpg",
+      "answer": [
+        "Hymenolepis nana",
+        "Hymenolepis diminuta"
+      ],
+      "explanation": "Mature proglottid of Hymenolepis nana or Hymenolepis diminuta. The proglottid is a transverse rectangle. It has three testes, two on the aporal side (distal to the genital pore) and one on the poral side (proximal to the genital pore) (typically two on the right, one on the left relative to the ovary). The genital pore opens unilaterally.",
+      "description": ""
+    },
+    {
+      "num": "106",
+      "path": "./images/IM-0012.jpg",
+      "answer": [
+        "Ancylostoma ceylanicum"
+      ],
+      "explanation": "Ancylostoma ceylanicum adult. The buccal capsule has two pairs of ventral teeth on the ventral side; one pair is larger, and one pair is smaller.",
+      "description": ""
+    },
+    {
+      "num": "107",
+      "path": "./images/IM-0013.jpg",
+      "answer": [
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "Ancylostoma duodenale adult. The buccal capsule has two pairs of similarly sized ventral teeth and one pair of accessory teeth on the ventral side.",
+      "description": ""
+    },
+    {
+      "num": "108",
+      "path": "./images/IM-0014.jpg",
+      "answer": [
+        "Fasciolopsis buski"
+      ],
+      "explanation": "The image shows water caltrop or water chestnut, which are second intermediate hosts for Fasciolopsis buski (metacercariae encyst on their surfaces).",
+      "description": "這是誰的中間宿主？"
+    },
+    {
+      "num": "109",
+      "path": "./images/IM-0015.jpg",
+      "answer": [
+        "Clonorchis sinensis"
+      ],
+      "explanation": "The image shows a snail (Parafossarulus manchouricus or Bithynia spp.), which is the first intermediate host of Clonorchis sinensis. The shell opening has an operculum.",
+      "description": "這是誰的中間宿主？"
+    },
+    {
+      "num": "110",
+      "path": "./images/IM-0016.jpg",
+      "answer": [
+        "Angiostrongylus cantonensis"
+      ],
+      "explanation": "The image shows a slug, which is one of the intermediate hosts of Angiostrongylus cantonensis.",
+      "description": "這是誰的中間宿主？"
+    },
+    {
+      "num": "111",
+      "path": "./images/IM-0017.jpg",
+      "answer": [
+        "Schistosoma japonicum"
+      ],
+      "explanation": "The image shows an Oncomelania hupensis snail, which is the sole intermediate host of Schistosoma japonicum. The shell is small and elongated, resembling a nail.",
+      "description": "這是誰的中間宿主？"
+    },
+    {
+      "num": "112",
+      "path": "./images/IM-0018.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "Paragonimus westermani adult. The worm resembles a boiled peanut, about one centimeter in size, small and roundish.",
+      "description": ""
+    },
+    {
+      "num": "113",
+      "path": "./images/IM-0019.jpg",
+      "answer": [
+        "Fasciola hepatica",
+        "Echinostoma revolutum",
+        "Echinostoma malayanum"
+      ],
+      "explanation": "The image shows a Lymnaea spp. snail. The shell is conical, about one centimeter, with an enlarged last whorl. It is the first intermediate host for Fasciola hepatica and some Echinostoma species. Needs to be distinguished from Bulinus snails, which are sinistral (left-coiling).",
+      "description": "寫出一種以它為中間宿主的蟲？"
+    },
+    {
+      "num": "114",
+      "path": "./images/IM-0020.jpg",
+      "answer": [
+        "Schistosoma haematobium"
+      ],
+      "explanation": "The image shows a Bulinus spp. snail, which is the first intermediate host of Schistosoma haematobium. The shell is sinistral (coils to the left when the apex is pointing upwards and the aperture is facing the viewer).",
+      "description": ""
+    },
+    {
+      "num": "115",
+      "path": "./images/IM-0021.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "The image shows a freshwater crab or crayfish, which is the second intermediate host of Paragonimus westermani.",
+      "description": ""
+    },
+    {
+      "num": "116",
+      "path": "./images/IM-0022.jpg",
+      "answer": [
+        "Angiostrongylus cantonensis"
+      ],
+      "explanation": "The image shows a giant African snail or a Bradybaena snail, which are intermediate hosts for Angiostrongylus cantonensis.",
+      "description": ""
+    },
+    {
+      "num": "117",
+      "path": "./images/IM-0023.jpg",
+      "answer": [
+        "Echinostoma malayanum",
+        "Echinostoma revolutum"
+      ],
+      "explanation": "The image shows a clam (Corbicula spp.), which is the second intermediate host for Echinostoma malayanum and Echinostoma revolutum.",
+      "description": ""
+    },
+    {
+      "num": "118",
+      "path": "./images/IM-0024.jpg",
+      "answer": [
+        "Gnathostoma spinigerum",
+        "Dracunculus medinensis",
+        "Diphyllobothrium latum",
+        "Spirometra mansoni"
+      ],
+      "explanation": "The image shows a copepod (Cyclops), which is the first intermediate host for Gnathostoma spinigerum (humans are not the final host), Dracunculus medinensis (humans are the only final host), Diphyllobothrium latum (humans are a final host), and Spirometra mansoni (humans are not the final host).",
+      "description": "寫出一種以它為中間宿主的蟲？"
+    },
+    {
+      "num": "119",
+      "path": "",
+      "answer": [
+        "Wuchereria bancrofti",
+        "Brugia malayi",
+        "Brugia timori",
+        "Dirofilaria immitis"
+      ],
+      "explanation": "Mosquitoes are intermediate hosts for several filarial worms, including Wuchereria bancrofti, Brugia malayi, Brugia timori, and Dirofilaria immitis.",
+      "description": "寫出一種以蚊子為中間宿主的蟲？"
+    },
+    {
+      "num": "120",
+      "path": "",
+      "answer": [
+        "fly",
+        "蒼蠅"
+      ],
+      "explanation": "The intermediate host of Thelazia callipaeda (oriental eye worm) is certain species of fruit flies or lachryphagous flies.",
+      "description": "寫出Thelazia callipaeda 的中間宿主？（可寫中文）"
+    },
+    {
+      "num": "121",
+      "path": "./images/IM-0025.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "The image shows a freshwater crab, which is the second intermediate host of Paragonimus westermani.",
+      "description": ""
+    },
+    {
+      "num": "122",
+      "path": "",
+      "answer": [
+        "狗蚤",
+        "貓蚤",
+        "狗蝨",
+        "dog flea",
+        "Dog flea",
+        "Cat flea",
+        "cat flea"
+      ],
+      "explanation": "The intermediate hosts of Dipylidium caninum are primarily dog fleas (Ctenocephalides canis) or cat fleas (Ctenocephalides felis), and occasionally dog lice (Trichodectes canis).",
+      "description": "寫出一種Dipylidium caninum 的中間宿主？（可寫中文）（這題沒圖片）"
+    },
+    {
+      "num": "123",
+      "path": "./images/IM-0026.jpg",
+      "answer": [
+        "Fasciolopsis buski"
+      ],
+      "explanation": "The image shows a planorbid snail (Hippeutis spp. or Segmentina spp.), which is the first intermediate host of Fasciolopsis buski.",
+      "description": ""
+    },
+    {
+      "num": "124",
+      "path": "./images/IM-0027.jpg",
+      "answer": [
+        "Trypanosoma cruzi",
+        "Trypanosoma cruzi amastigote",
+        "Leishmania donovani",
+        "Leishimania donovani amastigote"
+      ],
+      "explanation": "Amastigote. A large dot (parasite's nucleus) and a small dot (kinetoplast) are visible. Found within tissue cells. Amastigotes of Trypanosoma cruzi and Leishmania donovani are morphologically difficult to distinguish.",
+      "description": ""
+    },
+    {
+      "num": "125",
+      "path": "./images/IM-0028.jpg",
+      "answer": [
+        "Toxoplasma gondii",
+        "Toxoplasma gondii tachyzoite"
+      ],
+      "explanation": "Toxoplasma gondii tachyzoite. The organism is bow-shaped or crescent-shaped, with one nucleus. Often found in peritoneal exudate or tissue smears.",
+      "description": ""
+    },
+    {
+      "num": "126",
+      "path": "./images/IM-0029.jpg",
+      "answer": [
+        "Cystoisospora belli mature oocyst",
+        "Cystoisospora belli oocyst",
+        "Cystoisospora belli",
+        "Isospora belli mature oocyst",
+        "Isospora belli oocyst",
+        "Isospora belli"
+      ],
+      "explanation": "Cystoisospora belli mature oocyst. Contains 2 sporocysts, each containing 4 sporozoites.",
+      "description": ""
+    },
+    {
+      "num": "127",
+      "path": "./images/IM-0030.jpg",
+      "answer": [
+        "Plasmodium ovale",
+        "Plasmodium ovale trophozoite"
+      ],
+      "explanation": "Red blood cells (RBCs) infected with Plasmodium ovale enlarge, often becoming oval-shaped with irregular, fimbriated edges. Schüffner's dots are present and relatively coarse.",
+      "description": ""
+    },
+    {
+      "num": "128",
+      "path": "./images/IM-0031.jpg",
+      "answer": [
+        "Giardia lamblia",
+        "Giardia lamblia cyst"
+      ],
+      "explanation": "Giardia lamblia cyst. Mature cyst has 4 nuclei. Fragments of the sucking disc and axonemes are visible. Compared to Endolimax nana cyst, Giardia nuclei are located to one side, and the overall shape is more elongated oval.",
+      "description": ""
+    },
+    {
+      "num": "129",
+      "path": "images/Plasmodium_falcipurum_gameto100x.jpg",
+      "answer": [
+        "Plasmodium falciparum",
+        "Plasmodium falciparum gametocyte"
+      ],
+      "explanation": "Gametocyte of Plasmodium falciparum, characteristically banana-shaped or sausage-shaped. Both contain malarial pigment.",
+      "description": ""
+    },
+    {
+      "num": "130",
+      "path": "./images/IM-0032.jpg",
+      "answer": [
+        "Plasmodium malariae",
+        "Plasmodium malariae schizont"
+      ],
+      "explanation": "Plasmodium malariae schizont. Typically contains 6-12 merozoites, often 8, arranged in a rosette or fruit-pie formation. Infected red blood cells do not enlarge. Contains brownish-yellow malarial pigment.",
+      "description": ""
+    },
+    {
+      "num": "131",
+      "path": "images/C_belli_spore_wtmt1.jpg",
+      "answer": [
+        "Cystoisospora belli immature oocyst",
+        "Cystoisospora belli oocyst",
+        "Cystoisospora belli",
+        "Isospora belli immature oocyst",
+        "Isospora belli oocyst",
+        "Isospora belli"
+      ],
+      "explanation": "Cystoisospora belli immature oocyst. The oocyst usually contains only 1 sporoblast or what is also referred to as a sporocyst at this stage.",
+      "description": ""
+    },
+    {
+      "num": "132",
+      "path": "./images/IM-0033.jpg",
+      "answer": [
+        "Plasmodium malariae",
+        "Plasmodium malariae trophozoite"
+      ],
+      "explanation": "Plasmodium malariae trophozoite. Infected red blood cells do not enlarge. Late trophozoites often exhibit a band form. Schüffner's dots are absent. Malarial pigment is present.",
+      "description": ""
+    },
+    {
+      "num": "133",
+      "path": "./images/IM-0034.jpg",
+      "answer": [
+        "Entamoeba coli",
+        "Entamoeba coli trophozoite"
+      ],
+      "explanation": "Entamoeba coli trophozoite. Its karyosome is eccentrically located within the nucleus. The cytoplasm may contain food vacuoles with bacteria, but not red blood cells. Peripheral chromatin is unevenly distributed.",
+      "description": ""
+    },
+    {
+      "num": "134",
+      "path": "./images/IM-0035.jpg",
+      "answer": [
+        "Iodamoeba butschlii cyst",
+        "Iodamoeba buetschlii cyst",
+        "Iodamoeba butschlii",
+        "Iodamoeba buetschlii"
+      ],
+      "explanation": "Iodamoeba buetschlii cyst. A mature cyst has only 1 nucleus, with a large karyosome. The cytoplasm contains a large glycogen vacuole. Lacks peripheral chromatin.",
+      "description": ""
+    },
+    {
+      "num": "135",
+      "path": "./images/IM-0036.jpg",
+      "answer": [
+        "Giardia lamblia",
+        "Giardia lamblia trophozoite"
+      ],
+      "explanation": "Giardia lamblia trophozoite. Pear-shaped, with 2 nuclei, 4 pairs of flagella, and a large sucking disc, resembling a smiling face.",
+      "description": ""
+    },
+    {
+      "num": "136",
+      "path": "./images/IM-0037.jpg",
+      "answer": [
+        "Trypanosoma cruzi trypomastigote",
+        "Trypanosoma cruzi"
+      ],
+      "explanation": "Trypanosoma cruzi trypomastigote. In blood, its kinetoplast is a large dot. It has an undulating membrane. Often C-shaped or S-shaped.",
+      "description": ""
+    },
+    {
+      "num": "137",
+      "path": "./images/IM-0038.jpg",
+      "answer": [
+        "Plasmodium vivax",
+        "Plasmodium vivax trophozoite"
+      ],
+      "explanation": "Plasmodium vivax trophozoite. Infected red blood cells are enlarged. Late trophozoites often exhibit an irregular, ameboid form. Fine Schüffner's dots and brownish-yellow malarial pigment are present.",
+      "description": ""
+    },
+    {
+      "num": "138",
+      "path": "./images/IM-0039.jpg",
+      "answer": [
+        "Trichomonas vaginalis",
+        "Trichomonas vaginalis trophozoite"
+      ],
+      "explanation": "Trichomonas vaginalis trophozoite. It has a very prominent axostyle. It has an undulating membrane, about one-third the length of the body. It has 1 nucleus. The body has four anterior flagella and one recurrent flagellum.",
+      "description": ""
+    },
+    {
+      "num": "139",
+      "path": "./images/IM-0040.jpg",
+      "answer": [
+        "Entamoeba histolytica",
+        "Entamoeba histolytica cyst"
+      ],
+      "explanation": "Entamoeba histolytica cyst. Mature cysts typically have 4 nuclei. Fine adjustment of the microscope is needed to see them clearly. The karyosome is centrally located, and peripheral chromatin is evenly distributed. Immature cysts may show chromatoidal bodies with bluntly rounded ends, resembling sausages.",
+      "description": ""
+    },
+    {
+      "num": "140",
+      "path": "./images/IM-0041.jpg",
+      "answer": [
+        "Trypanosoma brucei gambiense",
+        "Trypanosoma brucei rhodesiense",
+        "Trypanosoma brucei gambiense trypomastigote",
+        "Trypanosoma brucei rhodesiense trypomastigote",
+        "Trypanosoma gambiense",
+        "Trypanosoma rhodesiense",
+        "Trypanosoma gambiense trypomastigote",
+        "Trypanosoma rhodesiense trypomastigote"
+      ],
+      "explanation": "Trypomastigote of Trypanosoma brucei gambiense/rhodesiense. In blood, its kinetoplast is a small dot. It has an undulating membrane.",
+      "description": ""
+    },
+    {
+      "num": "141",
+      "path": "./images/IM-0042.jpg",
+      "answer": [
+        "Balantidium coli",
+        "Balantidium coli cyst"
+      ],
+      "explanation": "Balantidium coli cyst. Similar to the trophozoite but has an additional cyst wall. Contains a kidney-shaped macronucleus and a micronucleus.",
+      "description": ""
+    },
+    {
+      "num": "142",
+      "path": "./images/IM-0043.jpg",
+      "answer": [
+        "Acanthamoeba culbertsoni",
+        "Acanthamoeba castellanii",
+        "Acanthamoeba castellanii trophozoite"
+      ],
+      "explanation": "Acanthamoeba trophozoite. Has transparent, spine-like pseudopods. One nucleus with a large karyosome.",
+      "description": ""
+    },
+    {
+      "num": "143",
+      "path": "./images/IM-0044.jpg",
+      "answer": [
+        "Entamoeba histolytica",
+        "Entamoeba histolytica trophozoite"
+      ],
+      "explanation": "Entamoeba histolytica trophozoite. Karyosome is centrally located in the nucleus. Peripheral chromatin is evenly distributed. Often ingests red blood cells.",
+      "description": ""
+    },
+    {
+      "num": "144",
+      "path": "./images/IM-0045.jpg",
+      "answer": [
+        "Endolimax nana",
+        "Endolimax nana cyst"
+      ],
+      "explanation": "Endolimax nana cyst. Mature cysts typically have 4 nuclei. The nuclei lack peripheral chromatin; under the microscope, only 4 small dots are seen.",
+      "description": ""
+    },
+    {
+      "num": "145",
+      "path": "./images/IM-0046.jpg",
+      "answer": [
+        "蟎",
+        "疥蟎",
+        "Mite",
+        "mite",
+        "itch mite",
+        "Itch mite"
+      ],
+      "explanation": "Human itch mite (Sarcoptes scabiei). Very small, round or oval. Adults have eight legs. The cuticle has fine transverse striations and a few bristles or spines. Legs are short; some leg tips have long sucker-like structures.",
+      "description": "這是什麼？（可寫中文）"
+    },
+    {
+      "num": "146",
+      "path": "./images/IM-0047.jpg",
+      "answer": [
+        "頭蝨",
+        "體蝨",
+        "Human head louse"
+      ],
+      "explanation": "Head louse or body louse. The body is elongated oval and dorsoventrally flattened. It has six legs, with claws at the tips adapted for grasping hair. Head lice are usually found in hair; body lice are found in clothing seams.",
+      "description": "這是什麼？（可寫中文）"
+    },
+    {
+      "num": "147",
+      "path": "./images/IM-0048.jpg",
+      "answer": [
+        "Armillifer agkistrodontis",
+        "Armillifer agkistrodontis adult",
+        "Armillifer agkistrodontis female adult",
+        "Armillifer agkistrodontis 成蟲",
+        "Armillifer agkistrodontis 雌成蟲"
+      ],
+      "explanation": "Armillifer agkistrodontis female adult. The body is bead-like, with distinct annulations.",
+      "description": ""
+    },
+    {
+      "num": "148",
+      "path": "./images/IM-0049.jpg",
+      "answer": [
+        "tick",
+        "蜱",
+        "Tick"
+      ],
+      "explanation": "Tick. Adults have eight legs. The body is divided into a capitulum and an idiosoma. The capitulum has a hypostome.",
+      "description": "這是什麼？（可寫中文）"
+    },
+    {
+      "num": "149",
+      "path": "./images/IM-0050.jpg",
+      "answer": [
+        "Armillifer agkistrodontis",
+        "Armillifer agkistrodontis larva",
+        "Armillifer agkistrodontis 幼蟲"
+      ],
+      "explanation": "Armillifer agkistrodontis larva. The body is C-shaped or ring-shaped, with body rings.",
+      "description": ""
+    },
+    {
+      "num": "150",
+      "path": "./images/IM-0051.jpg",
+      "answer": [
+        "Leech",
+        "水蛭",
+        "山蛭",
+        "蛭",
+        "leech"
+      ],
+      "explanation": "Leech. The body is segmented, with a sucker at both the anterior and posterior ends; the posterior sucker is larger.",
+      "description": "這是什麼？（可寫中文）"
+    },
+    {
+      "num": "151",
+      "path": "./images/IM-0052.jpg",
+      "answer": [
+        "陰蝨",
+        "crab louse"
+      ],
+      "explanation": "Crab louse (Phthirus pubis). The body is short and wide, like a crab. The middle and hind pairs of legs are stout, with strong claws at the tips.",
+      "description": "這是什麼？（可寫中文）"
+    },
+    {
+      "num": "152",
+      "path": "./images/IM-0053.jpg",
+      "answer": [
+        "臭蟲",
+        "bed bug",
+        "Bed bug"
+      ],
+      "explanation": "Bed bug. The body is flat and oval-shaped. It has six legs.",
+      "description": "這是什麼？（可寫中文）"
+    },
+    {
+      "num": "153",
+      "path": "./images/IM-0054.jpg",
+      "answer": [
+        "Ctenocephalides spp.",
+        "跳蚤",
+        "人蚤",
+        "貓蚤",
+        "狗蚤",
+        "Pulex irritans",
+        "flea",
+        "Flea"
+      ],
+      "explanation": "Flea. The body is laterally compressed. The hind legs are strong, adapted for jumping.",
+      "description": "這是什麼？（可寫中文）"
+    },
+    {
+      "num": "154",
+      "path": "images/hookworm-f-form.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale",
+        "Necator americanus  F-form larva",
+        "Ancylostoma duodenale F-form larva"
+      ],
+      "explanation": "Hookworm filariform larva (F-form larva). It is sheathed. The mouth has a distinct spear-like structure (spear-like esophagus). The esophagus is about 1/3 to 1/4 of the body length. The tail end is pointed.",
+      "description": ""
+    },
+    {
+      "num": "155",
+      "path": "images/trichuris-female.jpg",
+      "answer": [
+        "Trichuris trichiura",
+        "Trichuris trichiura female adult"
+      ],
+      "explanation": "Trichuris trichiura female adult. The anterior 3/5 of the body is slender and whip-like, while the posterior 2/5 is thicker. The female's tail is straight.",
+      "description": ""
+    },
+    {
+      "num": "156",
+      "path": "images/trichuris-male.jpg",
+      "answer": [
+        "Trichuris trichiura",
+        "Trichuris trichiura male adult"
+      ],
+      "explanation": "Trichuris trichiura male adult. The anterior 3/5 of the body is slender and whip-like, while the posterior 2/5 is thicker. The male's tail is ventrally coiled and has a single spicule, which is enclosed in a spicular sheath.",
+      "description": ""
+    },
+    {
+      "num": "157",
+      "path": "images/ascaris-egg.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "Unfertilized Ascaris lumbricoides egg. Elongated oval (narrower than fertilized egg). The eggshell is relatively thin. There is no space between the ovum and the eggshell. The interior is filled with irregularly sized, refractile, oil droplet-like granules. The outer layer may or may not have an albuminous coat.",
+      "description": ""
+    },
+    {
+      "num": "158",
+      "path": "images/fasciola-egg.jpg",
+      "answer": [
+        "Fasciola hepatica",
+        "Fasciolopsis buski"
+      ],
+      "explanation": "Egg of Fasciola hepatica or Fasciolopsis buski. Large, operculated. The shell opposite the operculum is smooth and not thickened.",
+      "description": ""
+    },
+    {
+      "num": "159",
+      "path": "images/hookworm-r-form.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale",
+        "Necator americanus  R-form larva",
+        "Ancylostoma duodenale R-form larva"
+      ],
+      "explanation": "Hookworm rhabditiform larva (R-form larva). The esophagus is rhabditiform, with an esophageal bulb. The buccal cavity is relatively long and thick-walled. Buccal cavity depth to body width ratio is approximately 1:1. The genital primordium is inconspicuous.",
+      "description": ""
+    },
+    {
+      "num": "160",
+      "path": "images/ss-f-form.jpg",
+      "answer": [
+        "Strongyloides stercoralis",
+        "Strongyloides stercoralis F-form larva"
+      ],
+      "explanation": "Strongyloides stercoralis filariform larva (F-form larva). Unsheathed. The tail end is notched (inverted V-shape).",
+      "description": ""
+    },
+    {
+      "num": "161",
+      "path": "./images/IM-0055.jpg",
+      "answer": [
+        "雜質"
+      ],
+      "explanation": "The pointer indicates debris, as there is no eggshell and no internal contents (such as an ovum, larva, or other parasitic structures). To be identified as an egg, it must have both an eggshell and internal contents; neither can be missing.",
+      "description": ""
+    },
+    {
+      "num": "162",
+      "path": "images/ac-snail.jpg",
+      "answer": [
+        "Angiostrongylus cantonensis"
+      ],
+      "explanation": "The image shows a giant African snail, which is an intermediate host for Angiostrongylus cantonensis.",
+      "description": ""
+    },
+    {
+      "num": "163",
+      "path": "images/ac-snail2.jpg",
+      "answer": [
+        "Angiostrongylus cantonensis"
+      ],
+      "explanation": "The image shows a Bradybaena snail, which is an intermediate host for Angiostrongylus cantonensis. Distinguish from Biomphalaria (intermediate host of Schistosoma mansoni) and planorbid snails (intermediate host of Fasciolopsis buski): Bradybaena snails have a more convex spire, unlike the latter two which have a flat spire and are centrally depressed on both sides.",
+      "description": ""
+    },
+    {
+      "num": "164",
+      "path": "images/heter-egg.jpg",
+      "answer": [
+        "Metagonimus yokogawai",
+        "Heterophyes heterophyes"
+      ],
+      "explanation": "Egg of Metagonimus yokogawai or Heterophyes heterophyes. Small egg. Operculated. The eggshell has no markings. There are no shoulders (no protrusion between the operculum and the eggshell). Contains a miracidium.",
+      "description": ""
+    },
+    {
+      "num": "165",
+      "path": "images/heter-egg2.jpg",
+      "answer": [
+        "Metagonimus yokogawai",
+        "Heterophyes heterophyes"
+      ],
+      "explanation": "Egg of Metagonimus yokogawai or Heterophyes heterophyes. Small egg. Operculated. The eggshell has no markings. There are no shoulders. Contains a miracidium.",
+      "description": ""
+    },
+    {
+      "num": "166",
+      "path": "images/ancly-can.jpg",
+      "answer": [
+        "Ancylostoma caninum"
+      ],
+      "explanation": "Ancylostoma caninum adult. The buccal capsule has three pairs of ventral teeth on the ventral side.",
+      "description": ""
+    },
+    {
+      "num": "167",
+      "path": "images/ss-r-form.jpg",
+      "answer": [
+        "Strongyloides stercoralis",
+        "Strongyloides stercoralis R-form larva"
+      ],
+      "explanation": "Strongyloides stercoralis rhabditiform larva (R-form larva). Has a prominent genital primordium. The buccal cavity is short. Buccal cavity depth to body width ratio is approximately 1:3.",
+      "description": ""
+    },
+    {
+      "num": "168",
+      "path": "images/wb.jpg",
+      "answer": [
+        "Wuchereria bancrofti"
+      ],
+      "explanation": "Wuchereria bancrofti microfilaria. It is sheathed. The tail tip has an anuclear (empty) space. The body nuclei stain relatively lightly and are more loosely arranged.",
+      "description": ""
+    },
+    {
+      "num": "169",
+      "path": "images/taenia-egg.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata"
+      ],
+      "explanation": "Taenia spp. egg. The eggshell is thick, with radial striations on its surface (resembling tire treads). It contains an oncosphere (hexacanth embryo).",
+      "description": ""
+    },
+    {
+      "num": "170",
+      "path": "images/taenia-egg2.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata"
+      ],
+      "explanation": "Taenia spp. egg. The eggshell is thick, with radial striations (resembling tire treads). It contains an oncosphere (hexacanth embryo).",
+      "description": ""
+    },
+    {
+      "num": "171",
+      "path": "images/ac-snail3.jpg",
+      "answer": [
+        "Angiostrongylus cantonensis"
+      ],
+      "explanation": "The image shows a Cipangopaludina chinensis snail (Chinese mystery snail), which is one of the intermediate hosts for Angiostrongylus cantonensis.",
+      "description": ""
+    },
+    {
+      "num": "172",
+      "path": "images/pw-egg.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "Paragonimus westermani egg. Medium to large, elongated oval, asymmetrical. Operculated. The shell opposite the operculum is unevenly thickened. Golden-brown in color.",
+      "description": ""
+    },
+    {
+      "num": "173",
+      "path": "images/al-adult.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "Ascaris lumbricoides adult. Large nematode, creamy white or light pink, resembling an earthworm.",
+      "description": ""
+    },
+    {
+      "num": "174",
+      "path": "./images/IM-0056.jpg",
+      "answer": [
+        "Angiostrongylus cantonensis"
+      ],
+      "explanation": "The image shows an apple snail (Ampullarium canaliculatus, now Pomacea canaliculata), which is one of the intermediate hosts for Angiostrongylus cantonensis.",
+      "description": ""
+    },
+    {
+      "num": "175",
+      "path": "images/cp-female.jpg",
+      "answer": [
+        "Capillaria philippinensis",
+        "Capillaria philippinensis female adult"
+      ],
+      "explanation": "Capillaria philippinensis female adult. The body is slender, with a stichosome composed of stichocytes surrounding the esophagus. The uterus contains characteristic eggs (peanut-shaped, with plugs at both ends). Length is about 0.3 cm.",
+      "description": ""
+    },
+    {
+      "num": "176",
+      "path": "images/pw.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "Paragonimus westermani adult. It has an oral sucker and a ventral sucker. The body is short oval, resembling a coffee bean. The ovary is branched (many-fingered hand shape).",
+      "description": ""
+    },
+    {
+      "num": "177",
+      "path": "images/fh.jpg",
+      "answer": [
+        "Fasciola hepatica"
+      ],
+      "explanation": "Fasciola hepatica adult. It has a distinct cephalic cone. The body is flat and leaf-shaped. All internal organs are highly branched.",
+      "description": ""
+    },
+    {
+      "num": "178",
+      "path": "images/ev-egg.jpg",
+      "answer": [
+        "Enterobius vermicularis"
+      ],
+      "explanation": "Enterobius vermicularis egg. Semi-oval (D-shaped), with one side flat and the other curved. The eggshell is asymmetrical.",
+      "description": ""
+    },
+    {
+      "num": "179",
+      "path": "images/cs.jpg",
+      "answer": [
+        "Clonorchis sinensis"
+      ],
+      "explanation": "Clonorchis sinensis adult. There are two tandemly arranged, branched testes in the posterior part of the body, with branches extending beyond the intestinal ceca. Lacks a cirrus and cirrus sac.",
+      "description": ""
+    },
+    {
+      "num": "180",
+      "path": "images/ch-egg.jpg",
+      "answer": [
+        "Capillaria hepatica"
+      ],
+      "explanation": "Capillaria hepatica egg. Elongated oval, medium-sized. Transparent plugs at both ends. The eggshell has striations. The organism appears somewhat plump. If found in human stool, it indicates a spurious infection.",
+      "description": ""
+    },
+    {
+      "num": "181",
+      "path": "images/spirometra-egg.jpg",
+      "answer": [
+        "Spirometra mansoni"
+      ],
+      "explanation": "Spirometra mansoni egg. Asymmetrical, one end pointed, one end blunt (D-shaped). Operculated. The ends of the eggshell are relatively pointed.",
+      "description": ""
+    },
+    {
+      "num": "182",
+      "path": "images/t-ori-egg.jpg",
+      "answer": [
+        "Trichostrongylus orientalis"
+      ],
+      "explanation": "Trichostrongylus orientalis egg. Elongated oval, with one end pointed and the other bluntly rounded. Larger than hookworm eggs. Hookworm eggs are about 2/3 the size of Trichostrongylus orientalis eggs. Contents often seen as a morula-stage ovum.",
+      "description": ""
+    },
+    {
+      "num": "183",
+      "path": "images/al-egg-fer.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "Fertilized Ascaris lumbricoides egg. Medium-sized, short oval or round. The eggshell is thick. The outer layer has a bumpy, mammillated albuminous coat (wavy edge), often bile-stained light yellow. There is a space between the ovum and the ends of the eggshell.",
+      "description": ""
+    },
+    {
+      "num": "184",
+      "path": "images/al-egg-fer-2.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "Fertilized Ascaris lumbricoides egg. Medium-sized, eggshell is very thick. The outer layer has an irregularly deposited albuminous coat. There is a space between the contents (ovum) and the ends of the eggshell.",
+      "description": ""
+    },
+    {
+      "num": "185",
+      "path": "images/fasciolopsis.jpg",
+      "answer": [
+        "Fasciolopsis buski"
+      ],
+      "explanation": "Fasciolopsis buski adult. Lacks a cephalic cone (distinguishing it from Fasciola hepatica). The ventral sucker is about four times the size of the oral sucker. The testes, ovary, and vitelline glands are all highly branched. The intestine is unbranched. It is the largest fluke parasitizing humans.",
+      "description": ""
+    },
+    {
+      "num": "186",
+      "path": "images/sj-egg.jpg",
+      "answer": [
+        "Schistosoma japonicum"
+      ],
+      "explanation": "Schistosoma japonicum egg. Large egg, round or oval. Non-operculated. Host tissue is often attached to the eggshell, giving it a dirty appearance. Contains a miracidium.",
+      "description": ""
+    },
+    {
+      "num": "187",
+      "path": "images/trichinella-cyst.jpg",
+      "answer": [
+        "Trichinella spiralis",
+        "Trichinella spiralis encysted larva"
+      ],
+      "explanation": "Trichinella spiralis encysted larva in muscle tissue. The larva is spirally coiled within the cyst.",
+      "description": ""
+    },
+    {
+      "num": "188",
+      "path": "images/cp-egg.jpg",
+      "answer": [
+        "Capillaria philippinensis"
+      ],
+      "explanation": "Capillaria philippinensis egg. Elongated oval, resembling a peanut shape. Transparent plugs at both ends. The eggshell has striations. The organism has a waist-like constriction.",
+      "description": ""
+    },
+    {
+      "num": "189",
+      "path": "images/anal-swab.jpg",
+      "answer": [
+        "Enterobius vermicularis"
+      ],
+      "explanation": "This is the equipment used for collecting Enterobius vermicularis eggs via the cellophane tape anal swab method.",
+      "description": ""
+    },
+    {
+      "num": "190",
+      "path": "images/ev-egg-2.jpg",
+      "answer": [
+        "Enterobius vermicularis"
+      ],
+      "explanation": "Enterobius vermicularis egg. Small to medium-sized. The eggshell is asymmetrical, with one side flat and the other curved (D-shaped). Contains an ovum or larva.",
+      "description": ""
+    },
+    {
+      "num": "191",
+      "path": "images/trichruis-egg.jpg",
+      "answer": [
+        "Trichuris trichiura"
+      ],
+      "explanation": "Trichuris trichiura egg. Medium-sized, barrel-shaped or hand grenade-shaped. Transparent plug at each end. The eggshell is relatively thick, smooth, and unstriated. Appears yellowish-brown when bile-stained.",
+      "description": ""
+    },
+    {
+      "num": "192",
+      "path": "images/hookworm-egg.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "Hookworm egg. Oval, small to medium-sized. The eggshell is thin and transparent. Both ends of the egg are relatively rounded. Contains an ovum or larva.",
+      "description": ""
+    },
+    {
+      "num": "193",
+      "path": "images/hookworm-egg-2.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "Hookworm egg. Shell thickness: single layer, very thin. Contents: ovum or larva. Both ends of the egg are relatively rounded.",
+      "description": ""
+    },
+    {
+      "num": "194",
+      "path": "images/hookworm-egg-3.jpg",
+      "answer": [
+        "Necator americanus",
+        "Ancylostoma duodenale"
+      ],
+      "explanation": "Hookworm egg. Oval, small to medium-sized. Thin shell. Both ends of the egg are relatively rounded.",
+      "description": ""
+    },
+    {
+      "num": "195",
+      "path": "images/na.jpg",
+      "answer": [
+        "Necator americanus"
+      ],
+      "explanation": "Necator americanus adult. The buccal capsule has a pair of ventral cutting plates. The male has a copulatory bursa, and its two spicules are fused at their tips with a small barb. Length is about 1 cm.",
+      "description": ""
+    },
+    {
+      "num": "196",
+      "path": "images/ac-ih.jpg",
+      "answer": [
+        "Angiostrongylus cantonensis"
+      ],
+      "explanation": "The image shows a slug, which is an intermediate host for Angiostrongylus cantonensis.",
+      "description": ""
+    },
+    {
+      "num": "197",
+      "path": "./images/IM-0057.jpg",
+      "answer": [
+        "雜質"
+      ],
+      "explanation": "The pointer indicates debris. There are no internal contents (such as an ovum, larva, etc.). To be identified as an egg, it must have both an eggshell and internal contents; neither can be missing.",
+      "description": ""
+    },
+    {
+      "num": "198",
+      "path": "images/echio-egg.jpg",
+      "answer": [
+        "Echinostoma malayanum",
+        "Echinostoma revolutum"
+      ],
+      "explanation": "Echinostoma egg. Large egg, operculated, transparent. The eggshell opposite the operculum is slightly thickened (distinguishing it from the smooth shell of Fasciola hepatica/Fasciolopsis buski). Contains one ovum and multiple vitelline cells.",
+      "description": ""
+    },
+    {
+      "num": "199",
+      "path": "images/sm-egg.jpg",
+      "answer": [
+        "Schistosoma mansoni"
+      ],
+      "explanation": "Schistosoma mansoni egg. Large egg, elongated oval. Non-operculated. Has a prominent lateral spine. Contains a miracidium.",
+      "description": ""
+    },
+    {
+      "num": "200",
+      "path": "images/cp-male.jpg",
+      "answer": [
+        "Capillaria philippinensis",
+        "Capillaria philippinensis male adult"
+      ],
+      "explanation": "Capillaria philippinensis male adult. The body is slender, with a stichosome composed of stichocytes surrounding the esophagus. The male has a very long spicule. Length is about 0.3 cm.",
+      "description": ""
+    },
+    {
+      "num": "201",
+      "path": "images/d-latum-egg.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "Diphyllobothrium latum egg. Medium-sized, about the size of a hookworm egg. Short oval or ovoid shape. Operculated. The ends of the eggshell are relatively rounded. Sometimes there is a small knob opposite the operculum, resembling a button.",
+      "description": ""
+    },
+    {
+      "num": "202",
+      "path": "images/d-latum-egg-2.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "Diphyllobothrium latum egg. Medium-sized, short oval or ovoid shape. Operculated. The ends of the eggshell are relatively rounded. Sometimes there is a small knob opposite the operculum.",
+      "description": ""
+    },
+    {
+      "num": "203",
+      "path": "images/h-nana-egg.jpg",
+      "answer": [
+        "Hymenolepis nana"
+      ],
+      "explanation": "Hymenolepis nana egg. Short oval, medium-sized (similar to hookworm egg size). The eggshell is very thin and transparent. Contains an oncosphere (hexacanth embryo). The embryophore has projections at both ends, from which 6-8 polar filaments extend. Distinguish from Hymenolepis diminuta egg, which lacks polar filaments and has a striated shell.",
+      "description": ""
+    },
+    {
+      "num": "204",
+      "path": "images/al-egg-fer-3.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "Fertilized Ascaris lumbricoides egg. The outer layer of the eggshell has a bumpy, mammillated albuminous coat (wavy edge).",
+      "description": ""
+    },
+    {
+      "num": "205",
+      "path": "images/al-egg-fer-4.jpg",
+      "answer": [
+        "Ascaris lumbricoides"
+      ],
+      "explanation": "Fertilized Ascaris lumbricoides egg. The eggshell is thick, with an outer albuminous coat deposited. There is a space between the contents and the ends of the eggshell.",
+      "description": ""
+    },
+    {
+      "num": "206",
+      "path": "images/t-spiral-female.jpg",
+      "answer": [
+        "Trichinella spiralis",
+        "Trichinella spiralis female adult"
+      ],
+      "explanation": "Trichinella spiralis female adult. The anterior end of the body has a stichosome composed of stichocytes surrounding the esophagus. The female is viviparous; the uterus contains many larvae. Length is about 0.3 cm.",
+      "description": ""
+    },
+    {
+      "num": "207",
+      "path": "images/h-diminuta-egg.jpg",
+      "answer": [
+        "Hymenolepis diminuta"
+      ],
+      "explanation": "Hymenolepis diminuta egg. The eggshell has striations and a hyaline (gelatinous) layer. Contains an oncosphere (hexacanth embryo). The embryophore has projections at both ends but lacks polar filaments (distinguishing it from Hymenolepis nana egg, which has polar filaments).",
+      "description": ""
+    },
+    {
+      "num": "208",
+      "path": "images/a-duo-male.jpg",
+      "answer": [
+        "Ancylostoma duodenale",
+        "Ancylostoma duodenale male adult"
+      ],
+      "explanation": "Ancylostoma duodenale male worm. The tail has a copulatory bursa, containing two separate spicules.",
+      "description": ""
+    },
+    {
+      "num": "209",
+      "path": "images/a-cey.jpg",
+      "answer": [
+        "Ancylostoma ceylanicum"
+      ],
+      "explanation": "Ancylostoma ceylanicum adult. The buccal capsule has two pairs of ventral teeth on the ventral side, one pair large and one pair small, resembling a bird's beak.",
+      "description": ""
+    },
+    {
+      "num": "210",
+      "path": "images/e-rev.jpg",
+      "answer": [
+        "Echinostoma revolutum"
+      ],
+      "explanation": "Echinostoma revolutum adult. Near the oral sucker, there are spines arranged in a horseshoe shape. It has two tandemly arranged, round testes.",
+      "description": ""
+    },
+    {
+      "num": "211",
+      "path": "images/e-malay.jpg",
+      "answer": [
+        "Echinostoma malayanum"
+      ],
+      "explanation": "Echinostoma malayanum adult. Near the oral sucker, there are spines arranged in a horseshoe shape. It has two tandemly arranged, branched testes.",
+      "description": ""
+    },
+    {
+      "num": "212",
+      "path": "images/echinostoma-head.jpg",
+      "answer": [
+        "Echinostoma malayanum",
+        "Echinostoma revolutum"
+      ],
+      "explanation": "Characteristic head of Echinostoma species. Near the oral sucker, there are collar spines arranged in a horseshoe shape. Size is about 1 cm.",
+      "description": ""
+    },
+    {
+      "num": "213",
+      "path": "images/m-yoko.jpg",
+      "answer": [
+        "Metagonimus yokogawai"
+      ],
+      "explanation": "Metagonimus yokogawai adult. Has an acetabulo-genital apparatus (genital sucker). There are two obliquely arranged, round testes at the posterior end of the body.",
+      "description": ""
+    },
+    {
+      "num": "214",
+      "path": "images/sj.jpg",
+      "answer": [
+        "Schistosoma japonicum"
+      ],
+      "explanation": "Schistosoma japonicum male worm. The male is short and stout, with a gynecophoral canal. The body surface is smooth, without tubercles. Intestinal ceca unite in the posterior part of the body. There are 7 testes, arranged in a single row.",
+      "description": ""
+    },
+    {
+      "num": "215",
+      "path": "images/s-mansoni.jpg",
+      "answer": [
+        "Schistosoma mansoni"
+      ],
+      "explanation": "Schistosoma mansoni male worm. The male body surface has prominent tubercles. Intestinal ceca unite in the anterior part of the body. There are 6-9 testes, arranged in two rows. The female's ovary is located in the anterior part of the body.",
+      "description": ""
+    },
+    {
+      "num": "216",
+      "path": "images/s-haema.jpg",
+      "answer": [
+        "Schistosoma haematobium"
+      ],
+      "explanation": "Schistosoma haematobium male worm. The male body surface has fine tubercles. Intestinal ceca unite in the middle of the body. There are 4-5 testes. The female's ovary is located in the posterior part of the body.",
+      "description": ""
+    },
+    {
+      "num": "217",
+      "path": "images/pw-1.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "Paragonimus westermani adult (jar specimen). Looks like a boiled peanut, about one centimeter in size, small and roundish body.",
+      "description": ""
+    },
+    {
+      "num": "218",
+      "path": "images/pw-2.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "Paragonimus westermani adult (jar specimen). Looks like a boiled peanut.",
+      "description": ""
+    },
+    {
+      "num": "219",
+      "path": "images/fasciolopsis-2.jpg",
+      "answer": [
+        "Fasciolopsis buski"
+      ],
+      "explanation": "Fasciolopsis buski adult (jar specimen). The worm is somewhat thick, like a slice of ginger. Size is about 2-7 cm.",
+      "description": ""
+    },
+    {
+      "num": "220",
+      "path": "images/fasciolopsis-3.jpg",
+      "answer": [
+        "Fasciolopsis buski"
+      ],
+      "explanation": "Fasciolopsis buski adult (jar specimen). The worm is thick and fleshy, resembling a slice of ginger.",
+      "description": ""
+    },
+    {
+      "num": "221",
+      "path": "images/fasciola.jpg",
+      "answer": [
+        "Fasciola hepatica"
+      ],
+      "explanation": "Fasciola hepatica adult (jar specimen). Appears flat, about 3 cm in size, and the cephalic cone is visible.",
+      "description": ""
+    },
+    {
+      "num": "222",
+      "path": "images/c-sinensis.jpg",
+      "answer": [
+        "Clonorchis sinensis"
+      ],
+      "explanation": "Clonorchis sinensis adult (jar specimen). The body is transparent, about 1-3 cm in size.",
+      "description": ""
+    },
+    {
+      "num": "223",
+      "path": "images/pw-ih.jpg",
+      "answer": [
+        "Paragonimus westermani"
+      ],
+      "explanation": "The image shows a freshwater crab or crayfish, which is the second intermediate host of Paragonimus westermani.",
+      "description": ""
+    },
+    {
+      "num": "224",
+      "path": "./images/IM-0058.jpg",
+      "answer": [
+        "Fasciolopsis buski"
+      ],
+      "explanation": "The image shows water caltrop or water chestnut, which are second intermediate hosts for Fasciolopsis buski.",
+      "description": ""
+    },
+    {
+      "num": "225",
+      "path": "./images/IM-0059.jpg",
+      "answer": [
+        "Paragonimus westermani",
+        "Metagonimus yokogawai"
+      ],
+      "explanation": "The image shows a Semisulcospira libertina snail; its apex is often eroded and broken. It is the first intermediate host for Paragonimus westermani and Metagonimus yokogawai.",
+      "description": ""
+    },
+    {
+      "num": "226",
+      "path": "./images/IM-0060.jpg",
+      "answer": [
+        "Paragonimus westermani",
+        "Metagonimus yokogawai"
+      ],
+      "explanation": "The image shows a Thiara granifera snail; the shell surface has small protrusions resembling nodules. It is the first intermediate host for Paragonimus westermani and Metagonimus yokogawai.",
+      "description": ""
+    },
+    {
+      "num": "227",
+      "path": "./images/IM-0061.jpg",
+      "answer": [
+        "Fasciola hepatica",
+        "Echinostoma revolutum",
+        "Echinostoma malayanum"
+      ],
+      "explanation": "The image shows a Lymnaea swinhoei snail, about one centimeter, with a large last whorl. It is the first intermediate host for Fasciola hepatica, Echinostoma malayanum, and Echinostoma revolutum. Needs to be distinguished from Bulinus snails, whose aperture is on the left side.",
+      "description": ""
+    },
+    {
+      "num": "228",
+      "path": "./images/IM-0062.jpg",
+      "answer": [
+        "Fasciolopsis buski"
+      ],
+      "explanation": "The image shows a planorbid snail (Hippeutis cantori or Segmentina spp.), which is the first intermediate host of Fasciolopsis buski.",
+      "description": ""
+    },
+    {
+      "num": "229",
+      "path": "./images/IM-0063.jpg",
+      "answer": [
+        "Heterophyes heterophyes"
+      ],
+      "explanation": "The image shows a Pirenella conica snail (commonly known as a tower snail or mudflat snail), which is the first intermediate host of Heterophyes heterophyes.",
+      "description": ""
+    },
+    {
+      "num": "230",
+      "path": "./images/IM-0064.jpg",
+      "answer": [
+        "Schistosoma japonicum"
+      ],
+      "explanation": "The image shows an Oncomelania hupensis nosophora snail, very small like a tiny nail, which is the first intermediate host of Schistosoma japonicum.",
+      "description": ""
+    },
+    {
+      "num": "231",
+      "path": "./images/IM-0065.jpg",
+      "answer": [
+        "Schistosoma mansoni"
+      ],
+      "explanation": "The image shows a Biomphalaria spp. snail, coin-sized, with a depression on both sides. It is the first intermediate host of Schistosoma mansoni.",
+      "description": ""
+    },
+    {
+      "num": "232",
+      "path": "./images/IM-0066.jpg",
+      "answer": [
+        "Schistosoma haematobium"
+      ],
+      "explanation": "The image shows a Bulinus spp. snail, which is the only sinistral (left-coiling) snail (apex upwards, aperture upwards, aperture on the left). It is the first intermediate host of Schistosoma haematobium.",
+      "description": ""
+    },
+    {
+      "num": "233",
+      "path": "./images/IM-0067.jpg",
+      "answer": [
+        "假葉目",
+        "假葉目絛蟲",
+        "擬葉目",
+        "擬葉目絛蟲"
+      ],
+      "explanation": "Adult Pseudophyllidean tapeworm, its genital pore is in the middle of the proglottid.",
+      "description": "這是圓葉目絛蟲還是擬葉目絛蟲？"
+    },
+    {
+      "num": "234",
+      "path": "./images/IM-0068.jpg",
+      "answer": [
+        "圓葉目",
+        "圓葉目絛蟲"
+      ],
+      "explanation": "Cyclophyllidean tapeworm, its genital pore is on the side of the proglottid.",
+      "description": "這是圓葉目絛蟲還是擬葉目絛蟲？"
+    },
+    {
+      "num": "235",
+      "path": "images/cysticercus-1.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata",
+        "Taenia solium cysticercus",
+        "Taenia saginata cysticercus"
+      ],
+      "explanation": "Cysticercus of Taenia solium or Taenia saginata. Approximately one centimeter in size, oval-shaped bladder containing a white scolex.",
+      "description": ""
+    },
+    {
+      "num": "236",
+      "path": "images/cysticercus-2.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata",
+        "Taenia solium cysticercus",
+        "Taenia saginata cysticercus"
+      ],
+      "explanation": "Cysticercus of Taenia solium or Taenia saginata in muscle tissue. Appears as an oval-shaped bladder containing a scolex.",
+      "description": ""
+    },
+    {
+      "num": "237",
+      "path": "images/cysticercus-3.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata",
+        "Taenia solium cysticercus",
+        "Taenia saginata cysticercus"
+      ],
+      "explanation": "Cysticercus, about one centimeter in size, oval-shaped, containing a scolex. Larva of Taenia solium or Taenia saginata.",
+      "description": ""
+    },
+    {
+      "num": "238",
+      "path": "images/cysticercus-4.jpg",
+      "answer": [
+        "Taenia solium",
+        "Taenia saginata",
+        "Taenia solium cysticercus",
+        "Taenia saginata cysticercus"
+      ],
+      "explanation": "Cysticercus, about one centimeter in size, oval-shaped, containing a scolex. Larva of Taenia solium or Taenia saginata.",
+      "description": ""
+    },
+    {
+      "num": "239",
+      "path": "images/e-g-protoscolex.jpg",
+      "answer": [
+        "Echinococcus granulosus",
+        "Echinococcus granulosus protoscolex"
+      ],
+      "explanation": "Protoscolex of Echinococcus granulosus. Released from a hydatid cyst, it resembles a small mushroom. Has suckers and hooks.",
+      "description": ""
+    },
+    {
+      "num": "240",
+      "path": "images/e-g-protoscolex-2.jpg",
+      "answer": [
+        "Echinococcus granulosus",
+        "Echinococcus granulosus protoscolex"
+      ],
+      "explanation": "Protoscolex of Echinococcus granulosus. Released from a hydatid cyst, it resembles a small mushroom. Has suckers and hooks.",
+      "description": ""
+    },
+    {
+      "num": "241",
+      "path": "images/pseudophyllidea.jpg",
+      "answer": [
+        "Diphyllobothrium latum",
+        "Spirometra mansoni"
+      ],
+      "explanation": "Scolex of a Pseudophyllidean tapeworm. Characterized by two longitudinal sucking grooves (bothria) on each side of the scolex, lacking suckers and hooks.",
+      "description": ""
+    },
+    {
+      "num": "242",
+      "path": "images/taeni-solium.jpg",
+      "answer": [
+        "Taenia solium"
+      ],
+      "explanation": "Scolex of Taenia solium. Has four suckers and a rostellum at the apex, with two rows of hooks on the rostellum.",
+      "description": ""
+    },
+    {
+      "num": "243",
+      "path": "images/taeni-sagi.jpg",
+      "answer": [
+        "Taenia saginata"
+      ],
+      "explanation": "Scolex of Taenia saginata. Has four suckers, lacks a rostellum and hooks.",
+      "description": ""
+    },
+    {
+      "num": "244",
+      "path": "images/h-nana.jpg",
+      "answer": [
+        "Hymenolepis nana"
+      ],
+      "explanation": "Scolex of Hymenolepis nana. Has four suckers and a retractable rostellum with one row of hooks. Has a distinct neck.",
+      "description": ""
+    },
+    {
+      "num": "245",
+      "path": "images/h-diminuta.jpg",
+      "answer": [
+        "Hymenolepis diminuta"
+      ],
+      "explanation": "Scolex of Hymenolepis diminuta. Has four suckers and a rudimentary, unarmed (hookless) rostellum. Appears to lack a distinct neck.",
+      "description": ""
+    },
+    {
+      "num": "246",
+      "path": "images/dipy.jpg",
+      "answer": [
+        "Dipylidium caninum"
+      ],
+      "explanation": "Scolex of Dipylidium caninum. Has four suckers and a retractable rostellum with several rows (usually 3-4) of rose thorn-shaped hooklets.",
+      "description": ""
+    },
+    {
+      "num": "247",
+      "path": "images/r-cele.jpg",
+      "answer": [
+        "Raillietina celebensis"
+      ],
+      "explanation": "Scolex of Raillietina celebensis (Taiwan tapeworm/Asian Raillietina). Has four suckers, which are armed with small hooks. The rostellum also has multiple rows of hammer-shaped hooks.",
+      "description": ""
+    },
+    {
+      "num": "248",
+      "path": "images/d-latum.jpg",
+      "answer": [
+        "Diphyllobothrium latum"
+      ],
+      "explanation": "Mature proglottid of Diphyllobothrium latum. Genital pore is in the middle of the proglottid, with a uterine pore. Uterus is rosette-shaped. Testes and vitelline glands are follicular, scattered on both sides. Ovary is lumpy, located behind the uterus.",
+      "description": ""
+    },
+    {
+      "num": "249",
+      "path": "images/spirometra.jpg",
+      "answer": [
+        "Spirometra mansoni"
+      ],
+      "explanation": "Mature proglottid of Spirometra mansoni. Genital pore is in the middle of the proglottid, with a uterine pore. Uterus is spiral-shaped (like soft-serve ice cream). Testes and vitelline glands are follicular, scattered on both sides. Ovary is lumpy, located behind the uterus.",
+      "description": ""
+    },
+    {
+      "num": "250",
+      "path": "images/taenia-solium.jpg",
+      "answer": [
+        "Taenia solium"
+      ],
+      "explanation": "Gravid proglottid of Taenia solium. Rectangular shape. Number of unilateral uterine branches is less than 13 (usually 7-12 pairs), branches are thick and dendritic (tree-like).",
+      "description": ""
+    },
+    {
+      "num": "251",
+      "path": "images/dipy-segment.jpg",
+      "answer": [
+        "Dipylidium caninum"
+      ],
+      "explanation": "Mature or gravid proglottid of Dipylidium caninum. Each proglottid has two sets of reproductive systems and two genital pores, one on each lateral margin. Gravid proglottids are filled with egg packets.",
+      "description": ""
+    },
+    {
+      "num": "252",
+      "path": "images/bal-coli-cyst.jpg",
+      "answer": [
+        "Balantidium coli",
+        "Balantidium coli cyst"
+      ],
+      "explanation": "Balantidium coli cyst. Round or oval. Has a cyst wall. A kidney-shaped macronucleus and a micronucleus are visible inside.",
+      "description": ""
+    },
+    {
+      "num": "253",
+      "path": "images/gl-tro.jpg",
+      "answer": [
+        "Giardia lamblia",
+        "Giardia lamblia trophozoite"
+      ],
+      "explanation": "Giardia lamblia trophozoite. Has 2 nuclei, 4 pairs of flagella, and a large ventral sucking disc. Resembles a smiling face. Has median bodies and axonemes. Live trophozoites exhibit a falling leaf-like motility.",
+      "description": ""
+    },
+    {
+      "num": "254",
+      "path": "images/gb-cyst.jpg",
+      "answer": [
+        "Giardia lamblia",
+        "Giardia lamblia cyst"
+      ],
+      "explanation": "Giardia lamblia cyst. Mature cyst has 4 nuclei. Fragments of the sucking disc and axonemes are visible.",
+      "description": ""
+    },
+    {
+      "num": "255",
+      "path": "images/t-vaginalis-tro.jpg",
+      "answer": [
+        "Trichomonas vaginalis",
+        "Trichomonas vaginalis trophozoite"
+      ],
+      "explanation": "Trichomonas vaginalis trophozoite. It has a very prominent axostyle. It has an undulating membrane, about one-third the length of the body. It has 1 nucleus. The body has four anterior flagella and one recurrent flagellum.",
+      "description": ""
+    },
+    {
+      "num": "256",
+      "path": "images/t-brucei-trypo.jpg",
+      "answer": [
+        "Trypanosoma brucei gambiense",
+        "Trypanosoma brucei rhodesiense",
+        "Trypanosoma brucei gambiense trypomastigote",
+        "Trypanosoma brucei rhodesiense trypomastigote",
+        "Trypanosoma gambiense",
+        "Trypanosoma rhodesiense",
+        "Trypanosoma gambiense trypomastigote",
+        "Trypanosoma rhodesiense trypomastigote"
+      ],
+      "explanation": "Trypomastigote of Trypanosoma brucei gambiense/rhodesiense. In human blood, its kinetoplast is a small dot. It has an undulating membrane. Trypomastigotes of these two species are indistinguishable.",
+      "description": ""
+    },
+    {
+      "num": "257",
+      "path": "images/t-cruzi-trypo.jpg",
+      "answer": [
+        "Trypanosoma cruzi",
+        "Trypanosoma cruzi trypomastigote"
+      ],
+      "explanation": "Trypanosoma cruzi trypomastigote. In blood, its kinetoplast is a large dot. It has an undulating membrane.",
+      "description": ""
+    },
+    {
+      "num": "258",
+      "path": "images/toxoplamsa-tachy.jpg",
+      "answer": [
+        "Toxoplasma gondii",
+        "Toxoplasma gondii tachyzoite"
+      ],
+      "explanation": "Toxoplasma gondii tachyzoite. Found in peritoneal exudate, it has one nucleus and is crescent-shaped.",
+      "description": ""
+    },
+    {
+      "num": "259",
+      "path": "images/pf-ring-form.jpg",
+      "answer": [
+        "Plasmodium falciparum",
+        "Plasmodium falciparum trophozoite"
+      ],
+      "explanation": "Gametocytes of Plasmodium falciparum are banana-shaped. Its ring form trophozoites are commonly seen in blood smears; multiple ring forms may infect a single red blood cell, or an appliqué form (ring at the periphery) may be seen.",
+      "description": ""
+    },
+    {
+      "num": "260",
+      "path": "images/p-vivax-amoeba-form.jpg",
+      "answer": [
+        "Plasmodium vivax",
+        "Plasmodium vivax trophozoite"
+      ],
+      "explanation": "Plasmodium vivax. Infected red blood cells are enlarged. Early trophozoites are ring-form, about 1/3 the diameter of the RBC. Late trophozoites often exhibit an ameboid form. Fine Schüffner's dots and brownish-yellow malarial pigment are present at all stages. Schizonts have 12-24 merozoites (typically 16).",
+      "description": ""
+    },
+    {
+      "num": "261",
+      "path": "images/p-ovale.jpg",
+      "answer": [
+        "Plasmodium ovale",
+        "Plasmodium ovale trophozoite"
+      ],
+      "explanation": "Plasmodium ovale trophozoite. Infected red blood cells are enlarged and often oval-shaped, with fimbriated (ragged) edges. Schüffner's dots are present and coarse.",
+      "description": ""
+    },
+    {
+      "num": "262",
+      "path": "images/e-h-cyst.jpg",
+      "answer": [
+        "Entamoeba histolytica",
+        "Entamoeba histolytica cyst"
+      ],
+      "explanation": "Entamoeba histolytica cyst. Mature cysts typically have 4 nuclei. Immature cysts may show chromatoidal bodies with bluntly rounded ends, resembling sausages. Cyst size is greater than 10 μm.",
+      "description": "4個核"
+    },
+    {
+      "num": "263",
+      "path": "images/ent-coli-cyst.jpg",
+      "answer": [
+        "Entamoeba coli",
+        "Entamoeba coli cyst"
+      ],
+      "explanation": "Entamoeba coli cyst. Mature cysts typically have 8 nuclei. Fine adjustment of the microscope is needed to see them clearly. Immature cysts may show chromatoidal bodies with splintered or broom-like ends. Cyst size is greater than 10 μm.",
+      "description": "8個核"
+    },
+    {
+      "num": "264",
+      "path": "images/e-nana-cyst.jpg",
+      "answer": [
+        "Endolimax nana",
+        "Endolimax nana cyst"
+      ],
+      "explanation": "Endolimax nana cyst. Size: less than 10 μm. Shape: short oval. Mature cysts typically have 4 nuclei. The nuclei lack peripheral chromatin. Under the microscope, only 4 small dots are seen.",
+      "description": "4個核"
+    },
+    {
+      "num": "265",
+      "path": "images/acanth.jpg",
+      "answer": [
+        "Acanthamoeba castellanii",
+        "Acanthamoeba castellanii trophozoite"
+      ],
+      "explanation": "Acanthamoeba trophozoite. Has transparent, spine-like pseudopods. One nucleus with a large karyosome.",
+      "description": ""
+    },
+    {
+      "num": "266",
+      "path": "images/blast-hom.jpg",
+      "answer": [
+        "Blastocystis hominis"
+      ],
+      "explanation": "Blastocystis hominis trophozoite. The common form has a large central vacuole, with multiple nuclei around the periphery.",
+      "description": ""
+    },
+    {
+      "num": "267",
+      "path": "images/leech.jpg",
+      "answer": [
+        "Leech",
+        "水蛭",
+        "山蛭",
+        "蛭",
+        "leech",
+        "land leech"
+      ],
+      "explanation": "Leech. The body is segmented, with a sucker at both the anterior and posterior ends.",
+      "description": ""
+    }
+  ]
